@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Resumen Proyecto Makers</title>
+<style>
+:root{
+  --ink:#17122B; --violet:#5B3DF5; --violet-soft:#ECE8FF; --lime:#C8F53C;
+  --paper:#FAF7F0; --coral:#E8442E; --mute:#5F5975; --line:#E2DCCF; --white:#fff;
+}
+@page{size:Letter;margin:0}
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+html,body{margin:0;padding:0}
+body{font-family:"Avenir Next","Avenir",Helvetica,Arial,sans-serif;color:var(--ink);font-size:9.6pt;line-height:1.38}
+.page{width:8.5in;height:11in;padding:.5in .55in .45in;background:var(--paper);position:relative;overflow:hidden;page-break-after:always}
+.page:last-child{page-break-after:auto}
+h1,h2,h3,p{margin:0}
+.kicker{font-size:8pt;font-weight:700;color:var(--violet);margin-bottom:5pt}
+h2{font-size:21pt;font-weight:800;letter-spacing:-.02em;line-height:1.08;margin-bottom:10pt}
+h3{font-size:11pt;font-weight:800;letter-spacing:-.01em;margin-bottom:4pt}
+.mute{color:var(--mute)}
+.src{font-size:7.4pt;color:var(--mute);margin-top:4pt}
+b{font-weight:700}
+.foot{position:absolute;left:.55in;right:.55in;bottom:.26in;display:flex;justify-content:space-between;font-size:7.4pt;color:var(--mute)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11pt}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10pt}
+.card{background:var(--white);border:1px solid var(--line);border-radius:9pt;padding:10pt 11pt}
+.card.v{background:var(--violet);color:#fff;border:0}
+.card.ink{background:var(--ink);color:#fff;border:0}
+.card.soft{background:var(--violet-soft);border:0}
+.card.lime{background:var(--lime);border:0}
+.big{font-family:"Avenir Next Condensed","Avenir Next",sans-serif;font-weight:800;font-size:34pt;line-height:.95;letter-spacing:-.02em}
+.hl{background:linear-gradient(transparent 58%,var(--lime) 58%)}
+.sec{margin-top:13pt}
+
+/* portada */
+.cover{background:var(--ink);color:#fff;margin:-.5in -.55in 0;padding:.5in .55in .34in}
+.cover .kicker{color:var(--lime)}
+.cover h1{font-size:40pt;font-weight:800;letter-spacing:-.03em;line-height:.98;max-width:6.4in}
+.cover h1 span{color:var(--lime)}
+.cover p{font-size:13pt;margin-top:10pt;max-width:5.6in;color:#DDD8F0}
+.tesis{background:var(--lime);border-radius:9pt;padding:12pt 14pt;font-size:12.6pt;font-weight:700;line-height:1.28;letter-spacing:-.01em;margin-top:13pt}
+.tesis small{display:block;font-size:8pt;font-weight:700;margin-bottom:3pt}
+.stat .big{color:var(--violet)}
+.stat p{margin-top:4pt}
+.ruta{display:flex;align-items:stretch;gap:5pt;margin-top:7pt}
+.ruta div{flex:1;border-radius:7pt;padding:7pt 8pt;background:var(--white);border:1px solid var(--line);font-size:8.6pt}
+.ruta div.on{background:var(--violet);color:#fff;border:0}
+.ruta i{align-self:center;font-style:normal;font-weight:800;color:var(--violet)}
+ol.rank{list-style:none;padding:0;margin:0;counter-reset:r}
+ol.rank li{counter-increment:r;display:flex;gap:8pt;align-items:baseline;padding:4.2pt 0;border-bottom:1px solid var(--line)}
+ol.rank li:last-child{border:0}
+ol.rank li::before{content:counter(r);font-family:"Avenir Next Condensed",sans-serif;font-weight:800;font-size:15pt;color:var(--violet);width:13pt;flex:none}
+ol.rank em{font-style:normal;color:var(--mute);font-size:8.4pt}
+
+/* barras */
+.bars{display:grid;grid-template-columns:86pt 1fr 34pt;row-gap:4.5pt;column-gap:8pt;align-items:center;font-size:8.8pt}
+.bars .bar{height:11pt;border-radius:3pt;background:#B9B2D6}
+.bars .n{font-weight:700;text-align:right}
+.bars .k .bar{background:var(--violet)}
+.bars .c .bar{background:var(--coral)}
+.row{display:contents}
+
+table{border-collapse:collapse;width:100%;font-size:8.7pt}
+th,td{text-align:left;padding:4.2pt 6pt;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:7.8pt;color:var(--mute);font-weight:700}
+td:first-child{font-weight:700}
+tr:last-child td{border-bottom:0}
+
+.num{font-family:"Avenir Next Condensed",sans-serif;font-weight:800;font-size:22pt;line-height:1;letter-spacing:-.01em}
+.neg{color:var(--coral)} .pos{color:var(--violet)}
+.card.v .num,.card.ink .num{color:var(--lime)}
+
+.flow{display:grid;grid-template-columns:1fr 14pt 1fr 14pt 1fr;align-items:stretch}
+.flow .arrow{align-self:center;text-align:center;font-weight:800;color:var(--violet);font-size:13pt}
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:5pt}
+.steps div{background:var(--white);border:1px solid var(--line);border-radius:7pt;padding:7pt 7pt 8pt;font-size:8.3pt;line-height:1.3}
+.steps b{display:block;font-size:8.9pt;margin-bottom:2pt}
+.steps span{font-family:"Avenir Next Condensed",sans-serif;font-weight:800;font-size:15pt;color:var(--violet);display:block;line-height:1}
+.chips{display:flex;flex-wrap:wrap;gap:4.5pt}
+.chips span{background:var(--white);border:1px solid var(--line);border-radius:20pt;padding:3pt 8pt;font-size:8.3pt;font-weight:600}
+.chips span.on{background:var(--ink);color:#fff;border:0}
+ul{margin:0;padding-left:12pt}
+li{margin-bottom:2.5pt}
+.tl{display:grid;grid-template-columns:62pt 1fr;row-gap:0;font-size:8.9pt}
+.tl div{padding:4.6pt 0;border-bottom:1px solid var(--line)}
+.tl div:nth-last-child(-n+2){border:0}
+.tl .d{font-weight:800;color:var(--violet)}
+.warn{border:1.4pt solid var(--coral);border-radius:9pt;padding:10pt 11pt;background:#fff}
+.warn h3{color:var(--coral)}
+ol.n7{margin:0;padding-left:14pt}
+ol.n7 li{margin-bottom:3pt}
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="page">
+  <div class="cover">
+    <div class="kicker">Proyecto Makers · EdTech de finanzas AI First · Exploración, 13 de noviembre de 2026</div>
+    <h1>No es un Duolingo<br>de finanzas.<br><span>Es mejor idea.</span></h1>
+    <p>Lo que encontramos al cruzar nuestros tres ICP con la evidencia sobre cómo se aprende a manejar la plata, y lo que proponemos construir.</p>
+  </div>
+
+  <div class="tesis"><small>LA TESIS</small>Lo que más cambia la conducta financiera es que alguien te acompañe a decidir en el momento. Siempre fue caro. La IA lo vuelve barato.</div>
+
+  <div class="grid3 sec">
+    <div class="card stat"><div class="big">2 a 3×</div><p>más fácil cambiar lo que la gente <b>sabe</b> que lo que <b>hace</b>. Un producto que mide quizzes cree que funciona cuando no.</p></div>
+    <div class="card stat"><div class="big">2 a 4</div><p>veces al mes es el uso natural: cuando pagan, cuando llega el extracto, cuando viene la prima. <b>No es una app diaria.</b></p></div>
+    <div class="card stat"><div class="big">1 foto</div><p>del desprendible basta para personalizar desde el primer usuario. Duolingo necesita millones de respuestas.</p></div>
+  </div>
+
+  <div class="grid2 sec">
+    <div>
+      <div class="kicker">PARA QUIÉN</div>
+      <h3>Joven de 21 a 26 años en sus primeros 18 meses de empleo formal</h3>
+      <p>Gana entre $2,3 y $3,5 millones, vive con su familia, tiene cuenta de nómina y Nequi, y ya le ofrecieron una tarjeta. <span class="hl">Le llegan documentos y fechas que no controla</span>, y eso le da un motivo para abrir el producto.</p>
+      <div class="ruta">
+        <div><b>Andrés</b><br>Mesada. Etapa previa</div><i>→</i>
+        <div class="on"><b>Valentina</b><br>Recién llegada, sin deuda</div><i>→</i>
+        <div class="on"><b>Santiago</b><br>Ya enredado con cuotas</div>
+      </div>
+      <p class="src">Los tres ICP son momentos de la misma ruta. El foco son los dos del centro y la derecha. Falta sumar el ICP de Luca.</p>
+    </div>
+    <div>
+      <div class="kicker">QUÉ LE DUELE, EN ORDEN</div>
+      <ol class="rank">
+        <li><span><b>Recibo documentos de mi plata que no entiendo</b><br><em>Desprendible, extracto. Cada quincena y cada corte.</em></span></li>
+        <li><span><b>Me llegan decisiones con fecha y las improviso</b><br><em>Prima, cesantías, fondo, oferta de tarjeta.</em></span></li>
+        <li><span><b>La plata se me va y no sé en qué</b><br><em>El único dolor que aparece en los tres ICP.</em></span></li>
+        <li><span><b>Tengo o me ofrecen crédito que no entiendo</b></span></li>
+        <li><span><b>Quiero invertir y no sé por dónde empezar</b><br><em>No tiene fecha, por eso se aplaza años.</em></span></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card soft sec" style="font-size:9.2pt"><b>Qué exige del producto, según los tres ICP:</b> que no parezca una clase, que no pida registrar gastos a mano, que no venda productos ni pida claves, que quepa en 5 minutos y que sea un lugar privado donde preguntar sin pena.</div>
+
+  <div class="foot"><span>Resumen de la exploración. Detalle y fuentes en la carpeta docs del repositorio.</span><span>1 / 4</span></div>
+</section>
+
+<!-- 2 -->
+<section class="page">
+  <div class="kicker">LO QUE DICE LA EVIDENCIA</div>
+  <h2>Saber de plata no es lo mismo<br>que manejarla bien</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Cuánto mueve la educación financiera cada cosa</h3>
+      <div class="bars" style="margin-top:7pt">
+        <div class="row k"><span><b>Conocimiento</b></span><div class="bar" style="width:100%"></div><span class="n">0,20</span></div>
+        <div class="row"><span>Presupuesto</span><div class="bar" style="width:72%"></div><span class="n">0,15</span></div>
+        <div class="row"><span>Ahorro</span><div class="bar" style="width:48%"></div><span class="n">0,10</span></div>
+        <div class="row"><span>Seguros</span><div class="bar" style="width:29%"></div><span class="n">0,06</span></div>
+        <div class="row"><span>Remesas</span><div class="bar" style="width:23%"></div><span class="n">0,05</span></div>
+        <div class="row c"><span><b>Crédito</b></span><div class="bar" style="width:21%"></div><span class="n">0,04</span></div>
+      </div>
+      <p class="src">Tamaño del efecto en desviaciones estándar. Metaestudio de 76 experimentos aleatorios, 33 países, más de 160.000 personas (Kaiser, Lusardi, Menkhoff y Urban, 2022).</p>
+      <p style="margin-top:8pt;font-weight:700">La educación mueve entre dos y tres veces más lo que la gente sabe que lo que hace.</p>
+    </div>
+    <div>
+      <div class="card ink" style="margin-bottom:9pt">
+        <h3 style="color:var(--lime)">Qué significa para nosotros</h3>
+        <ul>
+          <li><b>Medir conducta, no respuestas correctas.</b> El éxito es que la persona decidió su prima o pagó el total.</li>
+          <li><b>El crédito es lo más difícil de mover.</b> El módulo de tarjeta necesita simulador, repaso mensual y recordatorio, no solo lecciones.</li>
+          <li><b>Presupuesto y ahorro dan victorias tempranas.</b></li>
+        </ul>
+      </div>
+      <div class="card soft"><b>Sí funciona, y más de lo que se creía.</b> El estudio pesimista más citado (2014) tenía solo 13 experimentos. El nuevo encuentra un efecto al menos tres veces mayor y no confirma que lo aprendido se olvide rápido.</div>
+    </div>
+  </div>
+
+  <div class="grid2 sec" style="grid-template-columns:repeat(4,1fr);gap:8pt">
+    <div class="card"><div class="num pos">Momento</div><p style="margin-top:4pt"><b>Enseñar cuando hay una decisión inmediata.</b> Dos metaestudios coinciden: el "momento enseñable" es lo que más pesa.</p></div>
+    <div class="card"><div class="num pos">+16 %</div><p style="margin-top:4pt"><b>de ahorro con recordatorios que nombran la meta propia.</b> Los genéricos: cero efecto. En India, la educación sola no cambió nada; con metas, sí.</p></div>
+    <div class="card"><div class="num neg">−10 %</div><p style="margin-top:4pt"><b>al mes se deprecia lo aprendido sobre tarjetas.</b> La gente aprende pagando cargos por mora, y lo olvida. El repaso natural es cada extracto.</p></div>
+    <div class="card"><div class="num neg">−17 %</div><p style="margin-top:4pt"><b>rindieron estudiantes con un chat que daba las respuestas.</b> Con uno que daba pistas, sin daño. La IA hace pensar; no decide.</p></div>
+  </div>
+
+  <div class="grid2 sec">
+    <div>
+      <div class="kicker">POR QUÉ NO SE COPIA A DUOLINGO</div>
+      <table>
+        <tr><th></th><th>Un idioma</th><th>La plata</th></tr>
+        <tr><td>Qué se aprende</td><td>Miles de piezas</td><td>Pocos conceptos y decisiones</td></tr>
+        <tr><td>Cómo se fija</td><td>Repetición diaria</td><td>Entender y aplicar en el momento</td></tr>
+        <tr><td>Uso</td><td>Diario</td><td>Por episodios</td></tr>
+        <tr><td>Retroalimentación</td><td>Inmediata</td><td>Tardía y ruidosa</td></tr>
+        <tr><td>Equivocarse</td><td>No cuesta</td><td>Cuesta plata y da pena</td></tr>
+        <tr><td>Respuesta correcta</td><td>Igual para todos</td><td>Depende de tus números</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="kicker">LO QUE SÍ ENSEÑAN LOS GRANDES</div>
+      <div class="card" style="margin-bottom:7pt"><b>Duolingo</b> multiplicó sus usuarios diarios por 4,5 con rachas, ligas y notificaciones. Pero sus dos primeros intentos fracasaron por <span class="hl">copiar mecánicas sin preguntar por qué funcionaban</span>. La racha diaria existe porque un idioma se practica a diario.</div>
+      <div class="card" style="margin-bottom:7pt"><b>TikTok</b> aprende de lo que haces, no de lo que declaras. Sirve copiar eso. No sirve copiar su objetivo: tiempo en pantalla.</div>
+      <div class="card"><b>Rappi</b> logró <b>71 % de lectura por WhatsApp</b> segmentando por estado del usuario. En Colombia ese es el canal.</div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Fuentes y nivel de verificación de cada dato: docs/06 y docs/07.</span><span>2 / 4</span></div>
+</section>
+
+<!-- 3 -->
+<section class="page">
+  <div class="kicker">LO QUE PROPONEMOS</div>
+  <h2>Tu plata real se vuelve tu currículo</h2>
+
+  <div class="flow">
+    <div class="card v"><div class="num">1</div><h3 style="margin-top:4pt">Lee tu documento</h3><p>Subes una foto del desprendible o del extracto. La IA saca salario, descuentos, fechas, saldo y tasa. Sin registrar gastos ni dar claves del banco.</p></div>
+    <div class="arrow">→</div>
+    <div class="card v"><div class="num">2</div><h3 style="margin-top:4pt">Calcula qué te viene</h3><p>Cruza tus datos con el calendario legal colombiano: "tu prima llega en cinco semanas y sería de unos $900.000".</p></div>
+    <div class="arrow">→</div>
+    <div class="card v"><div class="num">3</div><h3 style="margin-top:4pt">Arma tu lección</h3><p>Explicación y ejercicio con tus números, sobre contenido colombiano que el equipo verifica.</p></div>
+  </div>
+  <p class="src" style="font-size:8.6pt;color:var(--ink);margin-top:7pt"><b>La prueba AI First:</b> si quitas la IA, no se pueden leer documentos ni generar lecciones por persona, y queda un curso genérico. <b>Reparto:</b> la IA lee y explica, el código hace las cuentas, el equipo cura las normas, y nadie decide por la persona.</p>
+
+  <div class="sec">
+    <div class="kicker">UNA LECCIÓN DE CINCO MINUTOS</div>
+    <div class="steps">
+      <div><span>1</span><b>Gancho</b>Un dato tuyo y una pregunta</div>
+      <div><span>2</span><b>Predicción</b>Apuestas antes de saber</div>
+      <div><span>3</span><b>Simulación</b>Ves el resultado y mueves las piezas</div>
+      <div><span>4</span><b>Regla</b>Una frase para llevarte</div>
+      <div><span>5</span><b>Decisión</b>Haces algo con tu plata</div>
+      <div><span>6</span><b>Compromiso</b>Fecha y recordatorio con tu meta</div>
+    </div>
+    <p class="src">Sin video largo, sin definiciones para memorizar, sin quiz al final. Diez interacciones reutilizables arman todos los módulos; la más importante es deslizar para simular (pago mínimo contra pago total).</p>
+  </div>
+
+  <div class="grid2 sec">
+    <div>
+      <div class="kicker">CADA CUÁNTO SE USA</div>
+      <div class="card" style="margin-bottom:7pt"><h3>1. Eventos <span class="mute" style="font-weight:600">el núcleo</span></h3>Día de pago, extracto de la tarjeta, prima de junio y diciembre, cesantías en enero y febrero, una oferta de crédito, un aumento.</div>
+      <div class="card" style="margin-bottom:7pt"><h3>2. Pulso de quincena <span class="mute" style="font-weight:600">el hábito</span></h3>Dos minutos el día de pago: cuánto entró, qué está comprometido, cuánto queda libre por día. La racha es de quincenas, no de días.</div>
+      <div class="card"><h3>3. A demanda <span class="mute" style="font-weight:600">la mayor intención</span></h3>"Me llegó esto" y "tengo una duda", en privado.</div>
+    </div>
+    <div>
+      <div class="kicker">CÓMO SE VE</div>
+      <div class="card lime" style="margin-bottom:7pt"><h3>WhatsApp como puerta, web como cuerpo</h3>Los avisos y las fotos de documentos van por WhatsApp; cada aviso abre una lección web interactiva. Sin instalar nada. <b>Pocos mensajes, cada uno ligado a un evento real.</b></div>
+      <div class="card" style="margin-bottom:7pt"><h3>La pantalla principal es tu línea de tiempo</h3>"En 12 días: tu prima, cerca de $900.000. Plan listo." No hay mapa de lecciones. El progreso son decisiones tomadas y documentos que ya entiendes.</div>
+      <div class="card ink"><div class="num">1 hora al año</div><p style="margin-top:4pt">En unas 20 sesiones, Valentina decide dos primas, entiende sus cesantías y evalúa una tarjeta antes de aceptarla.</p></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="kicker">OCHO MÓDULOS, UNO POR DECISIÓN</div>
+    <div class="chips"><span class="on">1 Mi desprendible</span><span>2 Mi quincena</span><span class="on">3 Mi prima</span><span>4 Mis cesantías</span><span>5 Mi pensión</span><span>6 Tarjeta y deuda</span><span>7 Mi colchón</span><span>8 Mi primera inversión</span></div>
+  </div>
+
+  <div class="foot"><span>Detalle: docs/03 (currículo), docs/04 (IA), docs/08 (lección) y docs/09 (producto).</span><span>3 / 4</span></div>
+</section>
+
+<!-- 4 -->
+<section class="page">
+  <div class="kicker">QUÉ SIGUE</div>
+  <h2>Un solo flujo para el entregable<br>del 22 de noviembre</h2>
+
+  <div class="grid2">
+    <div class="card v">
+      <h3 style="color:var(--lime);font-size:13pt">De mi desprendible a mi plan para la prima</h3>
+      <ol class="n7">
+        <li>Sube una foto de su desprendible (o usa el de ejemplo).</li>
+        <li>Confirma lo que se leyó.</li>
+        <li>Toca cada línea y entiende cada descuento.</li>
+        <li>Apuesta cuánto le llega de prima y ve el valor real.</li>
+        <li>Responde si tiene deudas y ahorro de emergencia.</li>
+        <li>Reparte la prima: colchón, deuda, meta, gusto.</li>
+        <li>Guarda su plan y pide que le recuerden.</li>
+      </ol>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:8pt">
+        <h3>Por qué este</h3>
+        Ataca los dos dolores de mayor prioridad, usa las tres piezas de IA, cabe en cinco minutos y <span class="hl">la prima de diciembre se paga en cinco semanas</span>.
+      </div>
+      <div class="card soft">
+        <h3>La prueba con una persona externa</h3>
+        Tarea: "saber cuánto te llega de prima y dejar un plan". Sin guiarla. Éxito si explica los dos descuentos, dice cuánto y cuándo le llega, y termina con un reparto guardado. Pregunta clave al final: <b>"¿subirías tu desprendible real?"</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2 sec">
+    <div>
+      <div class="kicker">CALENDARIO PROPUESTO</div>
+      <div class="tl">
+        <div class="d">13 y 14 nov</div><div>El grupo lee esto y decide si este es el flujo</div>
+        <div class="d">15 a 18 nov</div><div>Construir el prototipo web</div>
+        <div class="d">19 y 20 nov</div><div>Prueba con al menos una persona externa</div>
+        <div class="d">21 nov</div><div>Armar el PDF del entregable</div>
+        <div class="d">22 nov</div><div>Cada integrante sube el PDF</div>
+      </div>
+    </div>
+    <div>
+      <div class="kicker">TRES DECISIONES DEL GRUPO</div>
+      <ol class="rank">
+        <li><span><b>¿Este es el flujo?</b><br><em>La alternativa es entrar por el extracto de la tarjeta.</em></span></li>
+        <li><span><b>¿Quién construye y con qué?</b></span></li>
+        <li><span><b>¿Quién consigue a la persona externa y quién modera?</b></span></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="warn sec">
+    <h3>Lo que todavía no está firme</h3>
+    <div class="grid2" style="gap:14pt">
+      <ul>
+        <li><b>Nada está validado con entrevistas.</b> La persona foco y el orden de los dolores salen de nuestros ICP y de juicio razonado.</li>
+        <li><b>El supuesto más riesgoso:</b> que la gente quiera subir su desprendible.</li>
+        <li>Que el pulso de quincena sirva y no estorbe.</li>
+      </ul>
+      <ul>
+        <li>De la mayoría de artículos académicos se leyeron resúmenes, no el texto completo.</li>
+        <li>Las cifras legales (descuentos, prima, cesantías) se confirman contra la norma al escribir cada lección. La reforma pensional entra en abril de 2027 y sigue en disputa.</li>
+        <li>El producto enseña; no recomienda productos financieros.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="kicker">DÓNDE ESTÁ EL DETALLE</div>
+    <div class="chips"><span>01 ICP unificado</span><span>02 Dolores y necesidades</span><span>03 Currículo</span><span>04 Propuesta AI First</span><span>05 Primer flujo</span><span>06 Duolingo, TikTok y Rappi</span><span>07 Cómo se aprende finanzas</span><span>08 Diseño de la lección</span><span>09 Cómo se ve y se usa</span></div>
+    <p class="src">Elaborado con apoyo de IA a partir de los ICP de Juan José, Juan David y Ariel, y de investigación con fuentes citadas en cada documento.</p>
+  </div>
+
+  <div class="foot"><span>Proyecto Makers · Luca, Ariel, Juan José y Juan David</span><span>4 / 4</span></div>
+</section>
+
+</body>
+</html>
