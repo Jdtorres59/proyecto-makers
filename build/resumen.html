@@ -90,6 +90,22 @@ li{margin-bottom:2.5pt}
 .warn h3{color:var(--coral)}
 ol.n7{margin:0;padding-left:14pt}
 ol.n7 li{margin-bottom:3pt}
+sup{font-size:6.6pt;font-weight:700;color:var(--violet);margin-left:1pt}
+.card.v sup,.card.ink sup,.cover sup{color:var(--lime)}
+.tag{display:inline-block;font-size:7pt;font-weight:800;border-radius:3pt;padding:0 3.5pt;margin-left:2pt;background:var(--violet-soft);color:var(--violet)}
+.fuentes{columns:2;column-gap:16pt;font-size:7.5pt;line-height:1.32;color:var(--ink);padding-left:13pt;margin:0}
+.fuentes li{margin-bottom:1.6pt;break-inside:avoid}
+.cover h1{font-size:34pt}
+.per{font-size:8.7pt}.per b.n{font-size:11pt;display:block}
+.q{font-weight:800;font-size:10.4pt;letter-spacing:-.01em;margin-bottom:2pt}
+body{font-size:9.2pt}
+h2{font-size:18pt;margin-bottom:8pt}
+.card{padding:8pt 10pt}
+.num{font-size:17pt}
+.sec{margin-top:10pt}
+.chips span{background:none;border:0;padding:0}
+.chips > span{background:var(--white);border:1px solid var(--line);border-radius:20pt;padding:3pt 8pt}
+.chips .tag{background:var(--violet-soft);padding:0 3.5pt;border-radius:3pt}
 </style>
 </head>
 <body>
@@ -97,56 +113,70 @@ ol.n7 li{margin-bottom:3pt}
 <!-- 1 -->
 <section class="page">
   <div class="cover">
-    <div class="kicker">Proyecto Makers · EdTech de finanzas AI First · Exploración, 13 de noviembre de 2026</div>
-    <h1>No es un Duolingo<br>de finanzas.<br><span>Es mejor idea.</span></h1>
-    <p>Lo que encontramos al cruzar nuestros tres ICP con la evidencia sobre cómo se aprende a manejar la plata, y lo que proponemos construir.</p>
+    <div class="kicker">Proyecto Makers · EdTech de finanzas · Fase de investigación · 13 de noviembre de 2026</div>
+    <h1>Qué encontramos</h1>
+    <p>Lo que tienen en común nuestros tres ICP y lo que dice la evidencia sobre cómo se aprende a manejar la plata. Es investigación, no una propuesta de producto: lo que construimos sigue abierto.</p>
   </div>
 
-  <div class="tesis"><small>LA TESIS</small>Lo que más cambia la conducta financiera es que alguien te acompañe a decidir en el momento. Siempre fue caro. La IA lo vuelve barato.</div>
-
-  <div class="grid3 sec">
-    <div class="card stat"><div class="big">2 a 3×</div><p>más fácil cambiar lo que la gente <b>sabe</b> que lo que <b>hace</b>. Un producto que mide quizzes cree que funciona cuando no.</p></div>
-    <div class="card stat"><div class="big">2 a 4</div><p>veces al mes es el uso natural: cuando pagan, cuando llega el extracto, cuando viene la prima. <b>No es una app diaria.</b></p></div>
-    <div class="card stat"><div class="big">1 foto</div><p>del desprendible basta para personalizar desde el primer usuario. Duolingo necesita millones de respuestas.</p></div>
+  <div class="sec">
+    <div class="kicker">1. NUESTROS TRES ICP, LADO A LADO</div>
+    <div class="grid3">
+      <div class="card per"><b class="n">Andrés, 19 <span class="tag">A</span></b>Universitario en Bogotá, mesada de $1,5 millones. <b>Quiere invertir, cree que no está listo y no sabe por dónde empezar.</b> Piensa en plata dos veces al mes. <span class="mute">Por Juan David.</span></div>
+      <div class="card per"><b class="n">Valentina, 23 <span class="tag">V</span></b>Recién graduada, primer sueldo de $3,5 millones. <b>Le llegan decisiones con fecha (prima, cesantías, fondo, tarjeta) y las toma sin entenderlas.</b> <span class="mute">Por Ariel.</span></div>
+      <div class="card per"><b class="n">Santiago, 24 <span class="tag">S</span></b>Asesor en un BPO en Itagüí, $2,3 millones y deuda de consumo. <b>No sabe en qué se le va la plata ni cuánto debe.</b> <span class="mute">Por Juan José.</span></div>
+    </div>
+    <p class="src">Falta el ICP de Luca. Ninguno se ha validado con entrevistas.</p>
   </div>
 
   <div class="grid2 sec">
     <div>
-      <div class="kicker">PARA QUIÉN</div>
-      <h3>Joven de 21 a 26 años en sus primeros 18 meses de empleo formal</h3>
-      <p>Gana entre $2,3 y $3,5 millones, vive con su familia, tiene cuenta de nómina y Nequi, y ya le ofrecieron una tarjeta. <span class="hl">Le llegan documentos y fechas que no controla</span>, y eso le da un motivo para abrir el producto.</p>
-      <div class="ruta">
-        <div><b>Andrés</b><br>Mesada. Etapa previa</div><i>→</i>
-        <div class="on"><b>Valentina</b><br>Recién llegada, sin deuda</div><i>→</i>
-        <div class="on"><b>Santiago</b><br>Ya enredado con cuotas</div>
-      </div>
-      <p class="src">Los tres ICP son momentos de la misma ruta. El foco son los dos del centro y la derecha. Falta sumar el ICP de Luca.</p>
+      <div class="kicker">LO QUE COMPARTEN LOS TRES</div>
+      <ol class="rank">
+        <li><span><b>Improvisan</b><br><em>Brokers, fondo y tarjeta, cuotas y créditos.</em></span></li>
+        <li><span><b>No tienen a quién preguntar, y les da pena</b><br><em>"A esta edad ya debería saber".</em></span></li>
+        <li><span><b>Lo que encuentran no les sirve</b><br><em>Genérico, pensado para Estados Unidos, o ruidoso.</em></span></li>
+        <li><span><b>Quieren su caso, no teoría</b><br><em>"Un plan, no una teoría".</em></span></li>
+        <li><span><b>La plata se les va</b><br><em>Cargo de conciencia a fin de mes o de quincena.</em></span></li>
+        <li><span><b>Tienen 5 a 10 minutos</b><br><em>Y abandonan si hay que anotar gastos o si les venden algo.</em></span></li>
+      </ol>
     </div>
     <div>
-      <div class="kicker">QUÉ LE DUELE, EN ORDEN</div>
-      <ol class="rank">
-        <li><span><b>Recibo documentos de mi plata que no entiendo</b><br><em>Desprendible, extracto. Cada quincena y cada corte.</em></span></li>
-        <li><span><b>Me llegan decisiones con fecha y las improviso</b><br><em>Prima, cesantías, fondo, oferta de tarjeta.</em></span></li>
-        <li><span><b>La plata se me va y no sé en qué</b><br><em>El único dolor que aparece en los tres ICP.</em></span></li>
-        <li><span><b>Tengo o me ofrecen crédito que no entiendo</b></span></li>
-        <li><span><b>Quiero invertir y no sé por dónde empezar</b><br><em>No tiene fecha, por eso se aplaza años.</em></span></li>
-      </ol>
+      <div class="kicker">EN QUÉ SE DIFERENCIAN</div>
+      <table>
+        <tr><th></th><th>Andrés</th><th>Valentina</th><th>Santiago</th></tr>
+        <tr><td>Ingreso</td><td>Mesada</td><td>Sueldo</td><td>Sueldo</td></tr>
+        <tr><td>Tipo de dolor</td><td>Aspiración</td><td>Decisión</td><td>Angustia</td></tr>
+        <tr><td>Fechas que obligan</td><td>Ninguna</td><td>Muchas</td><td>Quincena y extracto</td></tr>
+        <tr><td>Deuda</td><td>No</td><td>Todavía no</td><td>Sí</td></tr>
+        <tr><td>Busca</td><td>Aprender a invertir</td><td>Decidir bien</td><td>Recuperar control</td></tr>
+      </table>
+      <div class="card soft" style="margin-top:8pt"><b>Una lectura posible</b> (de Ariel): son tres momentos de la misma ruta. Andrés llega a ser Valentina en unos años; Valentina sin guía puede terminar como Santiago.</div>
     </div>
   </div>
 
-  <div class="card soft sec" style="font-size:9.2pt"><b>Qué exige del producto, según los tres ICP:</b> que no parezca una clase, que no pida registrar gastos a mano, que no venda productos ni pida claves, que quepa en 5 minutos y que sea un lugar privado donde preguntar sin pena.</div>
+  <div class="sec">
+    <div class="kicker">LOS DOLORES QUE APARECEN, Y EN QUIÉN</div>
+    <div class="chips">
+      <span>La plata se me va y no sé en qué <span class="tag">A</span><span class="tag">V</span><span class="tag">S</span></span>
+      <span>Documentos de mi plata que no entiendo <span class="tag">V</span><span class="tag">S</span></span>
+      <span>Decisiones con fecha que improviso <span class="tag">V</span><span class="tag">S</span></span>
+      <span>Crédito que no entiendo <span class="tag">S</span><span class="tag">V</span></span>
+      <span>Quiero invertir y no sé por dónde empezar <span class="tag">A</span><span class="tag">V</span></span>
+    </div>
+    <p class="src">Contexto: el indicador nacional de capacidades financieras cayó de 64,8 (2013) a 50,4 (2026) sobre 100.<sup>20</sup></p>
+  </div>
 
-  <div class="foot"><span>Resumen de la exploración. Detalle y fuentes en la carpeta docs del repositorio.</span><span>1 / 4</span></div>
+  <div class="foot"><span>Detalle: docs/investigacion/01 y 02. Los números pequeños remiten a las fuentes de la página 4.</span><span>1 / 4</span></div>
 </section>
 
 <!-- 2 -->
 <section class="page">
-  <div class="kicker">LO QUE DICE LA EVIDENCIA</div>
-  <h2>Saber de plata no es lo mismo<br>que manejarla bien</h2>
+  <div class="kicker">2. CÓMO SE APRENDE A MANEJAR LA PLATA</div>
+  <h2>Funciona, pero mueve más el saber que el hacer</h2>
 
   <div class="grid2">
     <div class="card">
-      <h3>Cuánto mueve la educación financiera cada cosa</h3>
+      <h3>Efecto de la educación financiera, por resultado</h3>
       <div class="bars" style="margin-top:7pt">
         <div class="row k"><span><b>Conocimiento</b></span><div class="bar" style="width:100%"></div><span class="n">0,20</span></div>
         <div class="row"><span>Presupuesto</span><div class="bar" style="width:72%"></div><span class="n">0,15</span></div>
@@ -155,174 +185,163 @@ ol.n7 li{margin-bottom:3pt}
         <div class="row"><span>Remesas</span><div class="bar" style="width:23%"></div><span class="n">0,05</span></div>
         <div class="row c"><span><b>Crédito</b></span><div class="bar" style="width:21%"></div><span class="n">0,04</span></div>
       </div>
-      <p class="src">Tamaño del efecto en desviaciones estándar. Metaestudio de 76 experimentos aleatorios, 33 países, más de 160.000 personas (Kaiser, Lusardi, Menkhoff y Urban, 2022).</p>
-      <p style="margin-top:8pt;font-weight:700">La educación mueve entre dos y tres veces más lo que la gente sabe que lo que hace.</p>
+      <p class="src">Desviaciones estándar. 76 experimentos aleatorios, 33 países, más de 160.000 personas, medidos en promedio 30 semanas después.<sup>3</sup></p>
     </div>
     <div>
-      <div class="card ink" style="margin-bottom:9pt">
-        <h3 style="color:var(--lime)">Qué significa para nosotros</h3>
-        <ul>
-          <li><b>Medir conducta, no respuestas correctas.</b> El éxito es que la persona decidió su prima o pagó el total.</li>
-          <li><b>El crédito es lo más difícil de mover.</b> El módulo de tarjeta necesita simulador, repaso mensual y recordatorio, no solo lecciones.</li>
-          <li><b>Presupuesto y ahorro dan victorias tempranas.</b></li>
-        </ul>
-      </div>
-      <div class="card soft"><b>Sí funciona, y más de lo que se creía.</b> El estudio pesimista más citado (2014) tenía solo 13 experimentos. El nuevo encuentra un efecto al menos tres veces mayor y no confirma que lo aprendido se olvide rápido.</div>
+      <div class="card" style="margin-bottom:7pt"><b>2014, el estudio pesimista.</b> 201 estudios: las intervenciones explican 0,1 % de la variación en conducta y el efecto casi desaparece a los 20 meses. Recomienda enseñar "justo a tiempo". Solo incluía 13 experimentos aleatorios.<sup>1</sup></div>
+      <div class="card" style="margin-bottom:7pt"><b>2017.</b> 126 evaluaciones: funciona mejor en un "momento enseñable", ligado a una decisión inmediata. La deuda es más difícil de cambiar que el ahorro.<sup>2</sup></div>
+      <div class="card"><b>2022, el más completo.</b> Efecto al menos tres veces mayor que el de 2014. No encuentra evidencia clara de olvido rápido, ni en contra.<sup>3</sup></div>
     </div>
   </div>
 
-  <div class="grid2 sec" style="grid-template-columns:repeat(4,1fr);gap:8pt">
-    <div class="card"><div class="num pos">Momento</div><p style="margin-top:4pt"><b>Enseñar cuando hay una decisión inmediata.</b> Dos metaestudios coinciden: el "momento enseñable" es lo que más pesa.</p></div>
-    <div class="card"><div class="num pos">+16 %</div><p style="margin-top:4pt"><b>de ahorro con recordatorios que nombran la meta propia.</b> Los genéricos: cero efecto. En India, la educación sola no cambió nada; con metas, sí.</p></div>
-    <div class="card"><div class="num neg">−10 %</div><p style="margin-top:4pt"><b>al mes se deprecia lo aprendido sobre tarjetas.</b> La gente aprende pagando cargos por mora, y lo olvida. El repaso natural es cada extracto.</p></div>
-    <div class="card"><div class="num neg">−17 %</div><p style="margin-top:4pt"><b>rindieron estudiantes con un chat que daba las respuestas.</b> Con uno que daba pistas, sin daño. La IA hace pensar; no decide.</p></div>
+  <div class="sec">
+    <div class="kicker">EXPERIMENTOS QUE DICEN QUÉ FUNCIONA</div>
+    <div class="grid3" style="gap:8pt">
+      <div class="card"><div class="num pos">Metas</div><p style="margin-top:3pt">En India, la educación sola no cambió conductas. Sumada a fijar metas o a asesoría individual, sí mejoró presupuesto y ahorro.<sup>4</sup></p></div>
+      <div class="card"><div class="num pos">Reglas simples</div><p style="margin-top:3pt">Con 1.193 microempresarios, enseñar reglas prácticas mejoró más que el curso contable estándar.<sup>5</sup></p></div>
+      <div class="card"><div class="num pos">+16 %</div><p style="margin-top:3pt">de ahorro con recordatorios que nombran la meta de la persona. Los genéricos no tuvieron efecto.<sup>8</sup></p></div>
+      <div class="card"><div class="num pos">Colombia</div><p style="margin-top:3pt">LISTA, una app en tabletas en 60 municipios, mejoró conocimiento y prácticas; algunos efectos duraron dos años.<sup>6</sup></p></div>
+      <div class="card"><div class="num pos">Relato</div><p style="margin-top:3pt">Un video con historia enseñó más que una herramienta interactiva, que subió la confianza pero no el conocimiento.<sup>7</sup></p></div>
+      <div class="card"><div class="num neg">−10 % al mes</div><p style="margin-top:3pt">se deprecia lo aprendido sobre tarjetas. Pagar un cargo por mora reduce 40 % repetirlo al mes siguiente.<sup>9</sup></p></div>
+    </div>
   </div>
 
   <div class="grid2 sec">
-    <div>
-      <div class="kicker">POR QUÉ NO SE COPIA A DUOLINGO</div>
-      <table>
-        <tr><th></th><th>Un idioma</th><th>La plata</th></tr>
-        <tr><td>Qué se aprende</td><td>Miles de piezas</td><td>Pocos conceptos y decisiones</td></tr>
-        <tr><td>Cómo se fija</td><td>Repetición diaria</td><td>Entender y aplicar en el momento</td></tr>
-        <tr><td>Uso</td><td>Diario</td><td>Por episodios</td></tr>
-        <tr><td>Retroalimentación</td><td>Inmediata</td><td>Tardía y ruidosa</td></tr>
-        <tr><td>Equivocarse</td><td>No cuesta</td><td>Cuesta plata y da pena</td></tr>
-        <tr><td>Respuesta correcta</td><td>Igual para todos</td><td>Depende de tus números</td></tr>
-      </table>
+    <div class="card ink">
+      <h3 style="color:var(--lime)">Por dónde aprende la gente en la vida real</h3>
+      <ol class="n7">
+        <li><b>En la casa,</b> viendo a los papás, sin que nadie enseñe.<sup>10</sup></li>
+        <li><b>Golpeándose:</b> pagando el error.<sup>9</sup></li>
+        <li><b>De los pares:</b> compañeros y amigos (según nuestros ICP).</li>
+        <li><b>En redes:</b> despierta interés, no acción (según nuestros ICP).</li>
+        <li><b>En cursos:</b> mueve conocimiento más que conducta.<sup>3</sup></li>
+        <li><b>Con alguien que acompaña la decisión:</b> lo que mejor funciona en los experimentos, y lo más caro.<sup>2, 4</sup></li>
+      </ol>
     </div>
     <div>
-      <div class="kicker">LO QUE SÍ ENSEÑAN LOS GRANDES</div>
-      <div class="card" style="margin-bottom:7pt"><b>Duolingo</b> multiplicó sus usuarios diarios por 4,5 con rachas, ligas y notificaciones. Pero sus dos primeros intentos fracasaron por <span class="hl">copiar mecánicas sin preguntar por qué funcionaban</span>. La racha diaria existe porque un idioma se practica a diario.</div>
-      <div class="card" style="margin-bottom:7pt"><b>TikTok</b> aprende de lo que haces, no de lo que declaras. Sirve copiar eso. No sirve copiar su objetivo: tiempo en pantalla.</div>
-      <div class="card"><b>Rappi</b> logró <b>71 % de lectura por WhatsApp</b> segmentando por estado del usuario. En Colombia ese es el canal.</div>
+      <div class="card" style="margin-bottom:7pt"><h3>El dinero es un mal maestro</h3>Hay entornos donde la retroalimentación llega rápido y clara, y otros donde llega tarde o distorsionada y la gente gana confianza sin ganar habilidad.<sup>11</sup> Aplicarlo a finanzas es lectura nuestra: el resultado de escoger un fondo de pensiones se ve en décadas; el costo de pagar el mínimo se reparte en extractos que no se entienden.</div>
+      <div class="card soft"><b>Parte de la buena conducta no viene de saber.</b> Al controlar rasgos psicológicos, la relación entre conocimiento y conducta se reduce mucho.<sup>1</sup></div>
     </div>
   </div>
 
-  <div class="foot"><span>Fuentes y nivel de verificación de cada dato: docs/06 y docs/07.</span><span>2 / 4</span></div>
+  <div class="foot"><span>Detalle: docs/investigacion/07. De la mayoría de artículos se leyeron resúmenes, no el texto completo.</span><span>2 / 4</span></div>
 </section>
 
 <!-- 3 -->
 <section class="page">
-  <div class="kicker">LO QUE PROPONEMOS</div>
-  <h2>Tu plata real se vuelve tu currículo</h2>
+  <div class="kicker">3. FINANZAS CONTRA IDIOMAS, Y CÓMO PERSONALIZAN LOS GRANDES</div>
+  <h2>La plata no se aprende como un idioma</h2>
 
-  <div class="flow">
-    <div class="card v"><div class="num">1</div><h3 style="margin-top:4pt">Lee tu documento</h3><p>Subes una foto del desprendible o del extracto. La IA saca salario, descuentos, fechas, saldo y tasa. Sin registrar gastos ni dar claves del banco.</p></div>
-    <div class="arrow">→</div>
-    <div class="card v"><div class="num">2</div><h3 style="margin-top:4pt">Calcula qué te viene</h3><p>Cruza tus datos con el calendario legal colombiano: "tu prima llega en cinco semanas y sería de unos $900.000".</p></div>
-    <div class="arrow">→</div>
-    <div class="card v"><div class="num">3</div><h3 style="margin-top:4pt">Arma tu lección</h3><p>Explicación y ejercicio con tus números, sobre contenido colombiano que el equipo verifica.</p></div>
+  <div class="grid2">
+    <div>
+      <table>
+        <tr><th></th><th>Un idioma</th><th>La plata</th></tr>
+        <tr><td>Qué se aprende</td><td>Miles de piezas</td><td>Pocos conceptos, decisiones y hábitos</td></tr>
+        <tr><td>Cómo se fija</td><td>Repetición frecuente</td><td>Entender y aplicar</td></tr>
+        <tr><td>Uso</td><td>Diario</td><td>Por episodios</td></tr>
+        <tr><td>Retroalimentación</td><td>Inmediata</td><td>Tardía y ruidosa</td></tr>
+        <tr><td>Equivocarse</td><td>No cuesta</td><td>Cuesta plata y da pena</td></tr>
+        <tr><td>Respuesta correcta</td><td>Igual para todos</td><td>Depende de los números de cada uno</td></tr>
+        <tr><td>Éxito</td><td>Se mide en la app</td><td>Ocurre fuera de la app</td></tr>
+      </table>
+      <p class="src">Síntesis nuestra a partir de las fuentes 1 a 11 y de los ICP. No sale de un estudio que compare ambas cosas.</p>
+    </div>
+    <div>
+      <div class="card v" style="margin-bottom:7pt"><h3 style="color:var(--lime)">Lo que advierte el propio Duolingo</h3>Sus dos primeros intentos de crecer fracasaron: copiaron un contador de un juego y el programa de referidos de Uber, sin preguntarse por qué funcionaban allá. La racha diaria existe porque un idioma se practica a diario.<sup>14</sup></div>
+      <div class="card"><h3>Lo que sí hizo crecer a Duolingo</h3>Ligas: 17 % más tiempo de aprendizaje. Rachas: los usuarios diarios con racha de siete días casi se triplicaron. En cuatro años, 4,5 veces más usuarios diarios. Regla interna: no aumentar el número de notificaciones, para no quemar el canal.<sup>14</sup></div>
+    </div>
   </div>
-  <p class="src" style="font-size:8.6pt;color:var(--ink);margin-top:7pt"><b>La prueba AI First:</b> si quitas la IA, no se pueden leer documentos ni generar lecciones por persona, y queda un curso genérico. <b>Reparto:</b> la IA lee y explica, el código hace las cuentas, el equipo cura las normas, y nadie decide por la persona.</p>
 
   <div class="sec">
-    <div class="kicker">UNA LECCIÓN DE CINCO MINUTOS</div>
-    <div class="steps">
-      <div><span>1</span><b>Gancho</b>Un dato tuyo y una pregunta</div>
-      <div><span>2</span><b>Predicción</b>Apuestas antes de saber</div>
-      <div><span>3</span><b>Simulación</b>Ves el resultado y mueves las piezas</div>
-      <div><span>4</span><b>Regla</b>Una frase para llevarte</div>
-      <div><span>5</span><b>Decisión</b>Haces algo con tu plata</div>
-      <div><span>6</span><b>Compromiso</b>Fecha y recordatorio con tu meta</div>
+    <div class="kicker">CÓMO FUNCIONA LA PERSONALIZACIÓN</div>
+    <div class="grid3" style="gap:8pt">
+      <div class="card"><h3>Duolingo</h3>Un modelo predice la probabilidad de que cada persona acierte cada ejercicio y escoge los que están al borde de su nivel. <b>Personaliza la dificultad, no el contenido,</b> y se alimenta de mil millones de ejercicios al día.<sup>12</sup> Otro algoritmo escoge qué notificación mandar: +0,5 % de usuarios diarios.<sup>13</sup></div>
+      <div class="card"><h3>TikTok</h3>Aprende de lo que la persona hace: terminar un video pesa mucho; el país pesa poco; los seguidores del creador no cuentan directamente. Al usuario nuevo le pide escoger intereses o le muestra lo popular y ajusta de inmediato.<sup>15</sup></div>
+      <div class="card"><h3>Rappi</h3>Publica poco de su ingeniería. Lo verificable: separa usuarios activos e inactivos y les habla distinto, y por WhatsApp obtuvo 71 % de lectura y 80 % más compradores entre los inactivos que con notificaciones y correo.<sup>16</sup></div>
     </div>
-    <p class="src">Sin video largo, sin definiciones para memorizar, sin quiz al final. Diez interacciones reutilizables arman todos los módulos; la más importante es deslizar para simular (pago mínimo contra pago total).</p>
+    <p class="src">Los tres escogen entre contenido que ya existe y necesitan mucho comportamiento acumulado para hacerlo bien.</p>
   </div>
 
   <div class="grid2 sec">
     <div>
-      <div class="kicker">CADA CUÁNTO SE USA</div>
-      <div class="card" style="margin-bottom:7pt"><h3>1. Eventos <span class="mute" style="font-weight:600">el núcleo</span></h3>Día de pago, extracto de la tarjeta, prima de junio y diciembre, cesantías en enero y febrero, una oferta de crédito, un aumento.</div>
-      <div class="card" style="margin-bottom:7pt"><h3>2. Pulso de quincena <span class="mute" style="font-weight:600">el hábito</span></h3>Dos minutos el día de pago: cuánto entró, qué está comprometido, cuánto queda libre por día. La racha es de quincenas, no de días.</div>
-      <div class="card"><h3>3. A demanda <span class="mute" style="font-weight:600">la mayor intención</span></h3>"Me llegó esto" y "tengo una duda", en privado.</div>
+      <div class="kicker">MÉTRICAS</div>
+      <div class="card" style="margin-bottom:7pt"><b>Duolingo escogió su métrica con un modelo.</b> Simuló mover cada tasa 2 % por trimestre: la retención de usuarios actuales pesaba cinco veces más que cualquier otra sobre los usuarios diarios.<sup>14</sup></div>
+      <div class="card"><b>Conocimiento no es conducta.</b> Si la educación mueve entre dos y tres veces más lo que se sabe que lo que se hace,<sup>3</sup> medir respuestas correctas puede mostrar un éxito que no existe.</div>
     </div>
     <div>
-      <div class="kicker">CÓMO SE VE</div>
-      <div class="card lime" style="margin-bottom:7pt"><h3>WhatsApp como puerta, web como cuerpo</h3>Los avisos y las fotos de documentos van por WhatsApp; cada aviso abre una lección web interactiva. Sin instalar nada. <b>Pocos mensajes, cada uno ligado a un evento real.</b></div>
-      <div class="card" style="margin-bottom:7pt"><h3>La pantalla principal es tu línea de tiempo</h3>"En 12 días: tu prima, cerca de $900.000. Plan listo." No hay mapa de lecciones. El progreso son decisiones tomadas y documentos que ya entiendes.</div>
-      <div class="card ink"><div class="num">1 hora al año</div><p style="margin-top:4pt">En unas 20 sesiones, Valentina decide dos primas, entiende sus cesantías y evalúa una tarjeta antes de aceptarla.</p></div>
+      <div class="kicker">IA QUE ENSEÑA</div>
+      <div class="card" style="margin-bottom:7pt"><div class="num neg">−17 %</div><p style="margin-top:3pt">rindieron después estudiantes que practicaron con un chat que daba las respuestas. Con un tutor que daba pistas, no hubo daño.<sup>17</sup></p></div>
+      <div class="card"><b>Bien diseñado, enseña.</b> En Harvard, 194 estudiantes de física aprendieron más y en menos tiempo con un tutor de IA que en una clase activa.<sup>18</sup> El aprendizaje activo supera a la clase magistral en 225 estudios.<sup>19</sup></div>
     </div>
   </div>
 
-  <div class="sec">
-    <div class="kicker">OCHO MÓDULOS, UNO POR DECISIÓN</div>
-    <div class="chips"><span class="on">1 Mi desprendible</span><span>2 Mi quincena</span><span class="on">3 Mi prima</span><span>4 Mis cesantías</span><span>5 Mi pensión</span><span>6 Tarjeta y deuda</span><span>7 Mi colchón</span><span>8 Mi primera inversión</span></div>
-  </div>
-
-  <div class="foot"><span>Detalle: docs/03 (currículo), docs/04 (IA), docs/08 (lección) y docs/09 (producto).</span><span>3 / 4</span></div>
+  <div class="foot"><span>Detalle: docs/investigacion/06, 07 y 08.</span><span>3 / 4</span></div>
 </section>
 
 <!-- 4 -->
 <section class="page">
-  <div class="kicker">QUÉ SIGUE</div>
-  <h2>Un solo flujo para el entregable<br>del 22 de noviembre</h2>
+  <div class="kicker">4. QUÉ SUGIERE, QUÉ QUEDA ABIERTO Y DE DÓNDE SALE TODO</div>
+  <h2>Lo que la investigación sugiere<br>y lo que no resuelve</h2>
 
   <div class="grid2">
-    <div class="card v">
-      <h3 style="color:var(--lime);font-size:13pt">De mi desprendible a mi plan para la prima</h3>
-      <ol class="n7">
-        <li>Sube una foto de su desprendible (o usa el de ejemplo).</li>
-        <li>Confirma lo que se leyó.</li>
-        <li>Toca cada línea y entiende cada descuento.</li>
-        <li>Apuesta cuánto le llega de prima y ve el valor real.</li>
-        <li>Responde si tiene deudas y ahorro de emergencia.</li>
-        <li>Reparte la prima: colchón, deuda, meta, gusto.</li>
-        <li>Guarda su plan y pide que le recuerden.</li>
-      </ol>
+    <div class="card">
+      <h3>Lo que sugiere</h3>
+      <ul>
+        <li>Enseñar ligado a una decisión real parece funcionar mejor que enseñar por adelantado.<sup>1, 2</sup></li>
+        <li>Para que lo aprendido se vuelva conducta ayudan las metas y los recordatorios con la meta propia.<sup>4, 8</sup></li>
+        <li>Una regla simple enseña más que la teoría completa.<sup>5</sup></li>
+        <li>Lo que se copie de Duolingo conviene copiarlo sabiendo por qué funciona allá.<sup>14</sup></li>
+        <li>Una IA que enseña debe hacer pensar, no entregar la respuesta.<sup>17</sup></li>
+        <li>El crédito es la conducta más difícil de mover.<sup>2, 3</sup></li>
+      </ul>
     </div>
-    <div>
-      <div class="card" style="margin-bottom:8pt">
-        <h3>Por qué este</h3>
-        Ataca los dos dolores de mayor prioridad, usa las tres piezas de IA, cabe en cinco minutos y <span class="hl">la prima de diciembre se paga en cinco semanas</span>.
-      </div>
-      <div class="card soft">
-        <h3>La prueba con una persona externa</h3>
-        Tarea: "saber cuánto te llega de prima y dejar un plan". Sin guiarla. Éxito si explica los dos descuentos, dice cuánto y cuándo le llega, y termina con un reparto guardado. Pregunta clave al final: <b>"¿subirías tu desprendible real?"</b>
-      </div>
+    <div class="warn">
+      <h3>Lo que no resuelve</h3>
+      <p class="q">¿Enseñamos o acompañamos decisiones?</p>
+      <p>Acompañar decisiones no lleva a nadie a su primera inversión, y enseñar es parte de nuestra propuesta de valor. No investigamos cómo se aprende a invertir.</p>
+      <p class="q" style="margin-top:6pt">¿Cada cuánto se usaría, y eso sostiene un negocio?</p>
+      <p>Un producto atado solo a eventos de plata se abriría pocas veces al mes. No investigamos modelos de negocio ni quién pagaría.</p>
+      <p class="q" style="margin-top:6pt">¿Para quién?</p>
+      <p>Depende de las dos anteriores. Falta el ICP de Luca y faltan entrevistas.</p>
     </div>
   </div>
 
   <div class="grid2 sec">
-    <div>
-      <div class="kicker">CALENDARIO PROPUESTO</div>
-      <div class="tl">
-        <div class="d">13 y 14 nov</div><div>El grupo lee esto y decide si este es el flujo</div>
-        <div class="d">15 a 18 nov</div><div>Construir el prototipo web</div>
-        <div class="d">19 y 20 nov</div><div>Prueba con al menos una persona externa</div>
-        <div class="d">21 nov</div><div>Armar el PDF del entregable</div>
-        <div class="d">22 nov</div><div>Cada integrante sube el PDF</div>
-      </div>
+    <div class="card soft">
+      <h3>Una idea que nos gustó, sin definir</h3>
+      Subir un extracto u otro documento propio y que de ahí salga una lección para entenderlo: interactiva, con los números de la persona y nada genérica. Sirve tanto para enseñar como para acompañar una decisión. Está explorada en docs/ideas, como posibilidad.
     </div>
-    <div>
-      <div class="kicker">TRES DECISIONES DEL GRUPO</div>
-      <ol class="rank">
-        <li><span><b>¿Este es el flujo?</b><br><em>La alternativa es entrar por el extracto de la tarjeta.</em></span></li>
-        <li><span><b>¿Quién construye y con qué?</b></span></li>
-        <li><span><b>¿Quién consigue a la persona externa y quién modera?</b></span></li>
-      </ol>
-    </div>
-  </div>
-
-  <div class="warn sec">
-    <h3>Lo que todavía no está firme</h3>
-    <div class="grid2" style="gap:14pt">
-      <ul>
-        <li><b>Nada está validado con entrevistas.</b> La persona foco y el orden de los dolores salen de nuestros ICP y de juicio razonado.</li>
-        <li><b>El supuesto más riesgoso:</b> que la gente quiera subir su desprendible.</li>
-        <li>Que el pulso de quincena sirva y no estorbe.</li>
-      </ul>
-      <ul>
-        <li>De la mayoría de artículos académicos se leyeron resúmenes, no el texto completo.</li>
-        <li>Las cifras legales (descuentos, prima, cesantías) se confirman contra la norma al escribir cada lección. La reforma pensional entra en abril de 2027 y sigue en disputa.</li>
-        <li>El producto enseña; no recomienda productos financieros.</li>
-      </ul>
+    <div class="card">
+      <h3>Límites de esta investigación</h3>
+      De la mayoría de artículos se leyeron resúmenes. Los estudios son de otros países y poblaciones, salvo el de Colombia.<sup>6</sup> La tabla de finanzas contra idiomas es síntesis nuestra. De Rappi hay poca información pública. Nada se ha validado con usuarios.
     </div>
   </div>
 
   <div class="sec">
-    <div class="kicker">DÓNDE ESTÁ EL DETALLE</div>
-    <div class="chips"><span>01 ICP unificado</span><span>02 Dolores y necesidades</span><span>03 Currículo</span><span>04 Propuesta AI First</span><span>05 Primer flujo</span><span>06 Duolingo, TikTok y Rappi</span><span>07 Cómo se aprende finanzas</span><span>08 Diseño de la lección</span><span>09 Cómo se ve y se usa</span></div>
-    <p class="src">Elaborado con apoyo de IA a partir de los ICP de Juan José, Juan David y Ariel, y de investigación con fuentes citadas en cada documento.</p>
+    <div class="kicker">FUENTES</div>
+    <ol class="fuentes">
+      <li>Fernandes, Lynch y Netemeyer (2014). Financial Literacy, Financial Education, and Downstream Financial Behaviors. <i>Management Science</i>.</li>
+      <li>Kaiser y Menkhoff (2017). Does Financial Education Impact Financial Literacy and Financial Behavior, and If So, When? <i>World Bank Economic Review</i>.</li>
+      <li>Kaiser, Lusardi, Menkhoff y Urban (2022). Financial education affects financial knowledge and downstream behaviors. <i>Journal of Financial Economics</i>.</li>
+      <li>Carpena, Cole, Shapiro y Zia (2019). The ABCs of Financial Education. <i>Management Science</i>.</li>
+      <li>Drexler, Fischer y Schoar (2014). Keeping It Simple. <i>American Economic Journal: Applied Economics</i>.</li>
+      <li>Attanasio, Bird, Cardona-Sosa y Lavado (2019). Freeing Financial Education via Tablets: Evidence from Colombia. NBER 25929.</li>
+      <li>Lusardi y otros (2017). Visual Tools and Narratives. <i>Journal of Pension Economics and Finance</i>.</li>
+      <li>Karlan, McConnell, Mullainathan y Zinman. Getting to the Top of Mind: How Reminders Increase Saving.</li>
+      <li>Agarwal, Driscoll, Gabaix y Laibson (2008). Learning in the Credit Card Market. NBER 13822.</li>
+      <li>Gudmunson y Danes (2011). Family Financial Socialization: Theory and Critical Review.</li>
+      <li>Hogarth, entornos de aprendizaje amables y perversos, explicado por David Epstein.</li>
+      <li>Equipo de Duolingo. How Duolingo's AI Learns What You Need to Learn. <i>IEEE Spectrum</i>.</li>
+      <li>Yancey y Settles (2020). A Sleeping, Recovering Bandit Algorithm for Optimizing Recurring Notifications. KDD.</li>
+      <li>Mazal. How Duolingo reignited user growth. <i>Lenny's Newsletter</i>.</li>
+      <li>TikTok. How TikTok recommends videos #ForYou. Sala de prensa.</li>
+      <li>Braze. Caso de cliente: Rappi.</li>
+      <li>Bastani y otros (2025). Generative AI without guardrails can harm learning. <i>PNAS</i>.</li>
+      <li>Kestin y otros (2025). AI tutoring outperforms in-class active learning. <i>Scientific Reports</i>.</li>
+      <li>Freeman y otros (2014). Active learning increases student performance in science, engineering, and mathematics. <i>PNAS</i>.</li>
+      <li>Banca de las Oportunidades (2026). Encuesta de capacidades financieras de Colombia.</li>
+    </ol>
+    <p class="src">Enlaces y nivel de verificación de cada fuente en los documentos de docs/investigacion. Elaborado con apoyo de IA a partir de los ICP de Juan José, Juan David y Ariel.</p>
   </div>
 
   <div class="foot"><span>Proyecto Makers · Luca, Ariel, Juan José y Juan David</span><span>4 / 4</span></div>

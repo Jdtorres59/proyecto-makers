@@ -1,6 +1,6 @@
 # 08 - Diseño de la lección
 
-Cómo lograr una lección dinámica, visual, interactiva y personalizada, apoyada en lo que se sabe de aprendizaje y en lo que hacen los mejores productos. La anatomía y el catálogo de interacciones son propuesta mía; la evidencia está citada.
+Cómo lograr una lección dinámica, visual, interactiva y personalizada, apoyada en lo que se sabe de aprendizaje y en lo que hacen los mejores productos. La sección 1 es evidencia citada. De la sección 2 en adelante son ideas de diseño por explorar, no decisiones.
 
 ## 1. Qué dice la evidencia sobre cada adjetivo
 

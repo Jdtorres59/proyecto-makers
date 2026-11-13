@@ -1,5 +1,7 @@
 # 09 - Cómo se ve y se usa el producto
 
+> **Idea en exploración, no una decisión.** Este documento es una posibilidad que salió de la investigación. El equipo no ha definido el producto. Las dudas de fondo están en `00 - Preguntas abiertas.md`.
+
 Responde las preguntas de forma: cada cuánto se usa, qué lo dispara, por dónde llega, qué ve la persona al abrirlo y cómo se mide si funciona. Es una propuesta razonada sobre los documentos 06 a 08; lo que no está validado se dice.
 
 ## 1. La respuesta corta

@@ -13,9 +13,9 @@ pdf build/resumen.html "Resumen Proyecto Makers.pdf"
 
 # 2. Consolidado completo a partir de docs/*.md
 {
-  printf '# Exploración: EdTech de finanzas AI First\n\nProyecto Makers · Consolidado de los documentos de la carpeta docs.\n\n## Contenido\n\n'
-  for f in docs/0[1-9]*.md; do f=${f#docs/}; printf -- '- %s\n' "${f%.md}"; done
-  for f in docs/0[1-9]*.md; do printf '\n<div class="pb"></div>\n\n'; cat "$f"; done
+  printf '# Exploración: EdTech de finanzas AI First\n\nProyecto Makers · Primero la investigación (docs/investigacion) y después las ideas en exploración (docs/ideas), que no son decisiones.\n\n## Contenido\n\n'
+  for f in docs/investigacion/0*.md docs/ideas/0*.md; do printf -- '- %s\n' "${f%.md}"; done
+  for f in docs/investigacion/0*.md docs/ideas/0*.md; do printf '\n<div class="pb"></div>\n\n'; cat "$f"; done
 } > "$OUT/all.md"
 {
   cat <<'EOF'

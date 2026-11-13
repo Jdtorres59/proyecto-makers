@@ -1,5 +1,7 @@
 # 05 - Primer flujo a prototipar
 
+> **Idea en exploración, no una decisión.** Este documento es una posibilidad que salió de la investigación. El equipo no ha definido el producto. Las dudas de fondo están en `00 - Preguntas abiertas.md`.
+
 Aterriza los documentos 01 a 04 en lo que pide el entregable "Avances del prototipo y primera validación" (fecha ideal 15 de noviembre, límite 22 de noviembre de 2026). Es una propuesta: el grupo decide si este es el flujo.
 
 ## 1. El flujo: "De mi desprendible a mi plan para la prima"

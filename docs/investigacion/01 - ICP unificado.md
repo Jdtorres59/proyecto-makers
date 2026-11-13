@@ -1,6 +1,6 @@
 # 01 - ICP unificado
 
-Síntesis de los tres ICP escritos por el equipo (Juan José, Juan David y Ariel). Falta el de Luca; al final se indica dónde entra. Lo que aquí aparece como recomendación es una propuesta para que el grupo decida.
+Síntesis de los tres ICP escritos por el equipo (Juan José, Juan David y Ariel). Falta el de Luca; al final se indica dónde entra. Las secciones 1 a 3 comparan los documentos. La persona foco de las secciones 4 y 5 es una lectura posible para discutir, no una decisión: deja a Andrés y su meta de llegar a la primera inversión como etapa previa, y eso está en duda (ver `docs/ideas/00 - Preguntas abiertas.md`).
 
 ## 1. Los tres ICP lado a lado
 

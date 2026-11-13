@@ -1,5 +1,7 @@
 # 04 - Propuesta AI First
 
+> **Idea en exploración, no una decisión.** Este documento es una posibilidad que salió de la investigación. El equipo no ha definido el producto. Las dudas de fondo están en `00 - Preguntas abiertas.md`.
+
 Una propuesta para discutir en el grupo, no una decisión. Parte de los dolores del documento 02 y de la metodología del 03.
 
 ## 1. La prueba que usamos

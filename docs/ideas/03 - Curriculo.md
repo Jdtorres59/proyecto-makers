@@ -1,5 +1,7 @@
 # 03 - Currículo
 
+> **Idea en exploración, no una decisión.** Este documento es una posibilidad que salió de la investigación. El equipo no ha definido el producto. Las dudas de fondo están en `00 - Preguntas abiertas.md`.
+
 Parte de los dolores del documento 02. Primero la metodología, porque define la forma de los módulos; después los módulos.
 
 ## 1. Metodología: por qué no un Duolingo de finanzas tal cual
