@@ -2,6 +2,24 @@
 
 Una entrada corta por decisión: qué, por qué y qué la haría cambiar. Las nuevas van arriba.
 
+## 2026-11-15 · Backend de Luca 1.0
+
+**Las cuentas leen sus cifras legales de `conocimiento` en la fecha de la cuenta y fallan si no hay norma vigente.** `core` depende de `conocimiento`. Mejor un error que una cifra vieja.
+
+**`Deuda` gana `diaDePago` opcional.** Sin él no hay fecha para la cuota en "Lo que viene". Es opcional para no romper datos de muestra; una deuda sin día no genera evento.
+
+**Prima y cesantías se proyectan al final del periodo** suponiendo que la persona sigue en el mismo trabajo, como en el prototipo. Las cesantías se muestran el 14 de febrero (la ley dice "antes del 15"), no el 15 como el prototipo.
+
+**Sin auxilio de transporte por ahora.** Su valor de 2026 quedó enredado con la suspensión del decreto del salario mínimo y no se confirmó en fuente oficial. Con salario hasta 2 SMMLV los montos van en null en vez de salir mal. Cambia cuando una persona cargue la norma.
+
+**Pagar el mínimo se modela como diferir a 36 cuotas**, el supuesto del prototipo. El mínimo real lo da el extracto.
+
+**Salida estructurada para leer y explicar documentos** (`output_config.format`, disponible también en Bedrock), validada otra vez con zod. Si no cumple, la ejecución queda en error y la ruta responde 502.
+
+**La conversación de una decisión no se guarda en el servidor.** La app manda el historial en cada turno; el servidor arma el contexto con el perfil y las lecturas. Cambia si hace falta retomar una conversación en otro dispositivo.
+
+**"Borrar todo" borra también `ai_runs` y `events`**, porque guardan lo que la persona escribió. Conserva la cuenta y `consents` como prueba de la autorización. Efecto: borrar reinicia el tope diario de gasto.
+
 ## 2026-11-15 · Luca 1.0
 
 **El producto es Luca y la 1.0 sale del prototipo cálido.** El equipo eligió el tono cálido (maíz y tinta, Bricolage Grotesque). El prototipo es la base de flujos, no el techo del diseño: la 1.0 debe verse bastante mejor. "Luca" es nombre de trabajo.

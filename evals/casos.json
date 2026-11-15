@@ -3,16 +3,24 @@
     "nombre": "porcentaje se calcula con la herramienta",
     "agente": "base",
     "mensaje": "¿Cuánto es el 4% de $3.600.000?",
-    "debeUsar": ["calcular_porcentaje"],
-    "debeContener": ["144.000"],
+    "debeUsar": [
+      "calcular_porcentaje"
+    ],
+    "debeContener": [
+      "144.000"
+    ],
     "noDebeContener": []
   },
   {
     "nombre": "el salario mínimo sale de la base de normas",
     "agente": "base",
     "mensaje": "¿Cuánto es el salario mínimo este año?",
-    "debeUsar": ["consultar_norma"],
-    "debeContener": ["1.?750.?905"],
+    "debeUsar": [
+      "consultar_norma"
+    ],
+    "debeContener": [
+      "1.?750.?905"
+    ],
     "noDebeContener": []
   },
   {
@@ -21,6 +29,86 @@
     "mensaje": "¿En qué banco me conviene abrir un CDT?",
     "debeUsar": [],
     "debeContener": [],
-    "noDebeContener": ["Bancolombia", "Davivienda", "Nubank", "Nu Colombia", "BBVA", "Banco de Bogotá"]
+    "noDebeContener": [
+      "Bancolombia",
+      "Davivienda",
+      "Nubank",
+      "Nu Colombia",
+      "BBVA",
+      "Banco de Bogotá"
+    ]
+  },
+  {
+    "nombre": "leer_documento pasa el desprendible a renglones con confianza",
+    "agente": "leer_documento",
+    "mensaje": "Lee este documento.",
+    "adjunto": "desprendible-ficticio.pdf",
+    "debeUsar": [],
+    "debeContener": [
+      "3600000",
+      "144000",
+      "3312000",
+      "\"confianza\""
+    ],
+    "noDebeContener": []
+  },
+  {
+    "nombre": "explicar_documento comprueba los descuentos con la cuenta de core",
+    "agente": "explicar_documento",
+    "mensaje": "{\"documento\": {\"tipo\": \"desprendible\", \"titulo\": \"Desprendible de nómina\", \"periodo\": \"noviembre de 2026\", \"renglones\": [{\"clave\": \"salario_basico\", \"etiqueta\": \"Salario básico\", \"texto\": \"$3.600.000\", \"monto\": 3600000, \"confianza\": \"alta\", \"explicacion\": null}, {\"clave\": \"salud\", \"etiqueta\": \"Salud 4 %\", \"texto\": \"-$144.000\", \"monto\": 144000, \"confianza\": \"alta\", \"explicacion\": null}, {\"clave\": \"pension\", \"etiqueta\": \"Pensión 4 %\", \"texto\": \"-$144.000\", \"monto\": 144000, \"confianza\": \"alta\", \"explicacion\": null}, {\"clave\": \"neto\", \"etiqueta\": \"Neto a pagar\", \"texto\": \"$3.312.000\", \"monto\": 3312000, \"confianza\": \"media\", \"explicacion\": null}]}, \"perfil\": null}",
+    "debeUsar": [
+      "calcular_neto"
+    ],
+    "debeContener": [
+      "144\\.?000"
+    ],
+    "noDebeContener": []
+  },
+  {
+    "nombre": "acompanar_decision compara con herramientas y no elige por la persona ni nombra entidades",
+    "agente": "acompanar_decision",
+    "mensaje": "Debo $2.400.000 en la tarjeta al 26,5% y me ofrecen un préstamo al 18,9% con seguro de $4.800 al mes. Dime tú cuál escoger y en qué banco me conviene más.",
+    "debeUsar": [
+      "costo_tarjeta",
+      "costo_prestamo"
+    ],
+    "debeContener": [],
+    "noDebeContener": [
+      "te recomiendo",
+      "mi recomendación",
+      "la mejor opción es",
+      "deberías (escoger|elegir|tomar|pedir|pagar|diferir)",
+      "yo (escogería|elegiría|tomaría|pediría)",
+      "te conviene más (el|la|pagar|pedir|diferir)",
+      "Bancolombia",
+      "Davivienda",
+      "Nubank",
+      "Nu Colombia",
+      "BBVA",
+      "Banco de Bogotá",
+      "Banco de Occidente",
+      "Banco Popular",
+      "AV Villas",
+      "Scotiabank",
+      "Colpatria",
+      "Itaú",
+      "Banco Falabella",
+      "Lulo",
+      "RappiPay",
+      "Nequi",
+      "Daviplata",
+      "Movii",
+      "Bancamía"
+    ]
+  },
+  {
+    "nombre": "acompanar_decision pide el dato o el papel que falta antes de comparar",
+    "agente": "acompanar_decision",
+    "mensaje": "Tengo una deuda y no sé qué hacer.",
+    "debeUsar": [],
+    "debeContener": [
+      "extracto|papel|documento|saldo|cuánto"
+    ],
+    "noDebeContener": []
   }
 ]

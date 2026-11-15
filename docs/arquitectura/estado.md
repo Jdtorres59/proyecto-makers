@@ -2,7 +2,7 @@
 
 Documento de relevo. Quien termina una tarea lo actualiza para que la siguiente persona o agente sepa dónde va el trabajo.
 
-Última actualización: 15 de noviembre de 2026 (rama `v1`).
+Última actualización: 15 de noviembre de 2026 (rama `v1`; backend en `claude/backend-v1-0eae5c`).
 
 ## Luca 1.0: en qué paso va
 
@@ -14,7 +14,7 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 | 1 | Dirección visual y personaje (tres propuestas, Juan David elige) | En curso |
 | 2 | Biblioteca de assets en `apps/mobile/assets` | Pendiente |
 | 3 | App con datos de muestra | Pendiente |
-| 4 | Backend: cuentas, tablas, agentes y rutas | En curso |
+| 4 | Backend: cuentas, tablas, agentes y rutas | Hecho en `claude/backend-v1-0eae5c`, migración sin aplicar |
 | 5 | Conectar app y API | Pendiente |
 | 6 | Contenido de los 12 módulos | Pendiente |
 | 7 | Pulido y verificación | Pendiente |
@@ -24,12 +24,43 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 | Pieza | Estado | Cómo se comprobó |
 |---|---|---|
 | Monorepo, tipos | Listo | `pnpm typecheck` limpio en los cinco paquetes |
-| `packages/core`, `conocimiento`, `ai` | Listo | `pnpm test`: 13 pruebas |
-| API | Lista con dobles | Pruebas de 401, 400, 404, 429 y streaming; además se levantó por HTTP y `curl` recibió la respuesta por partes |
-| Evals | Arnés listo | `pnpm eval`: 3 casos contra el proveedor simulado |
+| `packages/core`, `conocimiento`, `ai` | Listo | `pnpm test`: 47 pruebas en todo el repo. Las cuentas cuadran con el prototipo (neto 3.312.000, prima y cesantías 900.000, intereses 27.000) |
+| API | Rutas de Luca 1.0 con dobles | Pruebas de cada ruta con datos en memoria y el proveedor simulado. `index.ts` (Supabase) compila pero no se ha corrido contra la base |
+| Evals | Arnés listo | `pnpm eval`: 7 casos contra el proveedor simulado, uno o más por agente |
 | App | Compila y muestra el login | `expo-doctor` 20/20, Metro empaqueta para iOS y el login se vio en la versión web. No se abrió en un celular ni en el simulador. Ver "Qué falta" |
 | Base de datos | Aplicada en `makers-dev` | Migración aplicada, avisos de seguridad de Supabase en cero, y prueba con dos usuarios: ninguno lee ni escribe filas del otro, y la app no puede insertar en `ai_runs` |
 | Login | Pantalla lista con Google, Apple y correo, **sin probar un ingreso real** | La pantalla se vio en web. El correo está activo en Supabase; Google y Apple responden "provider is not enabled" porque faltan sus credenciales |
+
+## Backend de Luca 1.0
+
+**Cuentas** (`packages/core/src/cuentas.ts`): neto del mes, prima, cesantías e intereses en año de 360 días, tarjeta diferida, pago mínimo (supuesto: 36 cuotas), préstamo de cuota fija con seguro, porcentaje del sueldo y `eventosDePlata(perfil, hoy)`. Leen las cifras legales de `conocimiento` en la fecha de la cuenta.
+
+**Normas** (`packages/conocimiento`): aportes del empleado a salud y pensión, Fondo de Solidaridad Pensional, fechas de pago de prima, cesantías e intereses, tasa de intereses de cesantías y tasa de usura de noviembre de 2026. Todas con fuente oficial y **pendientes de verificación de una persona**. La usura vence el 30 de noviembre: el 1 de diciembre el CI se pone en rojo hasta cargar la nueva.
+
+**Rutas** (`apps/api/src/app.ts`, todas con sesión):
+
+| Ruta | Qué hace |
+|---|---|
+| `GET /perfil`, `PUT /perfil` | Lee y guarda el `PerfilFinanciero` (las deudas se reemplazan completas) |
+| `POST /documentos/:id/leer` | Lee con IA un documento ya subido al bucket y registrado en `documents`; devuelve `DocumentoLeido` |
+| `GET /documentos/:id` | La lectura guardada |
+| `POST /documentos/:id/explicar` | Llena `explicacion` en cada renglón |
+| `GET /eventos` | `EventoDePlata[]` de "Lo que viene" |
+| `GET /progreso`, `POST /progreso` | Lee y suma lecciones y medallas |
+| `POST /decisiones` | Crea una decisión con la pregunta |
+| `POST /decisiones/:id/conversar` | Conversación con `acompanar_decision` (NDJSON como `/ai/run`); la app manda el historial y los documentos sumados |
+| `POST /decisiones/:id/cerrar` | La persona registra su camino, motivos y nota |
+| `DELETE /yo` | Borra todo lo que Luca sabe de la persona (conserva la cuenta y las autorizaciones) |
+
+Las rutas con IA respetan el tope diario.
+
+**Falta para el backend:**
+
+1. Aplicar `supabase/migrations/20261115000000_luca.sql` en `makers-dev` y revisar los avisos de seguridad. No se ha ejecutado contra ningún Postgres.
+2. Correr `index.ts` contra Supabase de verdad: subir un PDF, leerlo, explicarlo, borrar todo.
+3. Correr los evals contra el modelo real cuando haya llave (`AI_PROVIDER=anthropic pnpm eval`).
+4. Auxilio de transporte: con salario hasta 2 SMMLV, `eventosDePlata` devuelve los montos en null porque la norma de 2026 no se confirmó. Es justo el rango de mucha gente de la persona foco.
+5. Que una persona verifique las normas y cambie `verificadoPor`.
 
 ## Proyecto de Supabase
 

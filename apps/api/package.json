@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "exports": { ".": "./src/app.ts" },
+  "exports": {
+    ".": "./src/app.ts"
+  },
   "scripts": {
     "dev": "tsx watch --env-file=.env src/dev.ts",
     "typecheck": "tsc --noEmit"
@@ -11,9 +13,11 @@
   "dependencies": {
     "@hono/node-server": "^2.1.8",
     "@makers/ai": "workspace:*",
+    "@makers/conocimiento": "workspace:*",
     "@makers/core": "workspace:*",
     "@supabase/supabase-js": "catalog:",
-    "hono": "catalog:"
+    "hono": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",
