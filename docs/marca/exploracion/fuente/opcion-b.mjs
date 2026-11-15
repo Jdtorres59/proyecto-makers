@@ -1,4 +1,4 @@
-// Dirección · Morada (nombre de trabajo). Base morada: el color y la casa propia. El arco es una puerta con la luz prendida.
+// Luca · opción B, morada. El arco es una puerta con la luz prendida: la casa propia.
 import { icono, caso, lineas, reparto, controles, cop } from './comun.mjs';
 
 const MORADA = '#4B1F80', UVA = '#1F1030', CAL = '#F6F2EC', NOCHE = '#150B21', LILA = '#C8B3F5', DURAZNO = '#F2A97E';
@@ -26,7 +26,7 @@ const hg = "'Host Grotesk', system-ui, sans-serif";
 const arco = (x, y, w, h) => `M${x} ${y + h}V${y + w / 2}A${w / 2} ${w / 2} 0 0 1 ${x + w} ${y + w / 2}V${y + h}Z`;
 const puerta = (fuera, luz, extra = '') => `<path d="${arco(4, 4, 72, 92)}" fill="${fuera}"/><path d="${arco(28, 62, 24, 34)}" fill="${luz}"${extra}/>`;
 const simbolo = (t, h = 96) => `<svg viewBox="0 0 80 100" height="${h}" role="img" aria-label="Símbolo">${puerta(t.arco || t.acento, DURAZNO)}</svg>`;
-const wordmark = (t, h = 40) => `<span class="wm" style="font-size:${h}px;color:${t.texto}" role="img" aria-label="morada, nombre de trabajo"><svg viewBox="0 0 80 100" aria-hidden="true">${puerta(t.arco || t.acento, DURAZNO)}</svg>morada</span>`;
+const wordmark = (t, h = 40) => `<span class="wm" style="font-size:${h}px;color:${t.texto}" role="img" aria-label="luca, nombre de trabajo"><svg viewBox="0 0 80 100" aria-hidden="true">${puerta(t.arco || t.acento, DURAZNO)}</svg>luca</span>`;
 const appIcon = (h = 112) => `<svg viewBox="0 0 120 120" width="${h}" height="${h}" role="img" aria-label="Ícono de la app"><rect width="120" height="120" rx="28" fill="${MORADA}"/><g transform="translate(32 22) scale(.7)">${puerta(LILA, DURAZNO)}</g></svg>`;
 
 // Patrón: ventanas en arco, algunas con la luz prendida. Determinista.
@@ -50,9 +50,10 @@ const meta = (p, w = 44) => `<span class="m-meta" style="--p:${p};width:${w}px" 
 const pasos = (hechos, total = 6) => `<span class="m-pasos" role="img" aria-label="Paso ${hechos} de ${total}">${Array.from({ length: total }, (_, i) => `<i class="${i < hechos ? 'on' : ''}"></i>`).join('')}</span>`;
 
 export default {
-  slug: 'morada',
-  nombre: 'Morada',
-  bajada: 'Propuesta preliminar. "Morada" es un nombre de trabajo, no una decisión.',
+  slug: 'b',
+  opcion: 'Opción B · Morada',
+  nombre: 'Luca',
+  bajada: 'Opción B, morada. Propuesta preliminar: "Luca" es un nombre de trabajo.',
   temas,
   contrastesExtra: [
     ['Texto sobre tarjeta', 'heroTexto', 'hero'],
@@ -70,7 +71,7 @@ export default {
   appIcon,
   sobre: { bg: MORADA, texto: CAL, arco: LILA, nombre: 'Sobre morada' },
   colores: [
-    { nombre: 'Morada', hex: MORADA },
+    { nombre: 'Luca', hex: MORADA },
     { nombre: 'Uva', hex: UVA },
     { nombre: 'Cal', hex: CAL },
     { nombre: 'Lila niebla', hex: '#EDE6F3' },

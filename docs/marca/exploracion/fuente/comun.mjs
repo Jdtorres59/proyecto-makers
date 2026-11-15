@@ -1,4 +1,5 @@
 // Piezas compartidas: pares de contraste (se verifican, no se muestran), logos de Google y Apple y contenido de ejemplo.
+import { readFileSync } from 'node:fs';
 // El contenido sale de docs/ideas/05 y docs/investigacion/08. Datos ficticios.
 
 export const contrastes = [
@@ -13,9 +14,13 @@ export const contrastes = [
   ['Borde de control sobre fondo', 'control', 'bg', 'ui'],
 ];
 
-// Logos oficiales de Google y Apple desde Simple Icons (CC0). El color va sin "#".
-export const icono = (marca, hex) =>
-  `<img src="https://cdn.simpleicons.org/${marca}/${hex.slice(1)}" alt="" width="20" height="20">`;
+// Logos de Google y Apple de Simple Icons (CC0), guardados en fuente/iconos e incrustados en la página
+// porque el artifact no deja cargar imágenes de otros sitios.
+const svgIcono = (marca) => readFileSync(new URL(`./iconos/${marca}.svg`, import.meta.url), 'utf8');
+export const icono = (marca, hex) => {
+  const svg = svgIcono(marca).replace(/fill="#[0-9A-Fa-f]{6}"/, `fill="${hex}"`).replace(/<title>.*?<\/title>/, '');
+  return `<img src="data:image/svg+xml,${encodeURIComponent(svg)}" alt="" width="20" height="20">`;
+};
 
 // $1.234.567, igual en Node y en el navegador (Intl con es-CO no agrupa números de 4 cifras)
 export const cop = (n) => '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');

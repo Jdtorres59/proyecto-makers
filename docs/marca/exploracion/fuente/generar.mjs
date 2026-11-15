@@ -1,13 +1,15 @@
-// Genera una página de brand book por dirección: docs/marca/exploracion/<slug>.html
-// Uso: node docs/marca/exploracion/fuente/generar.mjs
-// El contraste WCAG se verifica aquí y no se muestra en la página: si un texto queda bajo 4,5:1
-// (o un elemento de interfaz bajo 3:1) en cualquiera de los dos temas, el script falla.
-import { writeFileSync } from 'node:fs';
+// Genera una sola página con los dos brand books de Luca (opción A cálida, opción B morada).
+// Uso: node docs/marca/exploracion/fuente/generar.mjs [carpeta-para-el-artifact]
+// Escribe docs/marca/exploracion/luca.html (documento completo, para abrir local) y, si se pasa
+// una carpeta, la misma página sin el esqueleto <html>/<head>, que es el formato que publica el artifact.
+// El contraste WCAG se verifica aquí y no se muestra: si un texto queda bajo 4,5:1 (o un elemento
+// de interfaz bajo 3:1) en cualquiera de los dos temas, el script falla.
+import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { contrastes, js } from './comun.mjs';
-import luca from './luca.mjs';
-import morada from './morada.mjs';
+import A from './opcion-a.mjs';
+import B from './opcion-b.mjs';
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -22,28 +24,24 @@ console.assert(Math.abs(contraste('#FFFFFF', '#000000') - 21) < 0.01, 'fórmula 
 
 const vars = (t) => Object.entries(t).map(([k, v]) => `--${k}:${v}`).join(';');
 const pantallas = [['entrada', 'Entrada'], ['inicio', 'Inicio'], ['leccion', 'Lección'], ['documento', 'Desprendible'], ['reparto', 'Reparto']];
+const gutter = 'padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))';
 
-function pagina(d) {
-  const { claro: c, oscuro: o } = d.temas;
-  const tels = (tema) => pantallas.map(([k, n]) => `<figure class="marco"><figcaption>${n}</figcaption><div class="tel" data-tema="${tema}" style="${vars(d.temas[tema])}"><div class="barra" aria-hidden="true"><span>9:41</span><span>5G ▮▮▮</span></div>${d.pantallas[k](tema)}</div></figure>`).join('');
-  const toc = [['logo', 'Logo'], ['color', 'Color'], ['tipografia', 'Tipografía'], ['assets', 'Assets'], ['pantallas', 'Pantallas']];
-  const css = `
-:root{${vars(c)};color-scheme:light}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){${vars(o)};color-scheme:dark}}
-:root[data-theme="dark"]{${vars(o)};color-scheme:dark}
-*,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--texto);font:16px/1.55 ${d.fuenteUI};-webkit-font-smoothing:antialiased}
-[hidden]{display:none!important}
-@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+// Estilos de una opción, anidados bajo .op-<slug> para que las dos convivan en la misma página
+function cssOpcion(d) {
+  const k = `.op-${d.slug}`;
+  return `
+${k}{${vars(d.temas.claro)};color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) ${k}{${vars(d.temas.oscuro)};color-scheme:dark}}
+:root[data-theme="dark"] ${k}{${vars(d.temas.oscuro)};color-scheme:dark}
+${k}{background:var(--bg);color:var(--texto);font:16px/1.55 ${d.fuenteUI};
 a{color:inherit;text-decoration-color:var(--acentoTexto);text-underline-offset:3px}
 :focus-visible{outline:2px solid var(--foco);outline-offset:3px;border-radius:4px}
-.doc{max-width:1360px;margin:0 auto;padding:24px 16px 0}
-@media (min-width:900px){.doc{padding:32px 40px 0}}
+.doc{max-width:1360px;margin:0 auto;padding-block:28px 0;${gutter}}
+@media (min-width:900px){.doc{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
 .doc-cab{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:14px;border-bottom:1px solid var(--texto);margin-bottom:40px}
 .doc-cab span{font-size:13px;color:var(--suave)}
 .doc-cuerpo{display:grid;grid-template-columns:minmax(0,1fr);gap:32px}
-@media (min-width:900px){.doc-cuerpo{grid-template-columns:200px minmax(0,1fr);gap:56px}.toc{position:sticky;top:32px;align-self:start}}
+@media (min-width:900px){.doc-cuerpo{grid-template-columns:200px minmax(0,1fr);gap:56px}.toc{position:sticky;top:96px;align-self:start}}
 .toc-t{font-size:13px;color:var(--suave);margin:0 0 10px}
 .toc ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:15px}
 @media (min-width:900px){.toc ol{display:block}.toc li{margin-bottom:8px}}
@@ -51,12 +49,12 @@ main{min-width:0}
 main h1,.doc h2,.pants>h2,.doc h3,.pants>h3{font-family:${d.fuenteDisplay};font-weight:${d.pesoDisplay};letter-spacing:${d.tracking};line-height:1.05;text-wrap:balance}
 main h1{font-size:clamp(36px,6vw,60px);margin:0 0 10px}
 .bajada{color:var(--suave);font-size:15px;margin:0 0 8px}
-.doc h2,.pants>h2{font-size:30px;margin:72px 0 22px;padding-top:24px;border-top:1px solid var(--linea);display:flex;align-items:center;gap:12px}
+.doc h2,.pants>h2{font-size:30px;margin:72px 0 22px;padding-top:24px;border-top:1px solid var(--linea);display:flex;align-items:center;gap:12px;scroll-margin-top:84px}
 .doc h2::before,.pants>h2::before{content:"";width:18px;height:18px;flex:none;${d.marcador}}
 .doc h3,.pants>h3{font-size:17px;margin:36px 0 14px;font-family:${d.fuenteUI};font-weight:600;letter-spacing:0}
-.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:12px}
 .tile{margin:0;border-radius:${d.radio}px;min-height:200px;display:flex;flex-direction:column;justify-content:space-between;padding:20px;border:1px solid var(--linea);overflow:hidden}
-.tile .arte{flex:1;display:grid;place-items:center;padding:12px 0}
+.tile .arte{flex:1;display:grid;place-items:center;padding:12px 0;min-width:0}
 .tile svg{max-width:100%;height:auto}
 .tile figcaption{font-size:13px}
 .tile.ancho{grid-column:1/-1}
@@ -69,8 +67,8 @@ main h1{font-size:clamp(36px,6vw,60px);margin:0 0 10px}
 .espec .rol{font-size:14px;color:var(--suave)}
 .espec .rol b{color:var(--texto);font-weight:600}
 .espec .m{overflow-wrap:anywhere}
-.pants{max-width:1760px;margin:0 auto;padding:0 16px 96px}
-@media (min-width:900px){.pants{padding:0 40px 120px}}
+.pants{max-width:1760px;margin:0 auto;padding-block:0 96px;${gutter}}
+@media (min-width:900px){.pants{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
 .tels{display:flex;flex-wrap:wrap;gap:22px}
 .marco{margin:0;width:min(390px,100%)}
 .marco figcaption{font-size:13px;color:var(--suave);margin-bottom:8px}
@@ -82,17 +80,24 @@ main h1{font-size:clamp(36px,6vw,60px);margin:0 0 10px}
 .tel input[type=range]{width:100%}
 .oculto{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .cifra{font-variant-numeric:tabular-nums lining-nums}
-${d.css}`;
+${d.css}
+}`;
+}
+
+function cuerpoOpcion(d) {
+  const { claro: c, oscuro: o } = d.temas, p = d.slug;
+  const tels = (tema) => pantallas.map(([k, n]) => `<figure class="marco"><figcaption>${n}</figcaption><div class="tel" data-tema="${tema}" style="${vars(d.temas[tema])}"><div class="barra" aria-hidden="true"><span>9:41</span><span>5G ▮▮▮</span></div>${d.pantallas[k](tema)}</div></figure>`).join('');
+  const toc = [['logo', 'Logo'], ['color', 'Color'], ['tipografia', 'Tipografía'], ['assets', 'Assets'], ['pantallas', 'Pantallas']];
   const tile = (bg, tx, arte, cap, extra = '') => `<figure class="tile" style="background:${bg};color:${tx};${extra}"><div class="arte">${arte}</div><figcaption>${cap}</figcaption></figure>`;
-  const cuerpo = `
+  return `<div class="op op-${p}" id="opcion-${p}" data-op="${p}">
 <div class="doc">
-<header class="doc-cab"><div>${d.wordmark(c, 34)}</div><span>Propuesta preliminar</span></header>
+<header class="doc-cab"><div>${d.wordmark(c, 34)}</div><span>${d.opcion}</span></header>
 <div class="doc-cuerpo">
-<nav class="toc" aria-label="Contenido"><p class="toc-t">Contenido</p><ol>${toc.map(([id, n], i) => `<li><a href="#${id}">${i + 1}. ${n}</a></li>`).join('')}</ol></nav>
+<nav class="toc" aria-label="Contenido de la ${d.opcion}"><p class="toc-t">Contenido</p><ol>${toc.map(([id, n], i) => `<li><a href="#${p}-${id}">${i + 1}. ${n}</a></li>`).join('')}</ol></nav>
 <main>
 <h1>Brand book · ${d.nombre}</h1>
 <p class="bajada"><em>${d.bajada}</em></p>
-<section><h2 id="logo">1. Logo</h2>
+<section><h2 id="${p}-logo">1. Logo</h2>
 <div class="tiles">
 ${tile(c.bg, c.texto, d.wordmark(c, 64), 'Positivo')}
 ${tile(o.bg, o.texto, d.wordmark(o, 64), 'Negativo', `border-color:${o.bg}`)}
@@ -102,41 +107,138 @@ ${tile(c.superficie, c.texto, d.appIcon(116), 'Ícono de app')}
 </div>
 ${d.enUso ? `<h3>${d.enUso.titulo}</h3><div class="tiles">${d.enUso.items.map((x) => tile(x.bg, x.tx, x.html, x.nombre)).join('')}</div>` : ''}
 </section>
-<section><h2 id="color">2. Color</h2>
+<section><h2 id="${p}-color">2. Color</h2>
 <div class="muestras">${d.colores.map((x) => `<figure class="muestra"><i style="background:${x.hex}"></i><figcaption><span>${x.nombre}</span><code>${x.hex}</code></figcaption></figure>`).join('')}</div>
 </section>
-<section><h2 id="tipografia">3. Tipografía</h2>
+<section><h2 id="${p}-tipografia">3. Tipografía</h2>
 ${d.tipografia.map((x) => `<div class="espec"><div class="rol"><b>${x.familia}</b> · ${x.rol}</div><div class="m" style="${x.css}">${x.muestra}</div></div>`).join('')}
 </section>
-<section><h2 id="assets">4. Assets</h2>
+<section><h2 id="${p}-assets">4. Assets</h2>
 <div class="tiles">${d.assets.map((x) => `<figure class="tile${x.ancho ? ' ancho' : ''}" style="background:${x.fondo || 'var(--superficie)'};color:${x.color || 'var(--texto)'};${x.fondo ? 'border-color:transparent' : ''}"><div class="arte">${x.html}</div><figcaption>${x.nombre}</figcaption></figure>`).join('')}</div>
 </section>
 </main>
 </div>
 </div>
-<section class="pants"><h2 id="pantallas">5. Pantallas</h2>
+<section class="pants"><h2 id="${p}-pantallas">5. Pantallas</h2>
 <h3>Claro</h3><div class="tels">${tels('claro')}</div>
 <h3>Oscuro</h3><div class="tels">${tels('oscuro')}</div>
-</section>${js}`;
-  return `<!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Brand book · ${d.nombre}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="${d.fuentesUrl}">
-<style>${css}</style>
-</head>
-<body>${cuerpo}
-</body>
-</html>
-`;
+</section>
+</div>`;
 }
 
+// Barra de arriba: cambiar de opción, votar y comentar. Colores propios, neutros, para no favorecer a ninguna.
+const cssShell = `
+/* Una barra neutra arriba para escoger y opinar; debajo, el brand book de la opción activa con su propia identidad. */
+:root{--s-bg:#F3F2EF;--s-tx:#1C1B19;--s-suave:#5D5A55;--s-linea:#D9D6CF;--s-activo:#1C1B19;--s-sobre:#F3F2EF;--s-campo:#FFFFFF;--s-foco:#1C1B19}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s-bg:#1C1B19;--s-tx:#EEEBE5;--s-suave:#ABA69D;--s-linea:#3A3833;--s-activo:#EEEBE5;--s-sobre:#1C1B19;--s-campo:#26241F;--s-foco:#EEEBE5;color-scheme:dark}}
+:root[data-theme="dark"]{--s-bg:#1C1B19;--s-tx:#EEEBE5;--s-suave:#ABA69D;--s-linea:#3A3833;--s-activo:#EEEBE5;--s-sobre:#1C1B19;--s-campo:#26241F;--s-foco:#EEEBE5;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--s-bg);color:var(--s-tx);font:15px/1.5 'Host Grotesk',system-ui,sans-serif}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--s-bg)}
+.sw{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--s-bg);border-bottom:1px solid var(--s-linea);padding-block:10px;${gutter}}
+.sw-in{max-width:1360px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.sw-t{font-weight:600;margin-right:auto;min-width:0}
+.sw-t small{display:block;font-weight:400;color:var(--s-suave);font-size:13px}
+.sw-tabs{display:flex;gap:4px;background:var(--s-campo);border:1px solid var(--s-linea);border-radius:999px;padding:3px}
+.sw-tabs a{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;color:var(--s-tx);text-decoration:none;font-weight:500;white-space:nowrap}
+.sw-tabs a[aria-current="true"]{background:var(--s-activo);color:var(--s-sobre)}
+.sw-tabs i{width:12px;height:12px;border-radius:50%;flex:none}
+.sw button,.sw a{font:inherit}
+.sw :focus-visible{outline:2px solid var(--s-foco);outline-offset:2px}
+.op[hidden]{display:none}
+.voto{max-width:1360px;margin:0 auto;padding-block:18px;${gutter};display:grid;gap:12px}
+.voto-caja{border:1px solid var(--s-linea);border-radius:16px;padding:16px;display:grid;gap:12px;background:var(--s-campo)}
+.voto-caja h2{font-size:17px;margin:0}
+.voto-fila{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.voto-fila button{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--s-linea);background:var(--s-bg);color:var(--s-tx);cursor:pointer;font-weight:500}
+.voto-fila button[aria-pressed="true"]{background:var(--s-activo);color:var(--s-sobre);border-color:var(--s-activo)}
+.voto label{font-size:14px;color:var(--s-suave)}
+.voto textarea{width:100%;min-height:70px;border-radius:12px;border:1px solid var(--s-linea);background:var(--s-bg);color:var(--s-tx);padding:10px 12px;font:inherit;resize:vertical}
+.voto-est{font-size:14px;color:var(--s-suave);margin:0}
+.voto-cuenta{font-variant-numeric:tabular-nums;font-weight:600;color:var(--s-tx)}
+.notas{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.notas li{font-size:14px;border-top:1px solid var(--s-linea);padding-top:8px;overflow-wrap:anywhere}
+.notas b{font-weight:600}
+`;
+
+const shellHtml = (ops) => `
+<header class="sw"><div class="sw-in">
+  <div class="sw-t">Luca, dos estilos<small>Propuesta preliminar para opinar. El nombre es de trabajo.</small></div>
+  <nav class="sw-tabs" aria-label="Opciones">${ops.map((d) => `<a href="#opcion-${d.slug}" data-tab="${d.slug}"><i style="background:${d.temas.claro.acento}" aria-hidden="true"></i>${d.opcion}</a>`).join('')}</nav>
+</div></header>
+<section class="voto" aria-labelledby="voto-t"><div class="voto-caja">
+  <h2 id="voto-t">¿Con cuál te quedas?</h2>
+  <div class="voto-fila">${ops.map((d) => `<button type="button" id="voto-${d.slug}" data-voto="${d.slug}" aria-pressed="false">${d.opcion}</button>`).join('')}
+    <button type="button" id="voto-comentar" hidden>Comentar sobre la página</button></div>
+  <label for="voto-nota">Qué te gusta o qué cambiarías (opcional)</label>
+  <textarea id="voto-nota" maxlength="600" placeholder="Por ejemplo: me gusta el logo de la A, pero la B se siente más seria"></textarea>
+  <div class="voto-fila"><button type="button" id="voto-guardar">Guardar mi opinión</button><p class="voto-est" id="voto-est" aria-live="polite">Cargando votos…</p></div>
+  <ul class="notas" id="voto-notas"></ul>
+</div></section>`;
+
+const shellJs = `
+<script>
+(() => {
+  const use = (n) => (window.claude && window.claude.use ? window.claude.use(n) : Promise.resolve(null));
+  const ops = [...document.querySelectorAll('.op')];
+  const tabs = [...document.querySelectorAll('[data-tab]')];
+  const muestra = () => {
+    const h = location.hash.slice(1);
+    const k = ops.some((o) => h === 'opcion-' + o.dataset.op || h.startsWith(o.dataset.op + '-')) ? (h.startsWith('opcion-') ? h.slice(7) : h.split('-')[0]) : 'a';
+    ops.forEach((o) => { o.hidden = o.dataset.op !== k; });
+    tabs.forEach((t) => t.setAttribute('aria-current', String(t.dataset.tab === k)));
+    if (h.startsWith('opcion-')) window.scrollTo(0, 0);
+  };
+  addEventListener('hashchange', muestra); muestra();
+
+  // Votos: un documento por persona en "votos/<id>"; todos leen, cada quien escribe el suyo.
+  const est = document.getElementById('voto-est'), nota = document.getElementById('voto-nota'), lista = document.getElementById('voto-notas');
+  const botones = [...document.querySelectorAll('[data-voto]')], guardar = document.getElementById('voto-guardar');
+  const nombres = { a: 'Opción A', b: 'Opción B' };
+  let elegido = null, db = null, user = null, miId = null, filas = [];
+  botones.forEach((b) => b.addEventListener('click', () => { elegido = b.dataset.voto; botones.forEach((x) => x.setAttribute('aria-pressed', String(x === b))); }));
+  const pinta = async () => {
+    const c = { a: 0, b: 0 };
+    filas.forEach((f) => { if (c[f.opcion] !== undefined) c[f.opcion]++; });
+    est.innerHTML = 'Votos: <span class="voto-cuenta">A ' + c.a + ' · B ' + c.b + '</span>';
+    const conNota = filas.filter((f) => f.nota);
+    const ps = user ? await user.profiles(conNota.map((f) => f.id)) : {};
+    lista.replaceChildren(...conNota.map((f) => { const li = document.createElement('li'); const b = document.createElement('b'); b.textContent = ((ps[f.id] && ps[f.id].name) || 'Alguien') + ' · ' + (nombres[f.opcion] || 'sin voto') + ': '; li.append(b, document.createTextNode(f.nota)); return li; }));
+  };
+  (async () => {
+    const espera = setTimeout(() => { est.textContent = 'Los votos no cargan todavía. Puedes comentar la página.'; }, 10000);
+    db = await use('db'); user = await use('user');
+    if (!db || !user) { clearTimeout(espera); est.textContent = 'Para votar tienes que abrir la página con tu cuenta. Puedes comentarla igual.'; guardar.disabled = true; return; }
+    miId = await user.id();
+    db.collection('votos').onSnapshot((s) => {
+      if (!s.metadata.fromCache) clearTimeout(espera);
+      filas = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+      const mio = filas.find((f) => f.id === miId);
+      if (mio && elegido === null) { elegido = mio.opcion; botones.forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.voto === elegido))); if (!nota.value) nota.value = mio.nota || ''; }
+      pinta();
+    }, () => { clearTimeout(espera); est.textContent = 'Los votos no están disponibles ahora.'; });
+  })();
+  guardar.addEventListener('click', async () => {
+    if (!db || !miId) return;
+    if (!elegido) { est.textContent = 'Escoge la opción A o la B antes de guardar.'; return; }
+    guardar.disabled = true;
+    try { await db.doc('votos/' + miId).set({ opcion: elegido, nota: nota.value.trim().slice(0, 600) }); est.textContent = 'Guardado. Puedes cambiarlo cuando quieras.'; }
+    catch (e) { est.textContent = 'No se pudo guardar: pídele a Juanda acceso para participar en la página.'; }
+    guardar.disabled = false;
+  });
+  // Comentarios: abre el compositor de comentarios del artifact sobre la opción que se está viendo
+  (async () => {
+    const com = await use('comments'); if (!com) return;
+    const b = document.getElementById('voto-comentar'); b.hidden = false;
+    b.addEventListener('click', async () => { try { await com.openComposer({ element: ops.find((o) => !o.hidden) }); } catch (e) { b.hidden = true; } });
+  })();
+})();
+</script>`;
+
 let fallas = 0;
-for (const d of [luca, morada]) {
+for (const d of [A, B]) {
   let min = 99;
   for (const tema of ['claro', 'oscuro']) {
     const t = d.temas[tema];
@@ -146,7 +248,30 @@ for (const d of [luca, morada]) {
       if (r < m) { fallas++; console.error(`[${d.slug}] ${tema} · ${etq}: ${r.toFixed(2)}:1 < ${m}`); }
     }
   }
-  writeFileSync(join(raiz, `${d.slug}.html`), pagina(d));
-  console.log(`${d.slug}.html: contraste mínimo de texto ${min.toFixed(2)}:1`);
+  console.log(`${d.opcion}: contraste mínimo de texto ${min.toFixed(2)}:1`);
+}
+// La barra de arriba también se mide
+for (const [fg, bg] of [['#1C1B19', '#F3F2EF'], ['#5D5A55', '#F3F2EF'], ['#5D5A55', '#FFFFFF'], ['#EEEBE5', '#1C1B19'], ['#ABA69D', '#1C1B19'], ['#ABA69D', '#26241F']]) {
+  if (contraste(fg, bg) < 4.5) { fallas++; console.error(`barra: ${fg} sobre ${bg}`); }
 }
 if (fallas) { console.error(`${fallas} pares no pasan`); process.exit(1); }
+
+const fuentes = 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Young+Serif&family=Host+Grotesk:wght@300..800&display=swap';
+const contenido = `<title>Luca, dos estilos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="${fuentes}">
+<style>${cssShell}${cssOpcion(A)}${cssOpcion(B)}</style>
+${shellHtml([A, B])}
+${cuerpoOpcion(A)}
+${cuerpoOpcion(B)}
+${js}${shellJs}
+`;
+writeFileSync(join(raiz, 'luca.html'), `<!doctype html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n</head>\n<body>\n${contenido}</body>\n</html>\n`);
+console.log('luca.html');
+if (process.argv[2]) {
+  mkdirSync(process.argv[2], { recursive: true });
+  writeFileSync(join(process.argv[2], 'luca-dos-estilos.html'), contenido);
+  console.log(`artifact: ${join(process.argv[2], 'luca-dos-estilos.html')}`);
+}

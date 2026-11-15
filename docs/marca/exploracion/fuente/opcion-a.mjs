@@ -1,4 +1,4 @@
-// Dirección · Luca (nombre de trabajo). Cálida y con juego: la moneda que se reparte.
+// Luca · opción A, cálida. La moneda que se reparte.
 import { icono, caso, lineas, reparto, controles, cop } from './comun.mjs';
 
 const MAIZ = '#F2BE22', TINTA = '#1E291F', CREMA = '#FBF4E6';
@@ -60,9 +60,10 @@ const tajadas = (hechos, total = 6) => `<span class="l-taj" role="img" aria-labe
 const filasReparto = () => reparto.filas.map((f, i) => `<li class="l-fila" data-fila data-valor="${f.valor}"><i class="l-pt" style="background:var(--${['suave', 's1', 's2', 's3'][i]})"></i><span class="l-nom"><b>${f.nombre}</b><small>${f.detalle}</small></span><span class="l-mon cifra" data-monto>${cop(f.valor)}</span>${controles(f, i, 'l')}</li>`).join('');
 
 export default {
-  slug: 'luca',
+  slug: 'a',
+  opcion: 'Opción A · Cálida',
   nombre: 'Luca',
-  bajada: 'Propuesta preliminar. "Luca" es un nombre de trabajo, no una decisión.',
+  bajada: 'Opción A, cálida. Propuesta preliminar: "Luca" es un nombre de trabajo.',
   temas,
   fuentesUrl: 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap',
   fuenteUI: bri,
