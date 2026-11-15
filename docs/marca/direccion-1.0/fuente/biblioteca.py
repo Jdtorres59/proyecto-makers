@@ -136,6 +136,7 @@ def procesar(crudo):
             im = Image.open(src).convert('RGB').resize((1024, 1024), Image.LANCZOS)
             d = ASSETS / 'images'
             im.save(d / 'icon.png'); im.resize((48, 48), Image.LANCZOS).save(d / 'favicon.png')
+            (ASSETS / 'icono').mkdir(exist_ok=True); im.save(ASSETS / 'icono' / 'icono.png')  # copia que muestra la biblioteca
             fondo = im.getpixel((8, 8))
             Image.new('RGB', (512, 512), fondo).save(d / 'android-icon-background.png')
             # Android recorta el primer plano al círculo central: la cara va al 70 %

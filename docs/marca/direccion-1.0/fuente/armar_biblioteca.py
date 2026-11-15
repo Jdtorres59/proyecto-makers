@@ -9,7 +9,7 @@ import sys, shutil, pathlib, html
 AQUI = pathlib.Path(__file__).resolve().parent
 ASSETS = AQUI.parents[3] / 'apps/mobile/assets'
 SECCIONES = [
-    ('images', 'Ícono de app', 'icono'), ('luca', 'Luca', 'pose'), ('crecimiento', 'Crecimiento', 'pose'),
+    ('icono', 'Ícono de app', 'icono'), ('luca', 'Luca', 'pose'), ('crecimiento', 'Crecimiento', 'pose'),
     ('portadas', 'Portadas de módulo', 'portada'), ('medallas', 'Medallas', 'pose'), ('objetos', 'Objetos', 'pose'),
     ('escenas', 'Escenas de estado', 'pose'), ('iconos', 'Íconos de interfaz', 'ui'),
 ]
@@ -61,8 +61,7 @@ b.forEach(x=>x.addEventListener('click',()=>pon(x.dataset.t)));try{const t=local
 
 def archivos(carpeta):
     d = ASSETS / carpeta
-    if carpeta == 'images': return [d / 'icon.png'] if (d / 'icon.png').exists() else []
-    fs = sorted([*d.glob('*.webp'), *d.glob('*.svg')]) if d.exists() else []
+    fs = sorted([*d.glob('*.webp'), *d.glob('*.svg'), *d.glob('*.png')]) if d.exists() else []
     if carpeta == 'luca':
         clave = lambda f: ORDEN_LUCA.index(f.stem[5:]) if f.stem[5:] in ORDEN_LUCA else 99
         fs.sort(key=clave)
