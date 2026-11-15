@@ -1,6 +1,6 @@
-# Brand book · Platica (nombre de trabajo)
+# Brand book · Luca (nombre de trabajo)
 
-*Dirección 2 de tres. Exploración, no decisión: el nombre "Platica" es una propuesta de trabajo y nada de esto está aprobado por el equipo. Eje: **temperatura (cálida y con juego)**. Maquetas: [maquetas.html](maquetas.html). Versión navegable: [brandbook.html](brandbook.html).*
+*Dirección 2 de tres. Exploración, no decisión: el nombre "Luca" es una propuesta de trabajo y nada de esto está aprobado por el equipo. Eje: **temperatura (cálida y con juego)**. Maquetas: [maquetas.html](maquetas.html). Versión navegable: [brandbook.html](brandbook.html).*
 
 ## 1. Esencia
 
@@ -9,16 +9,16 @@
 | **Qué es** | Una app que te explica tu plata con tus documentos, como te la explicaría una amiga que sabe |
 | **A quién** | Jóvenes de 18 a 26 años: desde la mesada hasta el primer sueldo |
 | **Promesa** | Entender tu plata sin sentirte bruto por no saber |
-| **Por qué el nombre** | "La platica" es como se dice en la casa, en el bus y en el trabajo. Es cariñoso y sin pretensión |
+| **Por qué el nombre** | Una luca son mil pesos y "las lucas" es la plata en la calle, en la casa y en el trabajo. Es corto, de aquí y sin pretensión. Es una opción que ya tenía el equipo; no está decidida |
 | **Personalidad** | Cálida, directa, de buen humor, paciente, muy de aquí |
 | **Lo que no somos** | Juego de niños, banco, influenciador de trading, mamá que regaña |
 
-**La idea en una frase.** Suena como hablamos de plata en Colombia: "la platica". Cálida, redonda, con un amarillo maíz que se siente de aquí y una tinta verde oscura en vez de negro.
+**La idea en una frase.** Suena como hablamos de plata en Colombia: "eso cuesta cinco lucas". Cálida, redonda, con un amarillo maíz que se siente de aquí y una tinta verde oscura en vez de negro.
 
 ## 2. Logo
 
-- **Marca denominativa:** `platica` en Bricolage Grotesque 800, minúscula y apretada, con una moneda maíz al final con borde de tinta.
-- **Símbolo:** la moneda con la "p". Ícono de app, avatar, sello en los planes guardados.
+- **Marca denominativa:** `luca` en Bricolage Grotesque 800, minúscula y apretada, con una moneda maíz al final con borde de tinta: una luca, una moneda.
+- **Símbolo:** la moneda con "lu". Ícono de app, avatar, sello en los planes guardados.
 - **Área de respeto:** el diámetro de la moneda. **Tamaño mínimo:** 88 px de ancho; símbolo de 24 px.
 
 | Versión | Texto | Detalle | Fondo |
@@ -29,6 +29,18 @@
 
 - **Usos incorrectos:** quitar el borde de la moneda, cambiar el maíz por dorado metálico, usar mayúsculas, inclinar el logo.
 - **Archivos:** el SVG vive dentro de `brandbook.html`. Si se elige esta dirección, se convierte a trazos y se exporta en SVG y PNG.
+
+### Grafías exploradas
+
+Se probaron cinco grafías del nombre que propuso el equipo, todas en la misma fuente del logo. Recomendación de esta dirección: **luca**, en minúscula.
+
+| Grafía | Veredicto | Por qué |
+|---|---|---|
+| `luca` | Recomendada | Se lee igual que se dice y no necesita explicación. Corta, cabe en el ícono. Es también el nombre de un integrante del equipo |
+| `lucas` | Alternativa | Es la palabra completa de la calle ("cinco lucas"). Más clara como plata, menos como nombre propio |
+| `lucka` | No | La k la vuelve marca extranjera y obliga a deletrearla; pierde lo de aquí |
+| `luk` | No | Muy corta y se pierde el significado: ya no suena a plata. Se confunde con "look" |
+| `lucapp` | No | El "app" es relleno; se lee mal (¿luca-pp?) y envejece rápido. Sirve como usuario en redes si "luca" está tomado |
 
 ## 3. Color
 
@@ -117,7 +129,7 @@ Hablamos de **tú**, como hablan los parceros que saben de plata: directo, con p
 
 ## 7. Mensajes clave
 
-- **Taglines (propuesta):** *Tu platica, clarita.* · *Entiende tu plata sin pena.*
+- **Taglines (propuesta):** *Tus lucas, clarito.* · *Entiende tu plata sin pena.*
 - **Propuesta de valor:** Te explica tu desprendible, tu prima y tu tarjeta con tus números, en el idioma en que hablas de plata.
 - **Mensajes de apoyo:**
   - Con tus números, no con ejemplos gringos.
@@ -131,4 +143,5 @@ Hablamos de **tú**, como hablan los parceros que saben de plata: directo, con p
 
 - **Le habla mejor a:** Andrés y la Valentina de primer mes: 18 a 23 años, que se acercan por curiosidad y se van si algo suena a banco.
 - **Riesgo:** El juego puede leerse infantil o poco confiable cuando la persona sube un documento con datos sensibles, y le puede caer mal a alguien como Santiago que ya debe plata. Exige una regla clara para bajar la calidez en deuda.
+- **Riesgo del nombre:** Un integrante del equipo se llama Luca: puede leerse como el nombre de una persona y no del producto, y conviene que él esté de acuerdo. Luca es además el título de una película de Pixar (2021) y un nombre propio común; no se ha revisado la SIC ni las tiendas de apps.
 - **Costo de llevarla a la app:** Medio. Una sola fuente, pero los bordes, sombras duras y movimientos con resorte piden componentes propios en React Native.

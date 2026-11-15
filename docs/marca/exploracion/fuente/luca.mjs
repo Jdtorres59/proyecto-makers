@@ -1,4 +1,4 @@
-// Dirección 2 · Platica (nombre de trabajo). Calidez y juego: maíz, crema y tinta verde.
+// Dirección 2 · Luca (nombre de trabajo). Calidez y juego: maíz, crema y tinta verde.
 import { contrastes, icono, caso, lineas } from './comun.mjs';
 
 const temas = {
@@ -16,27 +16,37 @@ const temas = {
 
 const bri = "'Bricolage Grotesque', system-ui, sans-serif";
 
-const marca = (t, h = 44) => `<svg viewBox="0 0 194 64" height="${h}" role="img" aria-label="platica, nombre de trabajo"><text x="0" y="46" font-family="'Bricolage Grotesque', system-ui, sans-serif" font-size="54" font-weight="800" letter-spacing="-2" style="font-variation-settings:'opsz' 96" fill="${t.texto}">platica</text><circle cx="176" cy="33" r="14" fill="${t.moneda || '#F2BE22'}" stroke="${t.texto}" stroke-width="3"/></svg>`;
-const simbolo = (t, h = 72) => `<svg viewBox="0 0 72 72" height="${h}" role="img" aria-label="Símbolo de platica"><circle cx="36" cy="36" r="33" fill="#F2BE22" stroke="#1E291F" stroke-width="4"/><text x="36" y="49" text-anchor="middle" font-family="'Bricolage Grotesque', system-ui, sans-serif" font-size="40" font-weight="800" fill="#1E291F">p</text></svg>`;
+const marca = (t, h = 44) => `<svg viewBox="0 0 140 64" height="${h}" role="img" aria-label="luca, nombre de trabajo"><text x="0" y="46" font-family="'Bricolage Grotesque', system-ui, sans-serif" font-size="54" font-weight="800" letter-spacing="-2" style="font-variation-settings:'opsz' 96" fill="${t.texto}">luca</text><circle cx="122" cy="33" r="14" fill="${t.moneda || '#F2BE22'}" stroke="${t.texto}" stroke-width="3"/></svg>`;
+const simbolo = (t, h = 72) => `<svg viewBox="0 0 72 72" height="${h}" role="img" aria-label="Símbolo de luca"><circle cx="36" cy="36" r="33" fill="#F2BE22" stroke="#1E291F" stroke-width="4"/><text x="36" y="46" text-anchor="middle" font-family="'Bricolage Grotesque', system-ui, sans-serif" font-size="30" font-weight="800" letter-spacing="-1" fill="#1E291F">lu</text></svg>`;
 
 export default {
-  slug: 'platica',
+  slug: 'luca',
   numero: 2,
-  nombre: 'Platica',
+  nombre: 'Luca',
   eje: 'temperatura (cálida y con juego)',
-  idea: 'Suena como hablamos de plata en Colombia: "la platica". Cálida, redonda, con un amarillo maíz que se siente de aquí y una tinta verde oscura en vez de negro.',
+  idea: 'Suena como hablamos de plata en Colombia: "eso cuesta cinco lucas". Cálida, redonda, con un amarillo maíz que se siente de aquí y una tinta verde oscura en vez de negro.',
   esencia: [
     ['Qué es', 'Una app que te explica tu plata con tus documentos, como te la explicaría una amiga que sabe'],
     ['A quién', 'Jóvenes de 18 a 26 años: desde la mesada hasta el primer sueldo'],
     ['Promesa', 'Entender tu plata sin sentirte bruto por no saber'],
-    ['Por qué el nombre', '"La platica" es como se dice en la casa, en el bus y en el trabajo. Es cariñoso y sin pretensión'],
+    ['Por qué el nombre', 'Una luca son mil pesos y "las lucas" es la plata en la calle, en la casa y en el trabajo. Es corto, de aquí y sin pretensión. Es una opción que ya tenía el equipo; no está decidida'],
     ['Personalidad', 'Cálida, directa, de buen humor, paciente, muy de aquí'],
     ['Lo que no somos', 'Juego de niños, banco, influenciador de trading, mamá que regaña'],
   ],
+  grafias: {
+    intro: 'Se probaron cinco grafías del nombre que propuso el equipo, todas en la misma fuente del logo. Recomendación de esta dirección: **luca**, en minúscula.',
+    filas: [
+      ['luca', 'Recomendada', 'Se lee igual que se dice y no necesita explicación. Corta, cabe en el ícono. Es también el nombre de un integrante del equipo'],
+      ['lucas', 'Alternativa', 'Es la palabra completa de la calle ("cinco lucas"). Más clara como plata, menos como nombre propio'],
+      ['lucka', 'No', 'La k la vuelve marca extranjera y obliga a deletrearla; pierde lo de aquí'],
+      ['luk', 'No', 'Muy corta y se pierde el significado: ya no suena a plata. Se confunde con "look"'],
+      ['lucapp', 'No', 'El "app" es relleno; se lee mal (¿luca-pp?) y envejece rápido. Sirve como usuario en redes si "luca" está tomado'],
+    ],
+  },
   logo: {
     texto: [
-      '**Marca denominativa:** `platica` en Bricolage Grotesque 800, minúscula y apretada, con una moneda maíz al final con borde de tinta.',
-      '**Símbolo:** la moneda con la "p". Ícono de app, avatar, sello en los planes guardados.',
+      '**Marca denominativa:** `luca` en Bricolage Grotesque 800, minúscula y apretada, con una moneda maíz al final con borde de tinta: una luca, una moneda.',
+      '**Símbolo:** la moneda con "lu". Ícono de app, avatar, sello en los planes guardados.',
       '**Área de respeto:** el diámetro de la moneda. **Tamaño mínimo:** 88 px de ancho; símbolo de 24 px.',
     ],
     versiones: [
@@ -105,7 +115,7 @@ export default {
     evitamos: 'billete, camello en exceso, ¡ups!, crack, hack, haz que tu dinero trabaje, libertad financiera.',
   },
   mensajes: {
-    taglines: ['Tu platica, clarita.', 'Entiende tu plata sin pena.'],
+    taglines: ['Tus lucas, clarito.', 'Entiende tu plata sin pena.'],
     valor: 'Te explica tu desprendible, tu prima y tu tarjeta con tus números, en el idioma en que hablas de plata.',
     apoyo: [
       'Con tus números, no con ejemplos gringos.',
@@ -118,6 +128,7 @@ export default {
   },
   aQuien: 'Andrés y la Valentina de primer mes: 18 a 23 años, que se acercan por curiosidad y se van si algo suena a banco.',
   riesgo: 'El juego puede leerse infantil o poco confiable cuando la persona sube un documento con datos sensibles, y le puede caer mal a alguien como Santiago que ya debe plata. Exige una regla clara para bajar la calidez en deuda.',
+  riesgoNombre: 'Un integrante del equipo se llama Luca: puede leerse como el nombre de una persona y no del producto, y conviene que él esté de acuerdo. Luca es además el título de una película de Pixar (2021) y un nombre propio común; no se ha revisado la SIC ni las tiendas de apps.',
   costo: 'Medio. Una sola fuente, pero los bordes, sombras duras y movimientos con resorte piden componentes propios en React Native.',
 
   cssMaquetas: `

@@ -5,7 +5,7 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import cuadre from './cuadre.mjs';
-import platica from './platica.mjs';
+import luca from './luca.mjs';
 import renglon from './renglon.mjs';
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -52,6 +52,11 @@ function brandbookMd(d, filas) {
   L.push('| Versión | Texto | Detalle | Fondo |', '|---|---|---|---|');
   for (const v of d.logo.versiones) L.push(`| ${v.join(' | ')} |`);
   L.push('', `- **Usos incorrectos:** ${d.logo.incorrectos}`, '- **Archivos:** el SVG vive dentro de `brandbook.html`. Si se elige esta dirección, se convierte a trazos y se exporta en SVG y PNG.', '');
+  if (d.grafias) {
+    L.push('### Grafías exploradas', '', d.grafias.intro, '', '| Grafía | Veredicto | Por qué |', '|---|---|---|');
+    for (const [w, v, p] of d.grafias.filas) L.push(`| \`${w}\` | ${v} | ${p} |`);
+    L.push('');
+  }
   L.push('## 3. Color', '', '| Hex | Nombre | Uso |', '|---|---|---|');
   for (const c of d.colores) L.push(`| \`${c.hex}\` | ${c.nombre} | ${c.uso} |`);
   L.push('', ...d.reglasColor.map((x) => `- ${x}`), '');
@@ -74,7 +79,7 @@ function brandbookMd(d, filas) {
   L.push('- **Mensajes de apoyo:**', ...d.mensajes.apoyo.map((x) => `  - ${x}`));
   L.push(`- **Llamado a la acción principal:** ${d.mensajes.cta}`);
   L.push(`- **Promesas que no hacemos:** ${d.mensajes.noPrometemos}`, '');
-  L.push('## 8. A quién le habla mejor y riesgo', '', `- **Le habla mejor a:** ${d.aQuien}`, `- **Riesgo:** ${d.riesgo}`, `- **Costo de llevarla a la app:** ${d.costo}`, '');
+  L.push('## 8. A quién le habla mejor y riesgo', '', `- **Le habla mejor a:** ${d.aQuien}`, `- **Riesgo:** ${d.riesgo}`, ...(d.riesgoNombre ? [`- **Riesgo del nombre:** ${d.riesgoNombre}`] : []), `- **Costo de llevarla a la app:** ${d.costo}`, '');
   return L.join('\n');
 }
 
@@ -140,6 +145,7 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:.9em}
 .muestra b{display:block;font-size:14px}
 .esp{border-top:1px solid var(--lin);padding:20px 0}
 .esp .rol{font-size:13px;color:var(--suave)}
+.grafias{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:16px 0}.grafias figure{margin:0;border:1px solid var(--lin);border-radius:12px;padding:20px 16px 12px}.grafias figcaption{font-size:13px;color:var(--suave);margin-top:10px}
 .ok{font-weight:600}.mal{font-weight:700;text-decoration:underline}
 .tema-btn{font:inherit;font-size:14px;background:var(--sup);color:var(--tx);border:1px solid var(--lin);border-radius:999px;padding:8px 14px;cursor:pointer;min-height:44px}
 ${d.cssBrandbook || ''}`;
@@ -165,7 +171,8 @@ ${sec(1, `<div class="logos">
 </div>
 <ul>${d.logo.texto.map((x) => `<li>${md(x)}</li>`).join('')}</ul>
 ${tabla(['Versión', 'Texto', 'Detalle', 'Fondo'], d.logo.versiones)}
-<p><strong>Usos incorrectos:</strong> ${d.logo.incorrectos}</p>`)}
+<p><strong>Usos incorrectos:</strong> ${d.logo.incorrectos}</p>
+${d.grafias ? `<h3>Grafías exploradas</h3><p>${md(d.grafias.intro)}</p><div class="grafias">${d.grafias.filas.map(([w, v]) => `<figure><span style="font-family:${d.fuenteDisplay};font-weight:${d.pesoTitular};font-size:44px;letter-spacing:-.04em;line-height:1">${w}</span><figcaption>${v}</figcaption></figure>`).join('')}</div>${tabla(['Grafía', 'Veredicto', 'Por qué'], d.grafias.filas.map(([w, v, p]) => [`<code>${w}</code>`, v, p]))}` : ''}`)}
 ${sec(2, `<div class="muestras">${d.colores.map((c) => `<div class="muestra"><i style="background:${c.hex}"></i><div><b>${c.nombre}</b><code>${c.hex}</code><br>${md(c.uso)}</div></div>`).join('')}</div>
 <ul>${d.reglasColor.map((x) => `<li>${md(x)}</li>`).join('')}</ul>
 <h3>Contraste medido</h3><p class="bajada">Calculado con la fórmula de WCAG 2.2 por el generador. Texto exige 4,5:1; elementos de interfaz, 3:1.</p>
@@ -174,7 +181,7 @@ ${sec(3, d.tipografia.map((x) => `<div class="esp"><div class="rol">${x.rol} · 
 ${sec(4, `<ul>${d.imagen.map((x) => `<li>${md(x)}</li>`).join('')}</ul>`)}
 ${sec(5, `<p>${md(d.voz.intro)}</p>${tabla(['Sí lo decimos', 'No lo decimos'], d.voz.siNo)}<h3>Frases reales de la app</h3>${tabla(['Dónde', 'Frase'], d.voz.frases)}<p><strong>Palabras que evitamos:</strong> ${d.voz.evitamos}</p>`)}
 ${sec(6, `<ul><li><strong>Taglines (propuesta):</strong> ${d.mensajes.taglines.map((x) => `<em>${x}</em>`).join(' · ')}</li><li><strong>Propuesta de valor:</strong> ${d.mensajes.valor}</li><li><strong>Mensajes de apoyo:</strong><ul>${d.mensajes.apoyo.map((x) => `<li>${x}</li>`).join('')}</ul></li><li><strong>Llamado a la acción principal:</strong> ${d.mensajes.cta}</li><li><strong>Promesas que no hacemos:</strong> ${d.mensajes.noPrometemos}</li></ul>`)}
-${sec(7, `<ul><li><strong>Le habla mejor a:</strong> ${d.aQuien}</li><li><strong>Riesgo:</strong> ${d.riesgo}</li><li><strong>Costo de llevarla a la app:</strong> ${d.costo}</li></ul><p><a href="maquetas.html">Ver las maquetas de esta dirección</a></p>`)}
+${sec(7, `<ul><li><strong>Le habla mejor a:</strong> ${d.aQuien}</li><li><strong>Riesgo:</strong> ${d.riesgo}</li>${d.riesgoNombre ? `<li><strong>Riesgo del nombre:</strong> ${d.riesgoNombre}</li>` : ''}<li><strong>Costo de llevarla a la app:</strong> ${d.costo}</li></ul><p><a href="maquetas.html">Ver las maquetas de esta dirección</a></p>`)}
 </main>
 </div>`;
   return baseDoc(`${d.nombre} · brand book`, d.fuentesUrl, cuerpo, css);
@@ -252,7 +259,7 @@ document.querySelectorAll('.leccion').forEach((l) => {
 
 // ---------- correr ----------
 let fallas = 0;
-for (const d of [cuadre, platica, renglon]) {
+for (const d of [cuadre, luca, renglon]) {
   const filas = medir(d);
   for (const f of filas.filter((x) => !x.pasa)) {
     fallas++;
