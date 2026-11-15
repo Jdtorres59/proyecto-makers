@@ -31,7 +31,10 @@ export const supabase = createClient(
     auth: {
       // En web SecureStore no existe; Supabase usa localStorage.
       storage: Platform.OS === 'web' ? undefined : almacenSeguro,
-      detectSessionInUrl: false,
+      // PKCE: el proveedor devuelve un código de un solo uso y la app lo canjea por la sesión.
+      flowType: 'pkce',
+      // Solo en web la sesión llega en la URL; en el celular la canjea login.tsx.
+      detectSessionInUrl: Platform.OS === 'web',
     },
   },
 );

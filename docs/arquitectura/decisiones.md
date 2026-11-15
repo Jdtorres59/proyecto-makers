@@ -22,7 +22,7 @@ Una entrada corta por decisión: qué, por qué y qué la haría cambiar. Las nu
 
 **Tope de gasto por usuario y por día** (`TOPE_DIARIO_USD`, 0,50 por defecto). Evita que un error o un abuso consuma los créditos.
 
-**Login por código al correo.** No requiere contraseñas ni módulos nativos. Pendiente: el correo de Supabase por defecto solo entrega a miembros del proyecto y tiene límite por hora; para probar con personas externas hay que configurar un proveedor de correo.
+**Login con Google y Apple (OAuth), sin correo ni contraseña.** Lo pidió Juan David el 14 de noviembre: menos fricción y no hay que operar envío de correos. El ingreso abre el navegador seguro del sistema y la app canjea un código de un solo uso (PKCE), así que funciona en iOS, Android y web sin módulos nativos. Sumar otro proveedor de Supabase es una línea en `login.tsx`. Si se publica en la App Store con Google, Apple exige ofrecer también el ingreso con Apple, que ya está.
 
 **Plata como entero en pesos.** Sin decimales, para no arrastrar errores de punto flotante.
 
