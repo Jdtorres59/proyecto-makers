@@ -6,6 +6,56 @@ Propuesta de qué debería enseñar la app, completa, para llevar al equipo. Par
 
 Fecha de corte: 15 de noviembre de 2026. Las cifras legales se marcan como **verificado** (con fuente y fecha) o **por verificar**.
 
+## Lo decidido el 15 de noviembre de 2026
+
+Juan David cerró cuatro de las decisiones de la sección 7. El resto del documento queda como el mapa completo; esta sección dice qué parte de ese mapa se construye primero.
+
+### Decisiones
+
+1. **Inversión: opción d).** La app nombra productos concretos como hechos (qué existe, qué replica, cuánto cuesta al año), sin decirle a una persona qué comprar según sus números. Sigue sujeto a que lo confirme un abogado de mercado de valores y exige ajustar la regla 8 de AGENTS.md, que es decisión del equipo (sección 7, decisión 1).
+2. **Público: solo la persona foco del documento 01.** Joven de 21 a 26 años en sus primeros 18 meses de empleo formal, en dos variantes: recién llegada y sin deuda (Valentina) o ya enredada con tarjeta y cuotas (Santiago). Andrés, independientes y estudiantes quedan para después; sus módulos (E2, E3, P3) se apagan sin romper nada.
+3. **Criterio de Pareto.** La meta no es formar expertos sino que la persona aprenda el 20 % que da el 80 % del resultado: lo necesario para tener sus finanzas en orden y no tener que volver a preocuparse por aprender mucho.
+4. **Cripto entra**, como tema que a la gente le interesa, no como vehículo recomendado. Ver el módulo 12 del núcleo.
+
+### Núcleo para la persona foco
+
+Once módulos, más uno corto de cripto. El corte es propuesta mía a partir del criterio de Pareto; se puede discutir.
+
+| # | Módulo | Viene de | Por qué entra |
+|---|---|---|---|
+| 1 | Desprendible | E1 | Puerta de entrada y documento que más se repite |
+| 2 | Prima y cesantías | E4 + E5 | Las fechas con más plata del año, donde se cometen los errores grandes |
+| 3 | Plan del mes, con gastos anuales | G1 + lo esencial de G2 | Responde "en qué se me va", el dolor común de los ICP |
+| 4 | Colchón | P1 | Sin él, todo lo demás se cae |
+| 5 | Costo de la deuda | D1 | Tasa, usura y costo total |
+| 6 | Tarjeta | D3 | La oferta que les llega a las dos variantes |
+| 7 | Historial crediticio | D2 | Corto y evita daños de años |
+| 8 | Si no puedo pagar | D6 | Solo variante B |
+| 9 | Fraudes | S2 | Una estafa borra todo lo ahorrado |
+| 10 | Invertir simple | I1, I2 e I4 condensados | Fondo indexado, bajo costo, largo plazo, con productos reales nombrados como hechos (opción d) |
+| 11 | Primera inversión | I6 | Cierra con una acción |
+| 12 | Cripto: qué es y qué no | Nuevo, corto | Qué compra quien compra cripto, por qué no es lo mismo que un indexado, cuánto puede caer y cómo se ven las estafas. **Por verificar:** no investigué la norma colombiana vigente sobre cripto (supervisión, reporte a la DIAN); hay que hacerlo antes de escribirlo |
+
+**Segundo nivel, solo si le pasa a la persona:** D4 (libranza y préstamos rápidos), D5 (ICETEX), S1 (cuentas y costos), P2 (seguros y salud), I3 (vehículos en Colombia), I5 (dólar e impuestos), F1 (pensión), F2 (renta), F3 (metas grandes) y F4 (revisión anual).
+
+**Fuera por ahora:** E2, E3 y P3, hasta que el equipo sume otro ICP.
+
+### Graduación y retención: sigue abierta
+
+Juan David duda entre "pruebas más revisión anual" y "no hay graduación", porque le preocupa que la gente se vaya: retener cuesta menos que conseguir clientes. Hay una tensión real entre "que no tenga que volver a aprender" y "que se quede".
+
+Idea mía, sin evidencia que la respalde: graduarse es pasar las pruebas del núcleo con sus propios documentos (hito claro; quien ya sabe se salta módulos). Después la app deja de enseñar y acompaña: avisa las fechas que se repiten (prima dos veces al año, cesantías, renta, extracto), los cambios de norma que lo afectan, y hace la revisión anual. A largo plazo, invertir desde la app (opción c de la decisión 1) sería la razón fuerte para quedarse. Si la gente de verdad vuelve por esos avisos se puede medir en un piloto.
+
+### Propuestas por defecto para las decisiones que siguen abiertas
+
+No están decididas; son lo que haría si nadie dice otra cosa.
+
+- **Decisión 4 (no tiene el producto):** la acción se hace con un caso simulado, sin bloquear.
+- **Decisión 5 (cómo se ofrece el núcleo):** el núcleo se ofrece desde el inicio, en orden; el segundo nivel se abre con el evento.
+- **Decisión 7 (normas inestables):** F1 ya queda fuera del núcleo, así que la reforma pensional pesa menos.
+- **Decisión 8 (quién verifica cifras):** necesita una persona con nombre en el equipo.
+- **Decisión 9 (primer prototipo):** sigue siendo E1.
+
 ## 0. La meta y cómo se lee este documento
 
 La meta que fijó Juan David: si una persona completa todo, puede (1) manejar su plata en el día a día, (2) entender la deuda y endeudarse con inteligencia, (3) hacer una inversión básica, por ejemplo un fondo que siga el S&P 500, y (4) planear a futuro con colchón de emergencia y preparación para imprevistos.
@@ -571,7 +621,7 @@ Lectura: la meta 3 es la única que queda a medias, y no por falta de contenido 
 | Tema | Por qué queda fuera |
 |---|---|
 | Trading y análisis de acciones individuales | Va contra la meta de una inversión básica y diversificada; los tres ICP piden separar invertir de apostar. Se menciona en I1.4 solo para distinguirlo |
-| Cripto como inversión | Alta volatilidad y regulación en movimiento; se trata como especulación en I1.4 y como vector de estafa en S2.3. Si el equipo quiere un módulo, es una decisión aparte (sección 7) |
+| Cripto como inversión | Alta volatilidad y regulación en movimiento; se trata como especulación en I1.4 y como vector de estafa en S2.3. El 15 de noviembre de 2026 se decidió sumar un módulo corto que explica qué es y qué no, sin recomendarlo (sección "Lo decidido") |
 | Finanzas de emprendimiento | Otro público y otro currículo |
 | Impuestos complejos | Quien está obligado a llevar contabilidad o es responsable de IVA necesita contador; F4.4 enseña cuándo pedirlo |
 | Herencias, sucesiones, régimen patrimonial de pareja | Poco frecuente en 18 a 27 años y muy legal |
@@ -601,7 +651,7 @@ Inferencia de trabajo: en el momento de lanzar, la revisión mensual cubre usura
 
 ## 7. Decisiones abiertas para el equipo
 
-1. **¿Hasta dónde llega la app en inversión, si no recomienda productos?** Opciones que veo, sin escoger:
+1. **¿Hasta dónde llega la app en inversión, si no recomienda productos?** *Juan David escogió la d) el 15 de noviembre de 2026, sujeta a la confirmación legal y al cambio de la regla 8 que se explican abajo.* Opciones:
    - a) Enseñar tipos de vehículo y criterios para evaluarlos (I3, I4), y que la persona escoja entidad por su cuenta. Es lo que propone este documento. La meta 3 queda a medias en la matriz.
    - b) Además, mostrar una lista neutral y completa de entidades vigiladas que ofrecen cada tipo, sin orden ni comisión. Más útil; hay que revisar si una lista así se considera recomendación.
    - c) Aliarse con una entidad vigilada para que la persona invierta sin salir de la app. Cumple la meta de lleno, pero crea un conflicto de interés y choca con la condición C5 del documento 02 ("si me vende productos, desconfío").
@@ -615,15 +665,15 @@ Inferencia de trabajo: en el momento de lanzar, la revisión mensual cubre usura
    - **Inferencia mía:** la frontera razonable está entre d) y e). Decir qué existe y cuánto cuesta debería ser información. Decirle a una persona concreta qué comprar es recomendación.
 
    Cuál opción cabe en la norma lo debe confirmar un abogado de mercado de valores; este documento no lo resuelve. Cambiar la regla 8 de AGENTS.md ("no recomienda productos ni entidades") es una decisión del equipo.
-2. **¿El currículo es solo para empleados formales?** Este documento propone que no: tres situaciones de ingreso (EF, IN, ES) con módulos propios. Cuesta tres módulos más (E2, E3, P3) y variantes en G1 y P1. Si el equipo decide enfocarse solo en formales, se pueden apagar sin romper lo demás.
-3. **¿Qué significa graduarse?** Opciones:
+2. **¿El currículo es solo para empleados formales?** *Decidido el 15 de noviembre de 2026: sí, solo la persona foco, con criterio de Pareto (sección "Lo decidido").* La propuesta original era que no: tres situaciones de ingreso (EF, IN, ES) con módulos propios. Cuesta tres módulos más (E2, E3, P3) y variantes en G1 y P1. Si el equipo decide enfocarse solo en formales, se pueden apagar sin romper lo demás.
+3. **¿Qué significa graduarse?** *Sigue abierta; ver la propuesta de graduación y retención en "Lo decidido".* Opciones:
    - a) Completar la acción de todos los módulos núcleo de su ruta.
    - b) Pasar las siete pruebas de la sección 1, con sus propios documentos, aunque no haya hecho todos los módulos (quien ya sabe se salta).
    - c) No hay graduación: la revisión anual (F4) es permanente porque las normas cambian.
    Inferencia mía: b) más c) es lo más coherente con la meta de criterio propio, pero b) exige diseñar las pruebas, que es trabajo adicional.
 4. **¿Qué pasa con la acción cuando la persona no tiene el producto?** Andrés no tiene tarjeta ni nómina. ¿Se completa D3 con un caso simulado, o queda bloqueado hasta que lo necesite?
 5. **¿Núcleo para todos desde el inicio, o solo lo que su ruta activa?** Si el producto acompaña momentos (pregunta 2 del documento 00), muchos módulos núcleo nunca se activan solos. Habría que decidir cómo se ofrecen.
-6. **¿Entra cripto?** Hoy queda como especulación y riesgo de estafa. Andrés y su entorno lo mencionan; dejarlo fuera puede costar credibilidad.
+6. **¿Entra cripto?** *Decidido el 15 de noviembre de 2026: sí, como módulo corto del núcleo (sección "Lo decidido"), no como vehículo recomendado.* Antes quedaba como especulación y riesgo de estafa. Andrés y su entorno lo mencionan; dejarlo fuera puede costar credibilidad.
 7. **¿Qué módulos no se publican hasta que la norma se estabilice?** Propuesta: F1 (pensión) y la parte de E2 que cambia en abril de 2027.
 8. **¿Quién verifica las cifras legales y cada cuánto?** La regla del repo dice que una persona verifica cada norma. Con 14 temas que cambian, ¿quién del equipo es responsable?
 9. **¿Cuántos módulos hacen falta para el primer prototipo?** El documento 05 parte de E1. Este currículo no cambia eso; solo lo ubica en un mapa completo.
@@ -693,4 +743,6 @@ Del repo: documentos 01, 02, 03 y 07, y sus fuentes académicas.
 - Edad hasta la cual se puede ser beneficiario en salud.
 - Evidencia sobre fondos activos contra indexados (por ejemplo, los informes SPIVA para Latinoamérica).
 - Cómo se aprende a invertir en particular (sigue abierta la investigación 1 del documento 00).
+- Norma colombiana vigente sobre cripto (supervisión de plataformas, reporte a la DIAN), necesaria para el módulo 12 del núcleo.
+- Si el núcleo de 12 módulos de verdad da el 80 % del resultado: es un corte por criterio, no medido.
 - Nada de esto se ha validado con entrevistas.
