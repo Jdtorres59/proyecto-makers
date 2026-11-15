@@ -18,6 +18,7 @@ Lo que la investigación no resuelve y el equipo tiene que decidir. Recoge las o
   - Invertir no tiene fecha que obligue, así que no hay un "momento enseñable" natural; habría que crearlo.
   - Las diferencias entre aprender finanzas y aprender un idioma siguen valiendo para un producto que enseñe.
   - La advertencia de Duolingo sobre copiar mecánicas sin entender por qué funcionan también.
+- **Propuesta de contenido:** `10 - Curriculo completo.md` desarrolla el bloque de inversión en seis módulos y formula como decisión abierta hasta dónde puede llegar la app sin recomendar productos.
 - **Qué no se investigó:** cómo aprende la gente a invertir en particular, qué productos enseñan a invertir y con qué resultados, y cuánto tiempo y práctica toma llegar a una primera inversión con criterio.
 - **Estado:** abierta.
 
