@@ -417,7 +417,7 @@ Lo verificado: en el MGC se negocian ETF internacionales, entre ellos fondos que
 
 **Acción:** con la lista de vehículos, escribe cuál tipo (no cuál entidad) le corresponde a cada meta y verifica en la Superfinanciera una entidad que ofrezca ese tipo.
 
-Esta lección es la frontera con la regla de no recomendar productos (sección 7, decisión 1). Se enseñan **tipos** y **criterios**; no se nombra "invierte aquí".
+Esta lección es la frontera con la regla de no recomendar productos (sección 7, decisión 1). En la versión base se enseñan **tipos** y **criterios**. Si el equipo escoge la opción d), aquí se nombrarían productos reales como ejemplos con su costo, sin decirle a la persona cuál comprar.
 
 #### I4. Fondos indexados y comisiones · núcleo para todos
 
@@ -558,7 +558,7 @@ Las cuatro metas de Juan David contra los módulos. ● cubierto, ◐ a medias, 
 |---|---|---|---|---|
 | **1. Manejar la plata en el día a día** | Entender el ingreso, planear el mes, gastos anuales, cuentas y costos, fraudes | E1 a E5, G1, G2, S1, S2 | ● | Finanzas de pareja y gastos compartidos en la casa: ◐, solo de paso en E3 y G1 |
 | **2. Entender la deuda y endeudarse con inteligencia** | Costo real, usura, historial, tarjeta, cuotas, educación, salir de deudas, codeudor | D1 a D6 | ● | Crédito de vehículo con detalle (◐, solo dentro de D4); crédito de vivienda está en F3, no en D |
-| **3. Hacer una inversión básica** (S&P 500) | Interés compuesto, inflación, riesgo y plazo, diversificación, vehículos locales, indexados, comisiones, dólar, impuestos, conducta en caídas | I1 a I6 | ◐ | La persona llega a poder escoger el tipo de vehículo y evaluarlo con criterios, pero la app no le dice en qué entidad ni producto invertir. Si eso basta o no es la decisión 1 de la sección 7 |
+| **3. Hacer una inversión básica** (S&P 500) | Interés compuesto, inflación, riesgo y plazo, diversificación, vehículos locales, indexados, comisiones, dólar, impuestos, conducta en caídas | I1 a I6 | ◐ | La persona llega a poder escoger el tipo de vehículo y evaluarlo con criterios, pero la app no le dice en qué entidad ni producto invertir. Si eso basta o no es la decisión 1 de la sección 7; con la opción d) (nombrar productos como ejemplos) quedaría casi cubierta |
 | **4. Planear a futuro con colchón e imprevistos** | Colchón, seguros, perder el ingreso, pensión, renta, metas grandes, revisión anual | P1 a P3, F1 a F4 | ● con una excepción | F1 (pensión) depende de una norma en disputa: ◐ hasta que se estabilice |
 | ○ Por fuera | | | | Trading, análisis de acciones individuales, cripto como inversión, finanzas de emprendimiento, impuestos de quien está obligado a llevar contabilidad o es responsable de IVA, herencias y sucesiones (ver sección 6) |
 
@@ -605,7 +605,16 @@ Inferencia de trabajo: en el momento de lanzar, la revisión mensual cubre usura
    - a) Enseñar tipos de vehículo y criterios para evaluarlos (I3, I4), y que la persona escoja entidad por su cuenta. Es lo que propone este documento. La meta 3 queda a medias en la matriz.
    - b) Además, mostrar una lista neutral y completa de entidades vigiladas que ofrecen cada tipo, sin orden ni comisión. Más útil; hay que revisar si una lista así se considera recomendación.
    - c) Aliarse con una entidad vigilada para que la persona invierta sin salir de la app. Cumple la meta de lleno, pero crea un conflicto de interés y choca con la condición C5 del documento 02 ("si me vende productos, desconfío").
-   Lo que sé de la norma: el Decreto 661 de 2018 reserva la asesoría en el mercado de valores a entidades vigiladas por la Superfinanciera, y la información general no requiere serlo, aunque puede tratarse como recomendación según los criterios de la Superintendencia ([Garrigues sobre el decreto](https://www.garrigues.com/es_ES/noticia/el-decreto-661-de-2018-regula-la-actividad-de-asesoria-del-mercado-de-valores-en-colombia.md); [texto del decreto en Función Pública](https://www.funcionpublica.gov.co/eva/gestornormativo/norma_pdf.php?i=85921)). Cuál opción cabe en la norma es una pregunta para un abogado, no algo que este documento resuelva.
+   - d) Nombrar productos concretos como hechos, no como consejo. Por ejemplo: "en el Mercado Global Colombiano existen ETF que replican el S&P 500, como el VOO, con un costo anual de tanto". La app no le dice a una persona qué comprar según sus números. Así la persona sale con nombres reales para investigar, que es lo que hoy busca en redes, y la meta 3 quedaría casi cubierta. Exige mantener nombres y costos al día, y tratar a todos los productos de un mismo tipo por igual.
+   - e) Recomendar con un aviso de que "no es una recomendación financiera", como hacen muchos creadores de contenido. Lo planteó Juan David el 15 de noviembre de 2026 porque es la práctica común. No la recomiendo, por lo que sigue.
+
+   **Lo que sé de la norma y de los casos:**
+   - El Decreto 661 de 2018 reserva la asesoría en el mercado de valores a entidades vigiladas por la Superfinanciera. La información general no requiere ser vigilado, pero puede tratarse como recomendación según los criterios de la Superintendencia ([Garrigues sobre el decreto](https://www.garrigues.com/es_ES/noticia/el-decreto-661-de-2018-regula-la-actividad-de-asesoria-del-mercado-de-valores-en-colombia.md); [texto del decreto en Función Pública](https://www.funcionpublica.gov.co/eva/gestornormativo/norma_pdf.php?i=85921)).
+   - **El aviso no ha protegido a los creadores de contenido.** La Superfinanciera canceló el registro de Fénix Valor, inscrito solo para dar información, por publicidad indebida y por asesorar sin autorización, aunque su fundador decía dejar claro que sus opiniones no eran recomendaciones. Según la misma nota, sancionó en diciembre de 2023 a Juan Diego Gómez por hacer recomendaciones de inversión sin licencia ([Vanguardia, febrero de 2024](https://www.vanguardia.com/economia/nacional/2024/02/15/su-dinero-esta-en-riesgo-superfinanciera-tiene-en-la-mira-a-los-influencers-financieros-en-redes-sociales/); [La República](https://www.larepublica.co/finanzas/superfinanciera-le-pone-la-lupa-al-trabajo-de-los-asesores-financieros-en-redes-sociales-3801339)). Son notas de prensa; no leí las resoluciones. No encontré una norma de 2025 o 2026 específica para creadores de contenido.
+   - **Inferencia mía:** la app está más expuesta que un creador de contenido. Conoce el ingreso, las deudas y el colchón de la persona, así que decirle "compra X" se parece más a una asesoría personalizada que un video para todos, y el aviso pesa menos. Además es una empresa con muchos usuarios y un repo público.
+   - **Inferencia mía:** la frontera razonable está entre d) y e). Decir qué existe y cuánto cuesta debería ser información. Decirle a una persona concreta qué comprar es recomendación.
+
+   Cuál opción cabe en la norma lo debe confirmar un abogado de mercado de valores; este documento no lo resuelve. Cambiar la regla 8 de AGENTS.md ("no recomienda productos ni entidades") es una decisión del equipo.
 2. **¿El currículo es solo para empleados formales?** Este documento propone que no: tres situaciones de ingreso (EF, IN, ES) con módulos propios. Cuesta tres módulos más (E2, E3, P3) y variantes en G1 y P1. Si el equipo decide enfocarse solo en formales, se pueden apagar sin romper lo demás.
 3. **¿Qué significa graduarse?** Opciones:
    - a) Completar la acción de todos los módulos núcleo de su ruta.
@@ -652,6 +661,7 @@ Secundarias (prensa, firmas, gremios):
 - Vivienda: [Asuntos Legales](https://www.asuntoslegales.com.co/consultorio/vivienda-en-colombia-subsidios-tasas-y-lo-que-viene-con-el-nuevo-gobierno-4465640), [Portafolio](https://www.portafolio.co/mis-finanzas/vivienda/subsidios-de-vivienda-vigentes-en-2026-cajas-de-compensacion-y-programas-locales-tras-mi-casa-ya-485814)
 - Independientes, cambio de 2027: [El País Cali](https://www.elpais.com.co/colombia/pagos-de-la-seguridad-social-para-trabajadores-independientes-cambiaran-a-partir-de-abril-de-2027-2724.html)
 - Asesoría: [Garrigues](https://www.garrigues.com/es_ES/noticia/el-decreto-661-de-2018-regula-la-actividad-de-asesoria-del-mercado-de-valores-en-colombia.md)
+- Sanciones a creadores de contenido: [Vanguardia](https://www.vanguardia.com/economia/nacional/2024/02/15/su-dinero-esta-en-riesgo-superfinanciera-tiene-en-la-mira-a-los-influencers-financieros-en-redes-sociales/), [La República](https://www.larepublica.co/finanzas/superfinanciera-le-pone-la-lupa-al-trabajo-de-los-asesores-financieros-en-redes-sociales-3801339)
 
 Del repo: documentos 01, 02, 03 y 07, y sus fuentes académicas.
 
@@ -668,7 +678,7 @@ Del repo: documentos 01, 02, 03 y 07, y sus fuentes académicas.
 - Las siete capacidades, la división núcleo y según situación, las rutas y la matriz.
 - No hacer un módulo cero de conceptos, sino presentarlos justo a tiempo.
 - Las reglas simples de cada lección. Algunas son convenciones de educación financiera (3 a 6 meses de colchón, "menos de 3 años no va a acciones", proporción de ingreso en cuotas) que no verifiqué contra una fuente colombiana.
-- Que la opción a) de la decisión 1 cabe en el Decreto 661. No es una opinión legal.
+- Que las opciones a) y d) de la decisión 1 caben en el Decreto 661 y que la e) no. No es una opinión legal.
 - Que la mayoría de EF del ICP no tiene que declarar renta todavía (cuenta con $3,5 millones al mes, sin revisar otros topes de cada persona).
 
 ### 8.4 Qué no investigué o quedó por verificar
