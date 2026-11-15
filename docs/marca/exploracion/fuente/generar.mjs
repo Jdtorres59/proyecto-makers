@@ -126,9 +126,9 @@ ${d.tipografia.map((x) => `<div class="espec"><div class="rol"><b>${x.familia}</
 </div>`;
 }
 
-// Barra de arriba: cambiar de opción, votar y comentar. Colores propios, neutros, para no favorecer a ninguna.
+// Barra de arriba: cambiar de opción y comentar. Colores propios, neutros, para no favorecer a ninguna.
 const cssShell = `
-/* Una barra neutra arriba para escoger y opinar; debajo, el brand book de la opción activa con su propia identidad. */
+/* Una barra neutra arriba para cambiar de opción y comentar; debajo, el brand book de la opción activa con su propia identidad. */
 :root{--s-bg:#F3F2EF;--s-tx:#1C1B19;--s-suave:#5D5A55;--s-linea:#D9D6CF;--s-activo:#1C1B19;--s-sobre:#F3F2EF;--s-campo:#FFFFFF;--s-foco:#1C1B19}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s-bg:#1C1B19;--s-tx:#EEEBE5;--s-suave:#ABA69D;--s-linea:#3A3833;--s-activo:#EEEBE5;--s-sobre:#1C1B19;--s-campo:#26241F;--s-foco:#EEEBE5;color-scheme:dark}}
 :root[data-theme="dark"]{--s-bg:#1C1B19;--s-tx:#EEEBE5;--s-suave:#ABA69D;--s-linea:#3A3833;--s-activo:#EEEBE5;--s-sobre:#1C1B19;--s-campo:#26241F;--s-foco:#EEEBE5;color-scheme:dark}
@@ -148,35 +148,16 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .sw button,.sw a{font:inherit}
 .sw :focus-visible{outline:2px solid var(--s-foco);outline-offset:2px}
 .op[hidden]{display:none}
-.voto{max-width:1360px;margin:0 auto;padding-block:18px;${gutter};display:grid;gap:12px}
-.voto-caja{border:1px solid var(--s-linea);border-radius:16px;padding:16px;display:grid;gap:12px;background:var(--s-campo)}
-.voto-caja h2{font-size:17px;margin:0}
-.voto-fila{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.voto-fila button{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--s-linea);background:var(--s-bg);color:var(--s-tx);cursor:pointer;font-weight:500}
-.voto-fila button[aria-pressed="true"]{background:var(--s-activo);color:var(--s-sobre);border-color:var(--s-activo)}
-.voto label{font-size:14px;color:var(--s-suave)}
-.voto textarea{width:100%;min-height:70px;border-radius:12px;border:1px solid var(--s-linea);background:var(--s-bg);color:var(--s-tx);padding:10px 12px;font:inherit;resize:vertical}
-.voto-est{font-size:14px;color:var(--s-suave);margin:0}
-.voto-cuenta{font-variant-numeric:tabular-nums;font-weight:600;color:var(--s-tx)}
-.notas{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.notas li{font-size:14px;border-top:1px solid var(--s-linea);padding-top:8px;overflow-wrap:anywhere}
-.notas b{font-weight:600}
+.sw-com{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--s-linea);background:var(--s-campo);color:var(--s-tx);cursor:pointer}
 `;
 
 const shellHtml = (ops) => `
 <header class="sw"><div class="sw-in">
   <div class="sw-t">Luca, dos estilos<small>Propuesta preliminar para opinar. El nombre es de trabajo.</small></div>
   <nav class="sw-tabs" aria-label="Opciones">${ops.map((d) => `<a href="#opcion-${d.slug}" data-tab="${d.slug}"><i style="background:${d.temas.claro.acento}" aria-hidden="true"></i>${d.opcion}</a>`).join('')}</nav>
+  <button type="button" class="sw-com" id="comentar" hidden>Comentar</button>
 </div></header>
-<section class="voto" aria-labelledby="voto-t"><div class="voto-caja">
-  <h2 id="voto-t">¿Con cuál te quedas?</h2>
-  <div class="voto-fila">${ops.map((d) => `<button type="button" id="voto-${d.slug}" data-voto="${d.slug}" aria-pressed="false">${d.opcion}</button>`).join('')}
-    <button type="button" id="voto-comentar" hidden>Comentar sobre la página</button></div>
-  <label for="voto-nota">Qué te gusta o qué cambiarías (opcional)</label>
-  <textarea id="voto-nota" maxlength="600" placeholder="Por ejemplo: me gusta el logo de la A, pero la B se siente más seria"></textarea>
-  <div class="voto-fila"><button type="button" id="voto-guardar">Guardar mi opinión</button><p class="voto-est" id="voto-est" aria-live="polite">Cargando votos…</p></div>
-  <ul class="notas" id="voto-notas"></ul>
-</div></section>`;
+`;
 
 const shellJs = `
 <script>
@@ -193,45 +174,10 @@ const shellJs = `
   };
   addEventListener('hashchange', muestra); muestra();
 
-  // Votos: un documento por persona en "votos/<id>"; todos leen, cada quien escribe el suyo.
-  const est = document.getElementById('voto-est'), nota = document.getElementById('voto-nota'), lista = document.getElementById('voto-notas');
-  const botones = [...document.querySelectorAll('[data-voto]')], guardar = document.getElementById('voto-guardar');
-  const nombres = { a: 'Opción A', b: 'Opción B' };
-  let elegido = null, db = null, user = null, miId = null, filas = [];
-  botones.forEach((b) => b.addEventListener('click', () => { elegido = b.dataset.voto; botones.forEach((x) => x.setAttribute('aria-pressed', String(x === b))); }));
-  const pinta = async () => {
-    const c = { a: 0, b: 0 };
-    filas.forEach((f) => { if (c[f.opcion] !== undefined) c[f.opcion]++; });
-    est.innerHTML = 'Votos: <span class="voto-cuenta">A ' + c.a + ' · B ' + c.b + '</span>';
-    const conNota = filas.filter((f) => f.nota);
-    const ps = user ? await user.profiles(conNota.map((f) => f.id)) : {};
-    lista.replaceChildren(...conNota.map((f) => { const li = document.createElement('li'); const b = document.createElement('b'); b.textContent = ((ps[f.id] && ps[f.id].name) || 'Alguien') + ' · ' + (nombres[f.opcion] || 'sin voto') + ': '; li.append(b, document.createTextNode(f.nota)); return li; }));
-  };
-  (async () => {
-    const espera = setTimeout(() => { est.textContent = 'Los votos no cargan todavía. Puedes comentar la página.'; }, 10000);
-    db = await use('db'); user = await use('user');
-    if (!db || !user) { clearTimeout(espera); est.textContent = 'Para votar tienes que abrir la página con tu cuenta. Puedes comentarla igual.'; guardar.disabled = true; return; }
-    miId = await user.id();
-    db.collection('votos').onSnapshot((s) => {
-      if (!s.metadata.fromCache) clearTimeout(espera);
-      filas = s.docs.map((d) => ({ id: d.id, ...d.data() }));
-      const mio = filas.find((f) => f.id === miId);
-      if (mio && elegido === null) { elegido = mio.opcion; botones.forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.voto === elegido))); if (!nota.value) nota.value = mio.nota || ''; }
-      pinta();
-    }, () => { clearTimeout(espera); est.textContent = 'Los votos no están disponibles ahora.'; });
-  })();
-  guardar.addEventListener('click', async () => {
-    if (!db || !miId) return;
-    if (!elegido) { est.textContent = 'Escoge la opción A o la B antes de guardar.'; return; }
-    guardar.disabled = true;
-    try { await db.doc('votos/' + miId).set({ opcion: elegido, nota: nota.value.trim().slice(0, 600) }); est.textContent = 'Guardado. Puedes cambiarlo cuando quieras.'; }
-    catch (e) { est.textContent = 'No se pudo guardar: pídele a Juanda acceso para participar en la página.'; }
-    guardar.disabled = false;
-  });
   // Comentarios: abre el compositor de comentarios del artifact sobre la opción que se está viendo
   (async () => {
     const com = await use('comments'); if (!com) return;
-    const b = document.getElementById('voto-comentar'); b.hidden = false;
+    const b = document.getElementById('comentar'); b.hidden = false;
     b.addEventListener('click', async () => { try { await com.openComposer({ element: ops.find((o) => !o.hidden) }); } catch (e) { b.hidden = true; } });
   })();
 })();
