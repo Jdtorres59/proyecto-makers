@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Biblioteca de Luca</title>
+<meta name="description" content="Personaje, crecimiento, portadas, medallas, objetos, escenas e íconos de Luca 1.0.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap">
+<style>
+:root{--bg:#F6EEDC;--papel:#FFFBF0;--tx:#2A2219;--sx:#5E4E3A;--ln:#2A2219;--ln2:#D9C8A6;--plato:#FFFBF0;--f:'Bricolage Grotesque',ui-rounded,system-ui,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1D1812;--papel:#2A2219;--tx:#F6EEDC;--sx:#C8B99C;--ln:#F6EEDC;--ln2:#45392A;--plato:#F3E7CF;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#1D1812;--papel:#2A2219;--tx:#F6EEDC;--sx:#C8B99C;--ln:#F6EEDC;--ln2:#45392A;--plato:#F3E7CF;color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font:400 16px/1.5 var(--f);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--tx);outline-offset:3px;border-radius:6px}
+header,section{max-width:1240px;margin:0 auto;padding:0 16px}
+header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-top:28px;padding-bottom:12px}
+header h1{font:800 clamp(30px,6vw,52px)/1 var(--f);letter-spacing:-.04em;flex:1;min-width:220px;font-variation-settings:'opsz' 96}
+header p{width:100%;color:var(--sx);max-width:62ch}
+.tema{display:flex;border:2.5px solid var(--ln);border-radius:8px;padding:2px}
+.tema button{padding:6px 12px;border-radius:5px;font-size:14px;font-weight:700;min-height:36px}
+.tema button[aria-pressed=true]{background:var(--tx);color:var(--bg)}
+section{padding-top:36px}
+h2{font:800 26px/1.1 var(--f);letter-spacing:-.03em;margin-bottom:14px;display:flex;align-items:baseline;gap:10px}
+h2 small{font-size:14px;font-weight:600;color:var(--sx);letter-spacing:0}
+.grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.grilla.portada{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.grilla.ui{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+figure{border:2.5px solid var(--ln);border-radius:10px;overflow:hidden;background:var(--papel);display:flex;flex-direction:column}
+figure>div{flex:1;display:grid;place-items:center;padding:12px;aspect-ratio:1;background:var(--plato)}
+.portada figure>div{padding:0;aspect-ratio:3/2}
+.portada img{width:100%;height:100%;object-fit:cover}
+figure img{max-width:100%;max-height:100%;object-fit:contain}
+.ui figure>div{background:var(--papel);padding:24px}
+.ui img{width:32px;height:32px}
+:root[data-theme=dark] .ui img{filter:invert(1) sepia(.2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .ui img{filter:invert(1) sepia(.2)}}
+.icono figure>div{padding:18px}
+.icono img{border-radius:22%}
+figcaption{font-size:12.5px;font-weight:600;padding:7px 10px 8px;border-top:2px solid var(--ln2);color:var(--sx);word-break:break-word}
+footer{max-width:1240px;margin:0 auto;padding:40px 16px 60px;color:var(--sx);font-size:13px}
+@media (max-width:520px){.grilla{grid-template-columns:repeat(2,1fr)}.grilla.ui{grid-template-columns:repeat(4,1fr)}.grilla.portada{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>Biblioteca de Luca</h1><div class="tema" role="group" aria-label="Tema"><button type="button" data-t="auto" aria-pressed="true">Auto</button><button type="button" data-t="light" aria-pressed="false">Claro</button><button type="button" data-t="dark" aria-pressed="false">Oscuro</button></div><p>Dirección Semilla en grabado. 25 piezas listas para la app, con los nombres con que se usan desde <code>apps/mobile/assets</code>.</p></header><section aria-labelledby="s-images"><h2 id="s-images">Ícono de app<small>1</small></h2><div class="grilla icono"><figure><div><img src="../../../apps/mobile/assets/images/icon.png" alt="" loading="lazy"></div><figcaption>icon</figcaption></figure></div></section><section aria-labelledby="s-luca"><h2 id="s-luca">Luca<small>3</small></h2><div class="grilla pose"><figure><div><img src="../../../apps/mobile/assets/luca/luca-saluda.webp" alt="" loading="lazy"></div><figcaption>luca-saluda</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/luca/luca-explica.webp" alt="" loading="lazy"></div><figcaption>luca-explica</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/luca/luca-celebra.webp" alt="" loading="lazy"></div><figcaption>luca-celebra</figcaption></figure></div></section><section aria-labelledby="s-objetos"><h2 id="s-objetos">Objetos<small>1</small></h2><div class="grilla pose"><figure><div><img src="../../../apps/mobile/assets/objetos/desprendible.webp" alt="" loading="lazy"></div><figcaption>desprendible</figcaption></figure></div></section><section aria-labelledby="s-iconos"><h2 id="s-iconos">Íconos de interfaz<small>20</small></h2><div class="grilla ui"><figure><div><img src="../../../apps/mobile/assets/iconos/aprender.svg" alt="" loading="lazy"></div><figcaption>aprender</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/atras.svg" alt="" loading="lazy"></div><figcaption>atras</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/calendario.svg" alt="" loading="lazy"></div><figcaption>calendario</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/camara.svg" alt="" loading="lazy"></div><figcaption>camara</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/campana.svg" alt="" loading="lazy"></div><figcaption>campana</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/candado.svg" alt="" loading="lazy"></div><figcaption>candado</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/cerrar.svg" alt="" loading="lazy"></div><figcaption>cerrar</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/check.svg" alt="" loading="lazy"></div><figcaption>check</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/chispa.svg" alt="" loading="lazy"></div><figcaption>chispa</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/documentos.svg" alt="" loading="lazy"></div><figcaption>documentos</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/editar.svg" alt="" loading="lazy"></div><figcaption>editar</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/eliminar.svg" alt="" loading="lazy"></div><figcaption>eliminar</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/enviar.svg" alt="" loading="lazy"></div><figcaption>enviar</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/flecha.svg" alt="" loading="lazy"></div><figcaption>flecha</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/info.svg" alt="" loading="lazy"></div><figcaption>info</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/inicio.svg" alt="" loading="lazy"></div><figcaption>inicio</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/lupa.svg" alt="" loading="lazy"></div><figcaption>lupa</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/mas.svg" alt="" loading="lazy"></div><figcaption>mas</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/subir.svg" alt="" loading="lazy"></div><figcaption>subir</figcaption></figure><figure><div><img src="../../../apps/mobile/assets/iconos/yo.svg" alt="" loading="lazy"></div><figcaption>yo</figcaption></figure></div></section><footer>Ilustraciones generadas para Luca 1.0. Datos y documentos de ejemplo ficticios.</footer><script>
+const r=document.documentElement,b=[...document.querySelectorAll('.tema button')];
+const pon=t=>{t==='auto'?r.removeAttribute('data-theme'):r.dataset.theme=t;b.forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.t===t)));try{localStorage.setItem('luca-tema',t)}catch(e){}};
+b.forEach(x=>x.addEventListener('click',()=>pon(x.dataset.t)));try{const t=localStorage.getItem('luca-tema');if(t)pon(t)}catch(e){}
+</script>
+</body>
+</html>
