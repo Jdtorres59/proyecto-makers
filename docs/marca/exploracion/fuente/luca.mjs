@@ -1,265 +1,263 @@
-// Dirección 2 · Luca (nombre de trabajo). Calidez y juego: maíz, crema y tinta verde.
-import { contrastes, icono, caso, lineas } from './comun.mjs';
+// Dirección · Luca (nombre de trabajo). Cálida y con juego: la moneda que se reparte.
+import { icono, caso, lineas, reparto, controles, cop } from './comun.mjs';
+
+const MAIZ = '#F2BE22', TINTA = '#1E291F', CREMA = '#FBF4E6';
 
 const temas = {
   claro: {
-    bg: '#FBF4E6', superficie: '#F3E3C4', texto: '#1E291F', suave: '#5A5242',
-    acento: '#F2BE22', sobreAcento: '#1E291F', acentoTexto: '#6B4C00',
-    alarma: '#B02A1C', linea: '#E3D2B0', foco: '#1E291F', control: '#8A7C62',
+    bg: CREMA, superficie: '#F3E3C4', texto: TINTA, suave: '#5A5242',
+    acento: MAIZ, sobreAcento: TINTA, acentoTexto: '#6B4C00',
+    alarma: '#B02A1C', linea: '#E3D2B0', foco: TINTA, control: '#8A7C62',
+    s1: TINTA, s2: MAIZ, s3: '#5B8A5C', sombra: TINTA,
   },
   oscuro: {
     bg: '#1B1812', superficie: '#2B261C', texto: '#F7EEDB', suave: '#BFB399',
-    acento: '#F2BE22', sobreAcento: '#1B1812', acentoTexto: '#F2BE22',
-    alarma: '#FF8B7B', linea: '#3E3628', foco: '#F2BE22', control: '#82765E',
+    acento: MAIZ, sobreAcento: '#1B1812', acentoTexto: MAIZ,
+    alarma: '#FF8B7B', linea: '#3E3628', foco: MAIZ, control: '#82765E',
+    s1: '#F7EEDB', s2: MAIZ, s3: '#86B886', sombra: '#8A6A0A',
   },
 };
 
 const bri = "'Bricolage Grotesque', system-ui, sans-serif";
 
-const marca = (t, h = 44) => `<svg viewBox="0 0 140 64" height="${h}" role="img" aria-label="luca, nombre de trabajo"><text x="0" y="46" font-family="'Bricolage Grotesque', system-ui, sans-serif" font-size="54" font-weight="800" letter-spacing="-2" style="font-variation-settings:'opsz' 96" fill="${t.texto}">luca</text><circle cx="122" cy="33" r="14" fill="${t.moneda || '#F2BE22'}" stroke="${t.texto}" stroke-width="3"/></svg>`;
-const simbolo = (t, h = 72) => `<svg viewBox="0 0 72 72" height="${h}" role="img" aria-label="Símbolo de luca"><circle cx="36" cy="36" r="33" fill="#F2BE22" stroke="#1E291F" stroke-width="4"/><text x="36" y="46" text-anchor="middle" font-family="'Bricolage Grotesque', system-ui, sans-serif" font-size="30" font-weight="800" letter-spacing="-1" fill="#1E291F">lu</text></svg>`;
+// Tajada: sector circular de a1 a a2 grados (0 = derecha, sentido horario)
+const pt = (cx, cy, r, a) => [cx + r * Math.cos((a * Math.PI) / 180), cy + r * Math.sin((a * Math.PI) / 180)].map((v) => v.toFixed(2)).join(' ');
+const tajada = (cx, cy, r, a1, a2) => `M${cx} ${cy}L${pt(cx, cy, r, a1)}A${r} ${r} 0 ${(a2 - a1) % 360 > 180 ? 1 : 0} 1 ${pt(cx, cy, r, a2)}Z`;
+// La moneda repartida: cuerpo con una tajada afuera, corrida hacia arriba a la derecha
+const moneda = (cuerpo, corte, { cx = 50, cy = 54, r = 40, a = 44, sep = 7 } = {}) => {
+  const a1 = -40 - a / 2, a2 = -40 + a / 2;
+  const dx = (sep * Math.cos((-40 * Math.PI) / 180)).toFixed(2), dy = (sep * Math.sin((-40 * Math.PI) / 180)).toFixed(2);
+  return `<path d="${tajada(cx, cy, r, a2, a1 + 360)}" fill="${cuerpo}"/><path d="${tajada(cx, cy, r, a1, a2)}" fill="${corte}" transform="translate(${dx} ${dy})"/>`;
+};
+
+const pie = (t) => `<svg class="pie" viewBox="0 0 100 100" aria-hidden="true">${moneda(t.texto, t.corte || MAIZ, { cy: 50, r: 47, a: 54, sep: 10 })}</svg>`;
+const wm = (t, h, antes, despues, label) => `<span class="wm" style="font-size:${h}px;color:${t.texto}" role="img" aria-label="${label}, nombre de trabajo">${antes}${pie(t)}${despues}</span>`;
+const wordmark = (t, h = 40) => wm(t, h, 'lu', 'a', 'luca');
+const simbolo = (t, h = 96) => `<svg viewBox="0 0 100 100" width="${h}" height="${h}" role="img" aria-label="Símbolo">${moneda(t.texto, t.corte || MAIZ)}</svg>`;
+const appIcon = (h = 112) => `<svg viewBox="0 0 120 120" width="${h}" height="${h}" role="img" aria-label="Ícono de la app"><rect width="120" height="120" rx="28" fill="${MAIZ}"/>${moneda(TINTA, CREMA, { cx: 58, cy: 64, r: 34, a: 48, sep: 7 })}</svg>`;
+
+// Patrón: monedas repartidas de muchas formas. Determinista para que el archivo no cambie en cada corrida.
+const patron = (cols, filas, paso, cuerpo, corte, fondo) => {
+  let s = '';
+  for (let f = 0; f < filas; f++) for (let c = 0; c < cols; c++) {
+    const k = (f * 7 + c * 5) % 6, cx = c * paso + paso / 2 + (f % 2) * (paso / 2), cy = f * paso + paso / 2;
+    const a = [40, 70, 100, 55, 130, 85][k];
+    s += moneda(cuerpo, corte, { cx, cy, r: paso * 0.27, a, sep: paso * 0.07 });
+  }
+  return `<svg viewBox="0 0 ${cols * paso} ${filas * paso}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="width:100%;height:100%;display:block;background:${fondo}">${s}</svg>`;
+};
+
+// Dona del reparto en SVG estático (para el tile de assets)
+const dona = (t) => {
+  const v = [44.4, 33.3, 22.3], col = [t.s1, t.s2, t.s3];
+  let a = -90, s = '';
+  v.forEach((p, i) => { const b = a + p * 3.6; s += `<path d="${tajada(80, 80, 70, a + 1.2, b - 1.2)}" fill="${col[i]}"/>`; a = b; });
+  return `<svg viewBox="0 0 160 160" width="170" aria-hidden="true">${s}<circle cx="80" cy="80" r="44" fill="${t.superficie}"/><text x="80" y="85" text-anchor="middle" font-family="Bricolage Grotesque" font-weight="800" font-size="15" fill="${t.texto}">$900.000</text></svg>`;
+};
+
+const tajadas = (hechos, total = 6) => `<span class="l-taj" role="img" aria-label="Paso ${hechos} de ${total}">${Array.from({ length: total }, (_, i) => `<svg viewBox="0 0 100 100" aria-hidden="true">${i < hechos ? moneda('currentColor', MAIZ, { r: 42 }) : `<circle cx="50" cy="54" r="40" fill="none" stroke="currentColor" stroke-width="8"/>`}</svg>`).join('')}</span>`;
+
+const filasReparto = () => reparto.filas.map((f, i) => `<li class="l-fila" data-fila data-valor="${f.valor}"><i class="l-pt" style="background:var(--${['suave', 's1', 's2', 's3'][i]})"></i><span class="l-nom"><b>${f.nombre}</b><small>${f.detalle}</small></span><span class="l-mon cifra" data-monto>${cop(f.valor)}</span>${controles(f, i, 'l')}</li>`).join('');
 
 export default {
   slug: 'luca',
-  numero: 2,
   nombre: 'Luca',
-  eje: 'temperatura (cálida y con juego)',
-  idea: 'Suena como hablamos de plata en Colombia: "eso cuesta cinco lucas". Cálida, redonda, con un amarillo maíz que se siente de aquí y una tinta verde oscura en vez de negro.',
-  esencia: [
-    ['Qué es', 'Una app que te explica tu plata con tus documentos, como te la explicaría una amiga que sabe'],
-    ['A quién', 'Jóvenes de 18 a 26 años: desde la mesada hasta el primer sueldo'],
-    ['Promesa', 'Entender tu plata sin sentirte bruto por no saber'],
-    ['Por qué el nombre', 'Una luca son mil pesos y "las lucas" es la plata en la calle, en la casa y en el trabajo. Es corto, de aquí y sin pretensión. Es una opción que ya tenía el equipo; no está decidida'],
-    ['Personalidad', 'Cálida, directa, de buen humor, paciente, muy de aquí'],
-    ['Lo que no somos', 'Juego de niños, banco, influenciador de trading, mamá que regaña'],
-  ],
-  grafias: {
-    intro: 'Se probaron cinco grafías del nombre que propuso el equipo, todas en la misma fuente del logo. Recomendación de esta dirección: **luca**, en minúscula.',
-    filas: [
-      ['luca', 'Recomendada', 'Se lee igual que se dice y no necesita explicación. Corta, cabe en el ícono. Es también el nombre de un integrante del equipo'],
-      ['lucas', 'Alternativa', 'Es la palabra completa de la calle ("cinco lucas"). Más clara como plata, menos como nombre propio'],
-      ['lucka', 'No', 'La k la vuelve marca extranjera y obliga a deletrearla; pierde lo de aquí'],
-      ['luk', 'No', 'Muy corta y se pierde el significado: ya no suena a plata. Se confunde con "look"'],
-      ['lucapp', 'No', 'El "app" es relleno; se lee mal (¿luca-pp?) y envejece rápido. Sirve como usuario en redes si "luca" está tomado'],
-    ],
-  },
-  logo: {
-    texto: [
-      '**Marca denominativa:** `luca` en Bricolage Grotesque 800, minúscula y apretada, con una moneda maíz al final con borde de tinta: una luca, una moneda.',
-      '**Símbolo:** la moneda con "lu". Ícono de app, avatar, sello en los planes guardados.',
-      '**Área de respeto:** el diámetro de la moneda. **Tamaño mínimo:** 88 px de ancho; símbolo de 24 px.',
-    ],
-    versiones: [
-      ['Positivo', 'Tinta `#1E291F`', 'Moneda maíz con borde tinta', 'Crema y claros'],
-      ['Negativo', 'Crema `#F7EEDB`', 'Moneda maíz con borde crema', 'Tierra y oscuros'],
-      ['Sobre maíz', 'Tinta', 'Moneda crema con borde tinta', 'Bloques maíz'],
-    ],
-    incorrectos: 'quitar el borde de la moneda, cambiar el maíz por dorado metálico, usar mayúsculas, inclinar el logo.',
-    svg: (t) => marca(t, 56),
-    simbolo: (t) => simbolo(t, 80),
+  bajada: 'Propuesta preliminar. "Luca" es un nombre de trabajo, no una decisión.',
+  temas,
+  fuentesUrl: 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap',
+  fuenteUI: bri,
+  fuenteDisplay: bri,
+  pesoDisplay: 800,
+  tracking: '-.035em',
+  radio: 20,
+  marcador: `background:conic-gradient(from 20deg, transparent 0 40deg, var(--texto) 40deg);border-radius:50%`,
+  wordmark,
+  simbolo,
+  appIcon,
+  sobre: { bg: MAIZ, texto: TINTA, corte: CREMA, nombre: 'Sobre maíz' },
+  enUso: {
+    titulo: 'Nombre en uso',
+    items: [['luca', wordmark(temas.claro, 52)], ['luk', `<span class="wm" style="font-size:52px;color:${TINTA}" role="img" aria-label="luk, nombre de trabajo">luk${pie(temas.claro)}</span>`], ['lucapp', wm(temas.claro, 52, 'lu', 'app', 'lucapp')]]
+      .map(([n, w]) => ({ nombre: n, bg: CREMA, tx: TINTA, html: `<span class="l-uso">${w}<span class="l-home">${appIcon(64)}<span>${n}</span></span></span>` })),
   },
   colores: [
-    { hex: '#F2BE22', nombre: 'Maíz', uso: 'Acento: botón principal, bloque del número que importa, moneda del logo. Nunca como texto sobre crema' },
-    { hex: '#FBF4E6', nombre: 'Crema', uso: 'Fondo claro' },
-    { hex: '#F3E3C4', nombre: 'Arepa', uso: 'Superficies y tarjetas' },
-    { hex: '#1E291F', nombre: 'Tinta monte', uso: 'Texto y bordes en claro. Verde casi negro, para que el amarillo no se vuelva infantil' },
-    { hex: '#1B1812', nombre: 'Tierra', uso: 'Fondo oscuro, café muy oscuro' },
-    { hex: '#6B4C00', nombre: 'Miel', uso: 'El maíz cuando tiene que ser texto en claro (enlaces, cifras de apoyo)' },
-    { hex: '#B02A1C', nombre: 'Ají', uso: 'Alarma, solo para lo que cuesta plata. En oscuro: `#FF8B7B`' },
+    { nombre: 'Maíz', hex: MAIZ },
+    { nombre: 'Tinta monte', hex: TINTA },
+    { nombre: 'Crema', hex: CREMA },
+    { nombre: 'Arepa', hex: '#F3E3C4' },
+    { nombre: 'Tierra', hex: '#1B1812' },
+    { nombre: 'Miel', hex: '#6B4C00' },
+    { nombre: 'Hoja', hex: '#5B8A5C' },
+    { nombre: 'Ají', hex: '#B02A1C' },
   ],
-  reglasColor: [
-    'El maíz es superficie, no texto, en el tema claro. Como texto se usa miel.',
-    'Bordes de 2 px en tinta y sombra dura de 3 px hacia abajo: es la marca, pero solo en lo que se toca (botones y la tarjeta principal).',
-    'El ají no aparece en celebraciones ni decoración. Con temas de deuda, la calidez se baja: sin moneda, sin bromas.',
-  ],
-  temas,
-  contrastes,
-  fuentesUrl: 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap',
-  fuenteCuerpo: bri,
-  fuenteDisplay: bri,
-  pesoTitular: 800,
-  cssBrandbook: 'h1,h2{letter-spacing:-.03em}',
   tipografia: [
-    { rol: 'Cifras y titulares', familia: 'Bricolage Grotesque 800, tamaño óptico grande', url: 'https://fonts.google.com/specimen/Bricolage+Grotesque', pesos: '700, 800', caracter: 'Grotesca con carácter: terminaciones con tinta, un poco irregular, cálida. A tamaño grande tiene personalidad sin ser caricatura.', muestra: '$900.000', css: `font-family:${bri};font-size:68px;font-weight:800;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums` },
-    { rol: 'Texto e interfaz', familia: 'Bricolage Grotesque, tamaño óptico pequeño', url: 'https://fonts.google.com/specimen/Bricolage+Grotesque', pesos: '400, 500, 600', caracter: 'La misma familia a tamaño óptico de texto se vuelve sobria y legible. Una sola fuente para todo: menos peso de descarga.', muestra: 'Va a tu EPS y te da derecho a citas.', css: `font-family:${bri};font-size:20px;font-weight:400;font-variation-settings:'opsz' 14` },
-    { rol: 'Etiquetas y pastillas', familia: 'Bricolage Grotesque condensada', url: 'https://fonts.google.com/specimen/Bricolage+Grotesque', pesos: '600, ancho 80', caracter: 'Para fechas en pastilla y estados. Solo en tamaño pequeño.', muestra: '20 DIC · PLAN PENDIENTE', css: `font-family:${bri};font-size:16px;font-weight:600;font-stretch:80%;letter-spacing:.02em` },
+    { familia: 'Bricolage Grotesque 800', rol: 'Cifras y titulares', muestra: '$900.000', css: `font-family:${bri};font-weight:800;font-size:clamp(56px,10vw,104px);letter-spacing:-.05em;line-height:.95;font-variation-settings:'opsz' 96` },
+    { familia: 'Bricolage Grotesque 800', rol: 'Titulares', muestra: 'Tu plata, en tu idioma.', css: `font-family:${bri};font-weight:800;font-size:clamp(30px,5vw,44px);letter-spacing:-.035em;line-height:1.05;font-variation-settings:'opsz' 96` },
+    { familia: 'Bricolage Grotesque 400 y 600', rol: 'Texto e interfaz', muestra: 'Va a tu EPS y es lo que te da derecho a citas, exámenes y urgencias.', css: `font-family:${bri};font-size:20px;line-height:1.45;max-width:36ch;font-variation-settings:'opsz' 14` },
+    { familia: 'Bricolage Grotesque condensada', rol: 'Fechas y estados', muestra: '20 dic · Plan listo', css: `font-family:${bri};font-weight:600;font-stretch:78%;font-size:22px` },
   ],
-  notasTipo: [
-    'Una sola familia variable, gratuita (SIL Open Font), en Google Fonts.',
-    'Cifras con `tabular-nums` y formato $1.234.567.',
-    'En deuda y cobros se usa el peso 600, no el 800: menos grito.',
+  assets: [
+    { nombre: 'Patrón de repartos', ancho: true, fondo: MAIZ, color: TINTA, html: `<div style="width:100%;height:220px;border-radius:12px;overflow:hidden">${patron(14, 4, 60, CREMA, TINTA, MAIZ)}</div>` },
+    { nombre: 'Patrón de repartos, oscuro', ancho: true, fondo: '#1B1812', color: '#F7EEDB', html: `<div style="width:100%;height:160px;border-radius:12px;overflow:hidden">${patron(18, 3, 60, '#3E3628', MAIZ, '#1B1812')}</div>` },
+    { nombre: 'Reparto', html: dona(temas.claro) },
+    { nombre: 'Progreso en tajadas', html: `<span style="color:${TINTA};font-size:28px">${tajadas(4)}</span>` },
+    { nombre: 'Botones', html: `<span style="display:grid;gap:12px;width:100%;max-width:240px"><span class="l-btn pri" style="--sombra:${TINTA}">Armemos el plan</span><span class="l-btn" style="--sombra:${TINTA}">Preguntar</span></span>` },
+    { nombre: 'Pastillas', html: `<span style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><span class="l-pas">20 dic</span><span class="l-pas lleno">Plan listo</span><span class="l-pas">Te cuento</span></span>` },
   ],
-  imagen: [
-    '**Fotografía:** real y colombiana, con color: buses, tiendas de barrio, la cocina de la casa, el celular en la mano. Gente de 18 a 27 años que se parezca a quien usa la app. Sin fotos de banco.',
-    '**Ilustración:** no se usa. El juego lo ponen la moneda, el color y el movimiento, no muñecos.',
-    '**Iconografía:** Phosphor Bold, redondeada, en tinta. Solo donde aclara.',
-    '**Movimiento:** con resorte suave: la moneda que cae en el reparto, la tarjeta que se levanta al tocarla. Nunca en pantallas de deuda.',
-  ],
-  voz: {
-    intro: 'Hablamos de **tú**, como hablan los parceros que saben de plata: directo, con palabras de aquí y buen humor. El humor se apaga cuando el tema es deuda o un cobro.',
-    siNo: [
-      ['Te cae la prima en 35 días', 'Recuerda tu pago de prima de servicios'],
-      ['Esto es lo que te descuentan y por qué', 'Conceptos de nómina'],
-      ['Tú decides; yo te muestro qué pasa con cada opción', 'Lo correcto es ahorrar'],
-      ['Casi. Pasa mucho', '¡Ups! Respuesta incorrecta'],
-      ['Esta tarjeta te cobra $86.400 al mes de intereses', 'Estás pagando una fortuna, ¡cuidado!'],
-    ],
-    frases: [
-      ['Entrada', 'Tu plata, en tu idioma.'],
-      ['Inicio', 'Quiubo, Valentina. En 35 días te cae la prima.'],
-      ['Lección', '¿Cuánto crees que te cae de prima?'],
-      ['Revelación', 'Te quedaste $400.000 por debajo. Normal: llevas 90 días, no el semestre entero.'],
-      ['Desprendible', 'Esto va para tu EPS. Es lo que te da derecho a citas y urgencias.'],
-      ['Error de lectura', 'La foto salió borrosa en la fecha. ¿Me la escribes tú?'],
-    ],
-    evitamos: 'billete, camello en exceso, ¡ups!, crack, hack, haz que tu dinero trabaje, libertad financiera.',
-  },
-  mensajes: {
-    taglines: ['Tus lucas, clarito.', 'Entiende tu plata sin pena.'],
-    valor: 'Te explica tu desprendible, tu prima y tu tarjeta con tus números, en el idioma en que hablas de plata.',
-    apoyo: [
-      'Con tus números, no con ejemplos gringos.',
-      'Sin vender tarjetas ni créditos.',
-      'Te escribe cuando hay plata de por medio, no todos los días.',
-      'Preguntar no da pena aquí.',
-    ],
-    cta: 'Muéstrame mi desprendible.',
-    noPrometemos: 'que vas a ahorrar X % sin esfuerzo, rentabilidades, "salir de deudas en 30 días".',
-  },
-  aQuien: 'Andrés y la Valentina de primer mes: 18 a 23 años, que se acercan por curiosidad y se van si algo suena a banco.',
-  riesgo: 'El juego puede leerse infantil o poco confiable cuando la persona sube un documento con datos sensibles, y le puede caer mal a alguien como Santiago que ya debe plata. Exige una regla clara para bajar la calidez en deuda.',
-  riesgoNombre: 'Un integrante del equipo se llama Luca: puede leerse como el nombre de una persona y no del producto, y conviene que él esté de acuerdo. Luca es además el título de una película de Pixar (2021) y un nombre propio común; no se ha revisado la SIC ni las tiendas de apps.',
-  costo: 'Medio. Una sola fuente, pero los bordes, sombras duras y movimientos con resorte piden componentes propios en React Native.',
-
-  cssMaquetas: `
-.tel{font-family:${bri};font-variation-settings:'opsz' 14}
-.pant{flex:1;display:flex;flex-direction:column;padding:8px 20px 22px}
-.p-t{font-weight:800;letter-spacing:-.035em;line-height:1.02;font-variation-settings:'opsz' 96;text-wrap:balance}
-.p-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;border-radius:999px;font:600 17px/1 ${bri};border:2px solid var(--texto);background:var(--bg);color:var(--texto);box-shadow:0 3px 0 var(--texto);transition:transform .12s cubic-bezier(.23,1,.32,1),box-shadow .12s}
-.p-btn:active{transform:translateY(3px);box-shadow:0 0 0 var(--texto)}
-.p-btn.pri{background:var(--acento);color:var(--sobreAcento);border-color:var(--sobreAcento);box-shadow:0 3px 0 var(--sobreAcento)}
-.tel[data-tema=oscuro] .p-btn.pri{border-color:var(--acento);box-shadow:0 3px 0 #8A6A0A}
-.p-pas{display:inline-block;font-size:13px;font-weight:600;font-stretch:80%;letter-spacing:.02em;border:1.5px solid var(--texto);border-radius:999px;padding:3px 10px}
+  css: `
+.wm{font-family:${bri};font-weight:800;letter-spacing:-.045em;line-height:1;font-variation-settings:'opsz' 96;white-space:nowrap;display:inline-flex;align-items:baseline}
+.wm .pie{width:.55em;height:.55em;margin:0 .05em 0 .02em;align-self:baseline;overflow:visible}
+.l-uso{display:grid;justify-items:center;gap:22px}
+.l-home{display:grid;justify-items:center;gap:8px;font:500 15px system-ui,sans-serif}
+.l-home svg{border-radius:18px}
+.l-taj{display:inline-flex;gap:.3em}
+.l-taj svg{width:1em;height:1em}
+.l-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:54px;border-radius:999px;font:600 17px/1 ${bri};border:2px solid var(--texto);background:var(--bg);color:var(--texto);box-shadow:0 3px 0 var(--sombra);transition:transform .12s cubic-bezier(.23,1,.32,1),box-shadow .12s;text-decoration:none}
+.l-btn:active{transform:translateY(3px);box-shadow:0 0 0 var(--sombra)}
+.l-btn.pri{background:var(--acento);color:var(--sobreAcento);border-color:var(--sobreAcento)}
+.tel[data-tema=oscuro] .l-btn.pri{border-color:var(--acento)}
+.l-pas{display:inline-flex;align-items:center;font:600 14px/1 ${bri};font-stretch:78%;border:1.5px solid currentColor;border-radius:999px;padding:6px 11px}
+.l-pas.lleno{background:${MAIZ};color:${TINTA};border-color:${MAIZ}}
+.l-t{font-family:${bri};font-weight:800;letter-spacing:-.04em;line-height:1;font-variation-settings:'opsz' 96;text-wrap:balance;margin:0}
+.pant{flex:1;display:flex;flex-direction:column;padding:6px 20px 24px}
 /* entrada */
-.p-foto{margin:10px 0 0;flex:1;min-height:260px;border-radius:28px;background:var(--acento);color:var(--sobreAcento);display:flex;flex-direction:column;justify-content:space-between;padding:20px;border:2px solid var(--texto)}
-.p-foto .ph{border:2px dashed currentColor;border-radius:18px;padding:14px;font-size:13px;line-height:1.4;opacity:.9}
-.p-ent h2{font-size:44px;margin:22px 0 8px}
-.p-ent p{margin:0 0 20px;font-size:16px;color:var(--suave);max-width:32ch}
-.p-ent .acc{display:grid;gap:12px}
-.p-ent .corr{background:none;border:0;color:var(--texto);font:600 16px ${bri};text-decoration:underline;text-underline-offset:4px;min-height:44px}
+.l-bloque{position:relative;flex:1;min-height:330px;border-radius:32px;overflow:hidden;border:2px solid var(--texto);margin-top:8px}
+.tel[data-tema=oscuro] .l-bloque{border-color:${MAIZ}}
+.l-marca{margin:10px 0 14px}
+.l-ent h2{font-size:44px;margin:24px 0 10px}
+.l-ent p{margin:0 0 20px;font-size:16px;color:var(--suave);max-width:32ch}
+.l-acc{display:grid;gap:12px}
+.l-link{background:none;border:0;font:600 16px ${bri};text-decoration:underline;text-underline-offset:4px;min-height:44px}
 /* inicio */
-.p-ini h2{font-size:30px;margin:12px 0 16px}
-.p-card{background:var(--acento);color:var(--sobreAcento);border:2px solid var(--texto);border-radius:28px;padding:20px;box-shadow:0 4px 0 var(--texto)}
-.tel[data-tema=oscuro] .p-card{border-color:var(--acento);box-shadow:none}
-.p-card .n{font-size:66px;font-weight:800;letter-spacing:-.045em;line-height:1;margin:10px 0 4px;font-variation-settings:'opsz' 96}
-.p-card p{margin:0 0 16px;font-size:15px}
-.p-card .p-btn{background:var(--sobreAcento);color:var(--acento);border-color:var(--sobreAcento);box-shadow:none;min-height:50px}
-.p-h3{font-size:18px;font-weight:700;margin:24px 0 10px}
-.p-items{display:grid;gap:10px;list-style:none;margin:0;padding:0}
-.p-items li{display:flex;align-items:center;gap:12px;background:var(--superficie);border-radius:20px;padding:14px 16px;font-size:15px}
-.p-items .m{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums}
-.p-cuenta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 auto}
-.p-cuenta div{border:2px solid var(--linea);border-radius:20px;padding:12px 14px;font-size:14px}
-.p-cuenta b{display:block;font-size:30px;font-weight:800;line-height:1.1}
-.p-dock{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:18px}
-.p-dock .p-btn{min-height:56px}
-.p-dock .sec{width:auto;padding:0 22px}
+.l-cab{display:flex;justify-content:space-between;align-items:center;margin:10px 0 18px}
+.l-cab h2{font-size:30px}
+.l-av{width:44px;height:44px;border-radius:50%;border:2px solid var(--texto);display:grid;place-items:center;font:800 18px ${bri}}
+.l-card{background:${MAIZ};color:${TINTA};border:2px solid var(--texto);border-radius:30px;padding:20px 20px 18px;box-shadow:0 4px 0 var(--sombra)}
+.tel[data-tema=oscuro] .l-card{border-color:${MAIZ}}
+.l-card .l-pas{border-color:${TINTA}}
+.l-card .n{font-family:${bri};font-weight:800;font-size:72px;letter-spacing:-.055em;line-height:1;margin:14px 0 6px;font-variation-settings:'opsz' 96}
+.l-card p{margin:0 0 16px;font-size:15px}
+.l-card .l-btn{background:${TINTA};color:${MAIZ};border-color:${TINTA};box-shadow:none;min-height:50px}
+.l-h3{font:700 17px ${bri};margin:24px 0 10px}
+.l-lista{list-style:none;margin:0 0 auto;padding:0;display:grid;gap:8px}
+.l-lista li{display:flex;align-items:center;gap:12px;background:var(--superficie);border-radius:20px;padding:13px 14px;font-size:15px}
+.l-lista .m{margin-left:auto;font-weight:700}
+.l-dock{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:18px}
+.l-dock .l-btn:last-child{width:auto;padding:0 22px}
 /* lección */
-.p-lec .top{display:flex;align-items:center;gap:12px;margin-top:8px}
-.p-lec .x{width:44px;height:44px;border-radius:50%;border:2px solid var(--texto);background:none;color:var(--texto);font:600 18px ${bri}}
-.p-lec .pr{flex:1;height:12px;border-radius:999px;border:2px solid var(--texto);overflow:hidden}
-.p-lec .pr i{display:block;height:100%;width:33%;background:var(--acento)}
-.p-lec h2{font-size:38px;margin:28px 0 8px}
-.p-lec .ctx{margin:0;color:var(--suave);font-size:16px}
-.p-ap{margin:auto 0 18px;text-align:center}
-.p-ap .n{font-size:80px;font-weight:800;letter-spacing:-.05em;line-height:1;margin:0 0 18px;font-variation-settings:'opsz' 96;transition:font-size .3s cubic-bezier(.23,1,.32,1)}
-.p-lec input[type=range]{-webkit-appearance:none;appearance:none;height:44px;background:transparent}
-.p-lec input[type=range]::-webkit-slider-runnable-track{height:16px;border-radius:999px;background:var(--superficie);border:2px solid var(--texto)}
-.p-lec input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:40px;height:40px;margin-top:-14px;border-radius:50%;background:var(--acento);border:3px solid var(--texto)}
-.p-lec input[type=range]::-moz-range-track{height:12px;border-radius:999px;background:var(--superficie);border:2px solid var(--texto)}
-.p-lec input[type=range]::-moz-range-thumb{width:34px;height:34px;border-radius:50%;background:var(--acento);border:3px solid var(--texto)}
-.p-esc{display:flex;justify-content:space-between;font-size:13px;color:var(--suave)}
-.leccion[data-revelado] .p-ap .n{font-size:28px;color:var(--suave)}
-.leccion[data-revelado] .p-ap label,.leccion[data-revelado] .p-esc{display:none}
-.p-res{background:var(--superficie);border-radius:28px;padding:20px;margin:0 0 16px}
-.p-res .n{font-size:76px;font-weight:800;letter-spacing:-.05em;line-height:1;margin:6px 0 10px;font-variation-settings:'opsz' 96}
-.p-res p{margin:0 0 8px;font-size:16px}
-.p-res .por{font-size:15px;color:var(--suave)}
+.l-top{display:flex;align-items:center;gap:14px;margin-top:8px}
+.l-x{width:44px;height:44px;border-radius:50%;border:2px solid var(--texto);background:none;font-size:18px}
+.l-top .l-taj{font-size:22px;color:var(--texto)}
+.l-lec h2{font-size:38px;margin:30px 0 10px}
+.l-lec .ctx{margin:0;color:var(--suave);font-size:16px}
+.l-datos{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.l-ap{margin:auto 0 18px;text-align:center}
+.l-ap .n{font-family:${bri};font-weight:800;font-size:82px;letter-spacing:-.06em;line-height:1;margin:0 0 20px;font-variation-settings:'opsz' 96;transition:font-size .3s cubic-bezier(.23,1,.32,1),color .3s}
+.l-lec input[type=range]{-webkit-appearance:none;appearance:none;height:48px;background:transparent}
+.l-lec input[type=range]::-webkit-slider-runnable-track{height:16px;border-radius:999px;background:var(--superficie);border:2px solid var(--texto)}
+.l-lec input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:42px;height:42px;margin-top:-15px;border-radius:50%;background:${MAIZ};border:3px solid var(--texto)}
+.l-lec input[type=range]::-moz-range-track{height:12px;border-radius:999px;background:var(--superficie);border:2px solid var(--texto)}
+.l-lec input[type=range]::-moz-range-thumb{width:36px;height:36px;border-radius:50%;background:${MAIZ};border:3px solid var(--texto)}
+.l-esc{display:flex;justify-content:space-between;font-size:13px;color:var(--suave)}
+.leccion[data-revelado] .l-ap .n{font-size:28px;color:var(--suave)}
+.leccion[data-revelado] .l-ap label,.leccion[data-revelado] .l-esc{display:none}
+.l-res{background:var(--superficie);border-radius:28px;padding:20px;margin:0 0 16px}
+.l-res .n{font-family:${bri};font-weight:800;font-size:78px;letter-spacing:-.06em;line-height:1;margin:6px 0 10px;font-variation-settings:'opsz' 96}
+.l-res p{margin:0 0 8px;font-size:16px}
+.l-res .por{font-size:15px;color:var(--suave)}
 /* documento */
-.p-doc h2{font-size:32px;margin:12px 0 4px}
-.p-doc .emp{margin:0 0 16px;font-size:14px;color:var(--suave)}
-.p-doc details{background:var(--superficie);border-radius:22px;margin-bottom:10px;border:2px solid transparent}
-.p-doc details[open]{border-color:var(--texto)}
-.p-doc summary{list-style:none;display:flex;align-items:center;gap:10px;padding:16px 18px;font-size:16px;font-weight:600;min-height:56px}
-.p-doc summary::-webkit-details-marker{display:none}
-.p-doc summary .v{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700}
-.p-doc summary .d{font-weight:500;color:var(--suave);font-size:14px}
-.p-doc details p{margin:0 14px 14px;background:var(--bg);border-radius:16px 16px 16px 4px;padding:12px 14px;font-size:15px;line-height:1.45}
-.p-doc .tot{background:var(--acento);color:var(--sobreAcento)}
-.p-doc .tot summary .v{font-size:24px;font-weight:800}
-.p-doc .tot p{color:var(--texto)}
-.p-doc .pie{margin-top:auto;display:grid;gap:12px;padding-top:16px}
+.l-doc h2{font-size:34px;margin:12px 0 10px}
+.l-doc .meta{display:flex;gap:8px;margin-bottom:16px;font-size:14px;color:var(--suave)}
+.l-doc details{background:var(--superficie);border-radius:22px;margin-bottom:10px;border:2px solid transparent}
+.l-doc details[open]{border-color:var(--texto)}
+.l-doc summary{list-style:none;display:flex;align-items:center;gap:10px;padding:16px 18px;font-size:16px;font-weight:600;min-height:56px;cursor:pointer}
+.l-doc summary::-webkit-details-marker{display:none}
+.l-doc summary .v{margin-left:auto;font-weight:700}
+.l-doc summary .d{font-weight:500;color:var(--suave);font-size:14px}
+.l-doc details p{margin:0 14px 14px;background:var(--bg);border-radius:18px 18px 18px 4px;padding:12px 14px;font-size:15px;line-height:1.45}
+.l-doc .tot{background:${MAIZ};color:${TINTA}}
+.l-doc .tot summary .v{font-size:26px;font-weight:800;letter-spacing:-.03em}
+.l-doc .tot p{color:var(--texto)}
+.l-doc .pie2{margin-top:auto;padding-top:16px}
+/* reparto */
+.l-rep h2{font-size:34px;margin:12px 0 4px}
+.l-rep .sub{margin:0;color:var(--suave)}
+.l-dona{position:relative;width:196px;aspect-ratio:1;border-radius:50%;margin:20px auto 16px;background:conic-gradient(var(--suave) 0 calc(var(--c1)*1%),var(--s1) 0 calc(var(--c2)*1%),var(--s2) 0 calc(var(--c3)*1%),var(--s3) 0 calc(var(--c4)*1%),var(--linea) 0);transition:background .2s}
+.l-dona::after{content:"";position:absolute;inset:44px;border-radius:50%;background:var(--bg)}
+.l-dona span{position:absolute;inset:0;display:grid;place-content:center;text-align:center;z-index:1;font-size:13px;color:var(--suave)}
+.l-dona b{display:block;font:800 26px/1 ${bri};letter-spacing:-.04em;color:var(--texto);margin-top:4px}
+.l-regla{font-size:14px;background:var(--superficie);border-radius:16px;padding:10px 14px;margin:0 0 12px}
+.l-filas{list-style:none;margin:0 0 auto;padding:0}
+.l-fila{display:grid;grid-template-columns:14px 1fr auto auto;align-items:center;gap:10px;padding:9px 0;border-bottom:1.5px solid var(--linea)}
+.l-pt{width:14px;height:14px;border-radius:50%}
+.l-nom b{display:block;font-weight:600}
+.l-nom small{color:var(--suave);font-size:13px}
+.l-mon{font-weight:700}
+.l-ctl{display:flex;gap:6px}
+.l-ctl button{width:44px;height:44px;border-radius:50%;border:2px solid var(--texto);background:var(--bg);font-size:20px;font-weight:700}
+.l-fija{font-size:13px;color:var(--suave);grid-column:3/5;justify-self:end}
+.l-fila:first-child .l-mon{display:none}
+.l-rep .l-btn{margin-top:14px}
 `,
   pantallas: {
-    entrada: (tema) => `<div class="pant p-ent">
-      <div class="p-foto">
-        <div>${marca({ texto: temas.claro.texto, moneda: temas.claro.bg }, 34)}</div>
-        <div class="ph" role="img" aria-label="Espacio para foto pendiente">Foto pendiente: persona real de unos 23 años mirando su celular en un bus. Sin foto de banco.</div>
-      </div>
-      <h2 class="p-t">Tu plata, en tu idioma.</h2>
+    entrada: (tema) => `<div class="pant l-ent">
+      <div class="l-marca">${wordmark(temas[tema], 40)}</div>
+      <div class="l-bloque">${patron(6, 7, 60, CREMA, TINTA, MAIZ)}</div>
+      <h2 class="l-t">Tu plata, en tu idioma.</h2>
       <p>Te explico tu desprendible, tu prima y tu tarjeta con tus números. Sin vender nada.</p>
-      <div class="acc">
-        <button class="p-btn" type="button">${icono('google', temas[tema].texto)}Seguir con Google</button>
-        <button class="p-btn" type="button">${icono('apple', temas[tema].texto)}Seguir con Apple</button>
-        <button class="corr" type="button">Usar mi correo</button>
+      <div class="l-acc">
+        <button class="l-btn" type="button">${icono('google', temas[tema].texto)}Seguir con Google</button>
+        <button class="l-btn" type="button">${icono('apple', temas[tema].texto)}Seguir con Apple</button>
+        <button class="l-link" type="button">Usar mi correo</button>
       </div>
     </div>`,
-    inicio: () => `<div class="pant p-ini">
-      <h2 class="p-t">Quiubo, ${caso.nombre}.</h2>
-      <section class="p-card" aria-label="Lo próximo">
-        <span class="p-pas">En ${caso.diasPrima} días</span>
+    inicio: () => `<div class="pant l-ini">
+      <div class="l-cab"><h2 class="l-t">Quiubo, ${caso.nombre}.</h2><span class="l-av" aria-hidden="true">V</span></div>
+      <section class="l-card" aria-label="Lo próximo">
+        <span class="l-pas">En ${caso.diasPrima} días · 20 dic</span>
         <p class="n cifra">${caso.prima}</p>
         <p>te cae de prima, más o menos. ¿Ya sabes qué vas a hacer con ella?</p>
-        <button class="p-btn" type="button">Armemos el plan</button>
+        <button class="l-btn" type="button">Armemos el plan</button>
       </section>
-      <h3 class="p-h3">Lo que viene</h3>
-      <ul class="p-items">
-        <li><span class="p-pas">30 nov</span>Te pagan<span class="m cifra">${caso.neto}</span></li>
-        <li><span class="p-pas">31 ene</span>Intereses de cesantías<span class="m">Te cuento</span></li>
+      <h3 class="l-h3">Lo que viene</h3>
+      <ul class="l-lista">
+        <li><span class="l-pas">30 nov</span>Te pagan<span class="m cifra">${caso.neto}</span></li>
+        <li><span class="l-pas">31 ene</span>Intereses de cesantías<span class="m">Te cuento</span></li>
+        <li><span class="l-pas lleno">Listo</span>Tu desprendible de octubre</li>
       </ul>
-      <div class="p-cuenta" aria-label="Lo que ya tienes claro">
-        <div><b>1</b>documento que ya entiendes</div>
-        <div><b>0</b>decisiones tomadas</div>
-      </div>
-      <div class="p-dock">
-        <button class="p-btn pri" type="button">Me llegó esto</button>
-        <button class="p-btn sec" type="button">Preguntar</button>
-      </div>
+      <div class="l-dock"><button class="l-btn pri" type="button">Me llegó esto</button><button class="l-btn" type="button">Preguntar</button></div>
     </div>`,
-    leccion: () => `<div class="pant p-lec leccion">
-      <div class="top"><button class="x" type="button" aria-label="Salir de la lección">✕</button><div class="pr" role="progressbar" aria-label="Paso 2 de 6" aria-valuemin="1" aria-valuemax="6" aria-valuenow="2"><i></i></div></div>
-      <h2 class="p-t">¿Cuánto crees que te cae de prima?</h2>
-      <p class="ctx">Entraste el 1 de octubre y ganas ${caso.salario}. Apuesta antes de ver la cuenta.</p>
-      <div class="p-ap">
+    leccion: () => `<div class="pant l-lec leccion">
+      <div class="l-top"><button class="l-x" type="button" aria-label="Salir de la lección">✕</button>${tajadas(2)}</div>
+      <h2 class="l-t">¿Cuánto crees que te cae de prima?</h2>
+      <p class="ctx">Apuesta antes de ver la cuenta. Estos son tus datos:</p>
+      <div class="l-datos"><span class="l-pas">Ganas ${caso.salario}</span><span class="l-pas">Entraste el 1 oct</span><span class="l-pas">90 días al 31 dic</span></div>
+      <div class="l-ap">
         <p class="n cifra" data-apuesta aria-live="polite">$500.000</p>
         <label><span class="oculto">Cuánto crees que te cae</span><input type="range" min="0" max="3600000" step="50000" value="500000"></label>
-        <div class="p-esc" aria-hidden="true"><span>$0</span><span>$3.600.000</span></div>
+        <div class="l-esc" aria-hidden="true"><span>$0</span><span>$3.600.000</span></div>
       </div>
-      <div class="p-res" data-resultado hidden>
+      <div class="l-res" data-resultado hidden>
         <p class="por">Te cae</p>
         <p class="n cifra" data-real data-foco tabindex="-1"></p>
         <p data-dif></p>
         <p class="por">Normal: la prima es medio sueldo por semestre completo y llevas 90 días de 180.</p>
       </div>
-      <button class="p-btn pri" type="button" data-revelar>Ver lo que me cae</button>
+      <button class="l-btn pri" type="button" data-revelar>Ver lo que me cae</button>
     </div>`,
-    documento: () => `<div class="pant p-doc">
-      <h2 class="p-t">Tu desprendible, clarito</h2>
-      <p class="emp">Octubre · ${caso.empresa}</p>
+    documento: () => `<div class="pant l-doc">
+      <h2 class="l-t">Tu desprendible, clarito</h2>
+      <div class="meta"><span class="l-pas">Octubre</span><span style="align-self:center">${caso.empresa}</span></div>
       ${lineas.map((l) => `<details ${l.abierta ? 'open' : ''} class="${l.total ? 'tot' : ''}"><summary><span>${l.concepto}${l.detalle ? ` <span class="d">${l.detalle}</span>` : ''}</span><span class="v cifra">${l.signo}${l.valor}</span></summary><p>${l.texto}</p></details>`).join('')}
-      <div class="pie">
-        <button class="p-btn pri" type="button">Y ahora, mi prima</button>
-      </div>
+      <div class="pie2"><button class="l-btn pri" type="button">Y ahora, mi prima</button></div>
+    </div>`,
+    reparto: () => `<div class="pant l-rep" data-reparto data-total="${reparto.total}" data-paso="${reparto.paso}" style="--c1:0;--c2:44.44;--c3:77.78;--c4:100">
+      <h2 class="l-t">Reparte tu prima</h2>
+      <p class="sub">${caso.prima} para cuatro destinos. Tú decides.</p>
+      <div class="l-dona"><span>Sin repartir<b class="cifra" data-libre aria-live="polite">$0</b></span></div>
+      <p class="l-regla">Primero lo que te cuesta, después lo que te protege, después lo que quieres.</p>
+      <ul class="l-filas">${filasReparto()}</ul>
+      <button class="l-btn pri" type="button">Guardar mi plan</button>
     </div>`,
   },
 };
