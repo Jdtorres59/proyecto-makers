@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Platica · maquetas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+body{background:#E9E9E6;color:#1B1B1A;font:15px/1.5 system-ui,-apple-system,sans-serif}
+@media (prefers-color-scheme: dark){body{background:#1A1A19;color:#E6E6E3}}
+.cab{max-width:1720px;margin:0 auto;padding:24px 16px 8px}
+.cab h1{font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
+.cab p{margin:0;max-width:70ch;opacity:.85}
+.cab a{color:inherit}
+.fila{max-width:1720px;margin:0 auto;padding:16px}
+.fila-t{font-size:15px;font-weight:600;margin:16px 0 12px}
+.tels{display:flex;flex-wrap:wrap;gap:24px}
+.marco{margin:0;width:min(390px,100%)}
+.marco figcaption{font-size:13px;margin-bottom:8px;opacity:.85}
+.tel{width:100%;min-height:844px;border-radius:36px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:var(--bg);color:var(--texto);box-shadow:0 1px 0 rgba(0,0,0,.06),0 12px 32px rgba(0,0,0,.12)}
+.barra{display:flex;justify-content:space-between;padding:14px 28px 6px;font:600 14px/1 system-ui,sans-serif;color:var(--texto)}
+.tel :focus-visible{outline:3px solid var(--foco);outline-offset:2px}
+.tel button,.tel summary,.tel a{cursor:pointer}
+.tel input[type=range]{width:100%}
+.oculto{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cifra{font-variant-numeric:tabular-nums lining-nums}
+
+.tel{font-family:'Bricolage Grotesque', system-ui, sans-serif;font-variation-settings:'opsz' 14}
+.pant{flex:1;display:flex;flex-direction:column;padding:8px 20px 22px}
+.p-t{font-weight:800;letter-spacing:-.035em;line-height:1.02;font-variation-settings:'opsz' 96;text-wrap:balance}
+.p-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;border-radius:999px;font:600 17px/1 'Bricolage Grotesque', system-ui, sans-serif;border:2px solid var(--texto);background:var(--bg);color:var(--texto);box-shadow:0 3px 0 var(--texto);transition:transform .12s cubic-bezier(.23,1,.32,1),box-shadow .12s}
+.p-btn:active{transform:translateY(3px);box-shadow:0 0 0 var(--texto)}
+.p-btn.pri{background:var(--acento);color:var(--sobreAcento);border-color:var(--sobreAcento);box-shadow:0 3px 0 var(--sobreAcento)}
+.tel[data-tema=oscuro] .p-btn.pri{border-color:var(--acento);box-shadow:0 3px 0 #8A6A0A}
+.p-pas{display:inline-block;font-size:13px;font-weight:600;font-stretch:80%;letter-spacing:.02em;border:1.5px solid var(--texto);border-radius:999px;padding:3px 10px}
+/* entrada */
+.p-foto{margin:10px 0 0;flex:1;min-height:260px;border-radius:28px;background:var(--acento);color:var(--sobreAcento);display:flex;flex-direction:column;justify-content:space-between;padding:20px;border:2px solid var(--texto)}
+.p-foto .ph{border:2px dashed currentColor;border-radius:18px;padding:14px;font-size:13px;line-height:1.4;opacity:.9}
+.p-ent h2{font-size:44px;margin:22px 0 8px}
+.p-ent p{margin:0 0 20px;font-size:16px;color:var(--suave);max-width:32ch}
+.p-ent .acc{display:grid;gap:12px}
+.p-ent .corr{background:none;border:0;color:var(--texto);font:600 16px 'Bricolage Grotesque', system-ui, sans-serif;text-decoration:underline;text-underline-offset:4px;min-height:44px}
+/* inicio */
+.p-ini h2{font-size:30px;margin:12px 0 16px}
+.p-card{background:var(--acento);color:var(--sobreAcento);border:2px solid var(--texto);border-radius:28px;padding:20px;box-shadow:0 4px 0 var(--texto)}
+.tel[data-tema=oscuro] .p-card{border-color:var(--acento);box-shadow:none}
+.p-card .n{font-size:66px;font-weight:800;letter-spacing:-.045em;line-height:1;margin:10px 0 4px;font-variation-settings:'opsz' 96}
+.p-card p{margin:0 0 16px;font-size:15px}
+.p-card .p-btn{background:var(--sobreAcento);color:var(--acento);border-color:var(--sobreAcento);box-shadow:none;min-height:50px}
+.p-h3{font-size:18px;font-weight:700;margin:24px 0 10px}
+.p-items{display:grid;gap:10px;list-style:none;margin:0;padding:0}
+.p-items li{display:flex;align-items:center;gap:12px;background:var(--superficie);border-radius:20px;padding:14px 16px;font-size:15px}
+.p-items .m{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums}
+.p-cuenta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 auto}
+.p-cuenta div{border:2px solid var(--linea);border-radius:20px;padding:12px 14px;font-size:14px}
+.p-cuenta b{display:block;font-size:30px;font-weight:800;line-height:1.1}
+.p-dock{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:18px}
+.p-dock .p-btn{min-height:56px}
+.p-dock .sec{width:auto;padding:0 22px}
+/* lección */
+.p-lec .top{display:flex;align-items:center;gap:12px;margin-top:8px}
+.p-lec .x{width:44px;height:44px;border-radius:50%;border:2px solid var(--texto);background:none;color:var(--texto);font:600 18px 'Bricolage Grotesque', system-ui, sans-serif}
+.p-lec .pr{flex:1;height:12px;border-radius:999px;border:2px solid var(--texto);overflow:hidden}
+.p-lec .pr i{display:block;height:100%;width:33%;background:var(--acento)}
+.p-lec h2{font-size:38px;margin:28px 0 8px}
+.p-lec .ctx{margin:0;color:var(--suave);font-size:16px}
+.p-ap{margin:auto 0 18px;text-align:center}
+.p-ap .n{font-size:80px;font-weight:800;letter-spacing:-.05em;line-height:1;margin:0 0 18px;font-variation-settings:'opsz' 96;transition:font-size .3s cubic-bezier(.23,1,.32,1)}
+.p-lec input[type=range]{-webkit-appearance:none;appearance:none;height:44px;background:transparent}
+.p-lec input[type=range]::-webkit-slider-runnable-track{height:16px;border-radius:999px;background:var(--superficie);border:2px solid var(--texto)}
+.p-lec input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:40px;height:40px;margin-top:-14px;border-radius:50%;background:var(--acento);border:3px solid var(--texto)}
+.p-lec input[type=range]::-moz-range-track{height:12px;border-radius:999px;background:var(--superficie);border:2px solid var(--texto)}
+.p-lec input[type=range]::-moz-range-thumb{width:34px;height:34px;border-radius:50%;background:var(--acento);border:3px solid var(--texto)}
+.p-esc{display:flex;justify-content:space-between;font-size:13px;color:var(--suave)}
+.leccion[data-revelado] .p-ap .n{font-size:28px;color:var(--suave)}
+.leccion[data-revelado] .p-ap label,.leccion[data-revelado] .p-esc{display:none}
+.p-res{background:var(--superficie);border-radius:28px;padding:20px;margin:0 0 16px}
+.p-res .n{font-size:76px;font-weight:800;letter-spacing:-.05em;line-height:1;margin:6px 0 10px;font-variation-settings:'opsz' 96}
+.p-res p{margin:0 0 8px;font-size:16px}
+.p-res .por{font-size:15px;color:var(--suave)}
+/* documento */
+.p-doc h2{font-size:32px;margin:12px 0 4px}
+.p-doc .emp{margin:0 0 16px;font-size:14px;color:var(--suave)}
+.p-doc details{background:var(--superficie);border-radius:22px;margin-bottom:10px;border:2px solid transparent}
+.p-doc details[open]{border-color:var(--texto)}
+.p-doc summary{list-style:none;display:flex;align-items:center;gap:10px;padding:16px 18px;font-size:16px;font-weight:600;min-height:56px}
+.p-doc summary::-webkit-details-marker{display:none}
+.p-doc summary .v{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700}
+.p-doc summary .d{font-weight:500;color:var(--suave);font-size:14px}
+.p-doc details p{margin:0 14px 14px;background:var(--bg);border-radius:16px 16px 16px 4px;padding:12px 14px;font-size:15px;line-height:1.45}
+.p-doc .tot{background:var(--acento);color:var(--sobreAcento)}
+.p-doc .tot summary .v{font-size:24px;font-weight:800}
+.p-doc .tot p{color:var(--texto)}
+.p-doc .pie{margin-top:auto;display:grid;gap:12px;padding-top:16px}
+
+</style>
+</head>
+<body>
+
+<header class="cab">
+  <h1>Platica · maquetas (nombre de trabajo)</h1>
+  <p>Dirección 2 de tres, eje: temperatura (cálida y con juego). Cuatro pantallas a 390 px en claro y en oscuro. Contenido de ejemplo con datos ficticios, tomado de los documentos 05 y 08; no son decisiones de producto. La lección y el desprendible se pueden tocar. <a href="brandbook.html">Brand book</a> · <a href="../README.md">Comparación</a></p>
+</header>
+<main>
+<section class="fila" aria-label="Tema claro">
+  <h2 class="fila-t">Tema claro</h2>
+  <div class="tels">
+  <figure class="marco"><figcaption>Entrada</figcaption>
+    <div class="tel" data-tema="claro" style="--bg:#FBF4E6;--superficie:#F3E3C4;--texto:#1E291F;--suave:#5A5242;--acento:#F2BE22;--sobreAcento:#1E291F;--acentoTexto:#6B4C00;--alarma:#B02A1C;--linea:#E3D2B0;--foco:#1E291F;--control:#8A7C62">
+      <div class="barra" aria-hidden="true"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="pant p-ent">
+      <div class="p-foto">
+        <div><svg viewBox="0 0 194 64" height="34" role="img" aria-label="platica, nombre de trabajo"><text x="0" y="46" font-family="'Bricolage Grotesque', system-ui, sans-serif" font-size="54" font-weight="800" letter-spacing="-2" style="font-variation-settings:'opsz' 96" fill="#1E291F">platica</text><circle cx="176" cy="33" r="14" fill="#FBF4E6" stroke="#1E291F" stroke-width="3"/></svg></div>
+        <div class="ph" role="img" aria-label="Espacio para foto pendiente">Foto pendiente: persona real de unos 23 años mirando su celular en un bus. Sin foto de banco.</div>
+      </div>
+      <h2 class="p-t">Tu plata, en tu idioma.</h2>
+      <p>Te explico tu desprendible, tu prima y tu tarjeta con tus números. Sin vender nada.</p>
+      <div class="acc">
+        <button class="p-btn" type="button"><img src="https://cdn.simpleicons.org/google/1E291F" alt="" width="20" height="20">Seguir con Google</button>
+        <button class="p-btn" type="button"><img src="https://cdn.simpleicons.org/apple/1E291F" alt="" width="20" height="20">Seguir con Apple</button>
+        <button class="corr" type="button">Usar mi correo</button>
+      </div>
+    </div>
+    </div></figure><figure class="marco"><figcaption>Inicio</figcaption>
+    <div class="tel" data-tema="claro" style="--bg:#FBF4E6;--superficie:#F3E3C4;--texto:#1E291F;--suave:#5A5242;--acento:#F2BE22;--sobreAcento:#1E291F;--acentoTexto:#6B4C00;--alarma:#B02A1C;--linea:#E3D2B0;--foco:#1E291F;--control:#8A7C62">
+      <div class="barra" aria-hidden="true"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="pant p-ini">
+      <h2 class="p-t">Quiubo, Valentina.</h2>
+      <section class="p-card" aria-label="Lo próximo">
+        <span class="p-pas">En 35 días</span>
+        <p class="n cifra">$900.000</p>
+        <p>te cae de prima, más o menos. ¿Ya sabes qué vas a hacer con ella?</p>
+        <button class="p-btn" type="button">Armemos el plan</button>
+      </section>
+      <h3 class="p-h3">Lo que viene</h3>
+      <ul class="p-items">
+        <li><span class="p-pas">30 nov</span>Te pagan<span class="m cifra">$3.312.000</span></li>
+        <li><span class="p-pas">31 ene</span>Intereses de cesantías<span class="m">Te cuento</span></li>
+      </ul>
+      <div class="p-cuenta" aria-label="Lo que ya tienes claro">
+        <div><b>1</b>documento que ya entiendes</div>
+        <div><b>0</b>decisiones tomadas</div>
+      </div>
+      <div class="p-dock">
+        <button class="p-btn pri" type="button">Me llegó esto</button>
+        <button class="p-btn sec" type="button">Preguntar</button>
+      </div>
+    </div>
+    </div></figure><figure class="marco"><figcaption>Lección: predecir y revelar</figcaption>
+    <div class="tel" data-tema="claro" style="--bg:#FBF4E6;--superficie:#F3E3C4;--texto:#1E291F;--suave:#5A5242;--acento:#F2BE22;--sobreAcento:#1E291F;--acentoTexto:#6B4C00;--alarma:#B02A1C;--linea:#E3D2B0;--foco:#1E291F;--control:#8A7C62">
+      <div class="barra" aria-hidden="true"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="pant p-lec leccion">
+      <div class="top"><button class="x" type="button" aria-label="Salir de la lección">✕</button><div class="pr" role="progressbar" aria-label="Paso 2 de 6" aria-valuemin="1" aria-valuemax="6" aria-valuenow="2"><i></i></div></div>
+      <h2 class="p-t">¿Cuánto crees que te cae de prima?</h2>
+      <p class="ctx">Entraste el 1 de octubre y ganas $3.600.000. Apuesta antes de ver la cuenta.</p>
+      <div class="p-ap">
+        <p class="n cifra" data-apuesta aria-live="polite">$500.000</p>
+        <label><span class="oculto">Cuánto crees que te cae</span><input type="range" min="0" max="3600000" step="50000" value="500000"></label>
+        <div class="p-esc" aria-hidden="true"><span>$0</span><span>$3.600.000</span></div>
+      </div>
+      <div class="p-res" data-resultado hidden>
+        <p class="por">Te cae</p>
+        <p class="n cifra" data-real data-foco tabindex="-1"></p>
+        <p data-dif></p>
+        <p class="por">Normal: la prima es medio sueldo por semestre completo y llevas 90 días de 180.</p>
+      </div>
+      <button class="p-btn pri" type="button" data-revelar>Ver lo que me cae</button>
+    </div>
+    </div></figure><figure class="marco"><figcaption>Tu desprendible, línea por línea</figcaption>
+    <div class="tel" data-tema="claro" style="--bg:#FBF4E6;--superficie:#F3E3C4;--texto:#1E291F;--suave:#5A5242;--acento:#F2BE22;--sobreAcento:#1E291F;--acentoTexto:#6B4C00;--alarma:#B02A1C;--linea:#E3D2B0;--foco:#1E291F;--control:#8A7C62">
+      <div class="barra" aria-hidden="true"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="pant p-doc">
+      <h2 class="p-t">Tu desprendible, clarito</h2>
+      <p class="emp">Octubre · Logística Andina S.A.S. (ficticia)</p>
+      <details  class=""><summary><span>Salario básico</span><span class="v cifra">$3.600.000</span></summary><p>Lo que pactaste en el contrato por un mes completo. De aquí salen casi todas las demás cuentas: salud, pensión, prima y cesantías.</p></details><details open class=""><summary><span>Salud <span class="d">4 %</span></span><span class="v cifra">−$144.000</span></summary><p>Va a tu EPS y es lo que te da derecho a citas, exámenes y urgencias. Es el 4 % de tu salario: 3.600.000 × 4 % = 144.000.</p></details><details  class=""><summary><span>Pensión <span class="d">4 %</span></span><span class="v cifra">−$144.000</span></summary><p>Va a tu ahorro para la vejez, a tu nombre. También es el 4 % de tu salario. Tu empresa pone otra parte que no ves en este papel.</p></details><details  class="tot"><summary><span>Neto a pagar</span><span class="v cifra">$3.312.000</span></summary><p>Lo que te consignan. Es el salario menos los dos descuentos: 3.600.000 − 144.000 − 144.000.</p></details>
+      <div class="pie">
+        <button class="p-btn pri" type="button">Y ahora, mi prima</button>
+      </div>
+    </div>
+    </div></figure>
+  </div>
+</section>
+<section class="fila" aria-label="Tema oscuro">
+  <h2 class="fila-t">Tema oscuro</h2>
+  <div class="tels">
+  <figure class="marco"><figcaption>Entrada</figcaption>
+    <div class="tel" data-tema="oscuro" style="--bg:#1B1812;--superficie:#2B261C;--texto:#F7EEDB;--suave:#BFB399;--acento:#F2BE22;--sobreAcento:#1B1812;--acentoTexto:#F2BE22;--alarma:#FF8B7B;--linea:#3E3628;--foco:#F2BE22;--control:#82765E">
+      <div class="barra" aria-hidden="true"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="pant p-ent">
+      <div class="p-foto">
+        <div><svg viewBox="0 0 194 64" height="34" role="img" aria-label="platica, nombre de trabajo"><text x="0" y="46" font-family="'Bricolage Grotesque', system-ui, sans-serif" font-size="54" font-weight="800" letter-spacing="-2" style="font-variation-settings:'opsz' 96" fill="#1E291F">platica</text><circle cx="176" cy="33" r="14" fill="#FBF4E6" stroke="#1E291F" stroke-width="3"/></svg></div>
+        <div class="ph" role="img" aria-label="Espacio para foto pendiente">Foto pendiente: persona real de unos 23 años mirando su celular en un bus. Sin foto de banco.</div>
+      </div>
+      <h2 class="p-t">Tu plata, en tu idioma.</h2>
+      <p>Te explico tu desprendible, tu prima y tu tarjeta con tus números. Sin vender nada.</p>
+      <div class="acc">
+        <button class="p-btn" type="button"><img src="https://cdn.simpleicons.org/google/F7EEDB" alt="" width="20" height="20">Seguir con Google</button>
+        <button class="p-btn" type="button"><img src="https://cdn.simpleicons.org/apple/F7EEDB" alt="" width="20" height="20">Seguir con Apple</button>
+        <button class="corr" type="button">Usar mi correo</button>
+      </div>
+    </div>
+    </div></figure><figure class="marco"><figcaption>Inicio</figcaption>
+    <div class="tel" data-tema="oscuro" style="--bg:#1B1812;--superficie:#2B261C;--texto:#F7EEDB;--suave:#BFB399;--acento:#F2BE22;--sobreAcento:#1B1812;--acentoTexto:#F2BE22;--alarma:#FF8B7B;--linea:#3E3628;--foco:#F2BE22;--control:#82765E">
+      <div class="barra" aria-hidden="true"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="pant p-ini">
+      <h2 class="p-t">Quiubo, Valentina.</h2>
+      <section class="p-card" aria-label="Lo próximo">
+        <span class="p-pas">En 35 días</span>
+        <p class="n cifra">$900.000</p>
+        <p>te cae de prima, más o menos. ¿Ya sabes qué vas a hacer con ella?</p>
+        <button class="p-btn" type="button">Armemos el plan</button>
+      </section>
+      <h3 class="p-h3">Lo que viene</h3>
+      <ul class="p-items">
+        <li><span class="p-pas">30 nov</span>Te pagan<span class="m cifra">$3.312.000</span></li>
+        <li><span class="p-pas">31 ene</span>Intereses de cesantías<span class="m">Te cuento</span></li>
+      </ul>
+      <div class="p-cuenta" aria-label="Lo que ya tienes claro">
+        <div><b>1</b>documento que ya entiendes</div>
+        <div><b>0</b>decisiones tomadas</div>
+      </div>
+      <div class="p-dock">
+        <button class="p-btn pri" type="button">Me llegó esto</button>
+        <button class="p-btn sec" type="button">Preguntar</button>
+      </div>
+    </div>
+    </div></figure><figure class="marco"><figcaption>Lección: predecir y revelar</figcaption>
+    <div class="tel" data-tema="oscuro" style="--bg:#1B1812;--superficie:#2B261C;--texto:#F7EEDB;--suave:#BFB399;--acento:#F2BE22;--sobreAcento:#1B1812;--acentoTexto:#F2BE22;--alarma:#FF8B7B;--linea:#3E3628;--foco:#F2BE22;--control:#82765E">
+      <div class="barra" aria-hidden="true"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="pant p-lec leccion">
+      <div class="top"><button class="x" type="button" aria-label="Salir de la lección">✕</button><div class="pr" role="progressbar" aria-label="Paso 2 de 6" aria-valuemin="1" aria-valuemax="6" aria-valuenow="2"><i></i></div></div>
+      <h2 class="p-t">¿Cuánto crees que te cae de prima?</h2>
+      <p class="ctx">Entraste el 1 de octubre y ganas $3.600.000. Apuesta antes de ver la cuenta.</p>
+      <div class="p-ap">
+        <p class="n cifra" data-apuesta aria-live="polite">$500.000</p>
+        <label><span class="oculto">Cuánto crees que te cae</span><input type="range" min="0" max="3600000" step="50000" value="500000"></label>
+        <div class="p-esc" aria-hidden="true"><span>$0</span><span>$3.600.000</span></div>
+      </div>
+      <div class="p-res" data-resultado hidden>
+        <p class="por">Te cae</p>
+        <p class="n cifra" data-real data-foco tabindex="-1"></p>
+        <p data-dif></p>
+        <p class="por">Normal: la prima es medio sueldo por semestre completo y llevas 90 días de 180.</p>
+      </div>
+      <button class="p-btn pri" type="button" data-revelar>Ver lo que me cae</button>
+    </div>
+    </div></figure><figure class="marco"><figcaption>Tu desprendible, línea por línea</figcaption>
+    <div class="tel" data-tema="oscuro" style="--bg:#1B1812;--superficie:#2B261C;--texto:#F7EEDB;--suave:#BFB399;--acento:#F2BE22;--sobreAcento:#1B1812;--acentoTexto:#F2BE22;--alarma:#FF8B7B;--linea:#3E3628;--foco:#F2BE22;--control:#82765E">
+      <div class="barra" aria-hidden="true"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="pant p-doc">
+      <h2 class="p-t">Tu desprendible, clarito</h2>
+      <p class="emp">Octubre · Logística Andina S.A.S. (ficticia)</p>
+      <details  class=""><summary><span>Salario básico</span><span class="v cifra">$3.600.000</span></summary><p>Lo que pactaste en el contrato por un mes completo. De aquí salen casi todas las demás cuentas: salud, pensión, prima y cesantías.</p></details><details open class=""><summary><span>Salud <span class="d">4 %</span></span><span class="v cifra">−$144.000</span></summary><p>Va a tu EPS y es lo que te da derecho a citas, exámenes y urgencias. Es el 4 % de tu salario: 3.600.000 × 4 % = 144.000.</p></details><details  class=""><summary><span>Pensión <span class="d">4 %</span></span><span class="v cifra">−$144.000</span></summary><p>Va a tu ahorro para la vejez, a tu nombre. También es el 4 % de tu salario. Tu empresa pone otra parte que no ves en este papel.</p></details><details  class="tot"><summary><span>Neto a pagar</span><span class="v cifra">$3.312.000</span></summary><p>Lo que te consignan. Es el salario menos los dos descuentos: 3.600.000 − 144.000 − 144.000.</p></details>
+      <div class="pie">
+        <button class="p-btn pri" type="button">Y ahora, mi prima</button>
+      </div>
+    </div>
+    </div></figure>
+  </div>
+</section></main>
+<script>
+// Formato colombiano: $1.234.567 (Intl con es-CO agrupa con punto desde 5 cifras, que es lo que se usa aquí)
+const cop = (n) => '$' + new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(n);
+const PRIMA = 900000;
+document.querySelectorAll('.leccion').forEach((l) => {
+  const r = l.querySelector('input[type=range]'), c = l.querySelector('[data-apuesta]'), b = l.querySelector('[data-revelar]'), res = l.querySelector('[data-resultado]');
+  const pinta = () => { c.textContent = cop(+r.value); r.setAttribute('aria-valuetext', cop(+r.value)); };
+  r.addEventListener('input', pinta); pinta();
+  b.addEventListener('click', () => {
+    const dif = PRIMA - +r.value;
+    l.dataset.revelado = '1';
+    res.hidden = false;
+    res.querySelector('[data-real]').textContent = cop(PRIMA);
+    res.querySelector('[data-dif]').textContent = dif === 0 ? 'Le pegaste exacto.' : (dif > 0 ? 'Te quedaste ' + cop(dif) + ' por debajo.' : 'Te pasaste por ' + cop(-dif) + '.');
+    b.hidden = true;
+    res.querySelector('[data-foco]').focus();
+  });
+});
+</script>
+</body>
+</html>
