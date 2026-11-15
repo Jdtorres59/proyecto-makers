@@ -5,3 +5,4 @@ export * from "./modelos";
 export * from "./proveedor";
 export * from "./simulado";
 export { constitucion } from "./prompts/constitucion";
+export * from "./salidas";
