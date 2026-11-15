@@ -18,7 +18,7 @@ Base técnica construida el 14 de noviembre de 2026. Sirve para cualquier versi�
 
 ```
 Celular (Expo)
-  │ 1. login con Google o Apple ────► Supabase Auth ──► token
+  │ 1. login: Google, Apple o correo ► Supabase Auth ──► token
   │ 2. sube documento ───────────────► Supabase Storage, bucket privado "documentos"
   │ 3. eventos de uso ───────────────► tabla events
   │ 4. pide trabajo a la IA (token) ─► apps/api  POST /ai/run
