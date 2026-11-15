@@ -1,2 +1,14 @@
 .DS_Store
 build/out/
+
+# dependencias y artefactos
+node_modules/
+dist/
+.expo/
+.vercel/
+*.tsbuildinfo
+
+# secretos: nunca se suben. Usar los .env.example como guía.
+.env
+.env.*
+!.env.example

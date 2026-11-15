@@ -1,0 +1,15 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Paquetes con permiso de correr scripts al instalarse.
+allowBuilds:
+  esbuild: true
+
+# Versiones compartidas: se cambian aquí y aplican a todo el repo.
+catalog:
+  zod: ^4.6.7
+  typescript: ~6.0.3
+  "@types/node": ^24.0.0
+  "@supabase/supabase-js": ^2.119.0
+  hono: ^4.13.18
