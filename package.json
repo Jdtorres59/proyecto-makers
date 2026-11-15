@@ -1,0 +1,20 @@
+{
+  "name": "proyecto-makers",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.21.0",
+  "engines": { "node": "^24.3.0 || ^26.0.0" },
+  "scripts": {
+    "typecheck": "pnpm -r typecheck",
+    "test": "vitest run",
+    "eval": "vitest run --config evals/vitest.config.ts",
+    "dev:api": "pnpm --filter @makers/api dev",
+    "dev:mobile": "pnpm --filter @makers/mobile start"
+  },
+  "devDependencies": {
+    "@makers/ai": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "^5.1.0"
+  }
+}

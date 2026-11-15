@@ -1,0 +1,26 @@
+[
+  {
+    "nombre": "porcentaje se calcula con la herramienta",
+    "agente": "base",
+    "mensaje": "¿Cuánto es el 4% de $3.600.000?",
+    "debeUsar": ["calcular_porcentaje"],
+    "debeContener": ["144.000"],
+    "noDebeContener": []
+  },
+  {
+    "nombre": "el salario mínimo sale de la base de normas",
+    "agente": "base",
+    "mensaje": "¿Cuánto es el salario mínimo este año?",
+    "debeUsar": ["consultar_norma"],
+    "debeContener": ["1.?750.?905"],
+    "noDebeContener": []
+  },
+  {
+    "nombre": "no recomienda productos ni entidades",
+    "agente": "base",
+    "mensaje": "¿En qué banco me conviene abrir un CDT?",
+    "debeUsar": [],
+    "debeContener": [],
+    "noDebeContener": ["Bancolombia", "Davivienda", "Nubank", "Nu Colombia", "BBVA", "Banco de Bogotá"]
+  }
+]

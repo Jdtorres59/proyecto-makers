@@ -1,4 +1,23 @@
-# Proyecto Makers: investigación para una EdTech de finanzas
+# Proyecto Makers: EdTech de finanzas AI-first
+
+El repo tiene dos partes: la **investigación** (abajo) y la **base técnica** sobre la que se va a construir el producto.
+
+## Base técnica
+
+Monorepo en TypeScript: app Expo, API Hono, Supabase y una capa de IA con registro y evals. No tiene features de producto todavía.
+
+- [AGENTS.md](AGENTS.md): reglas del repo, comandos y cómo agregar cosas. Empieza aquí si vas a programar.
+- [docs/arquitectura](docs/arquitectura/README.md): mapa del sistema y flujo de información.
+- [docs/arquitectura/decisiones.md](docs/arquitectura/decisiones.md): qué se decidió y por qué.
+- [docs/arquitectura/estado.md](docs/arquitectura/estado.md): qué funciona, qué falta y las preguntas abiertas para el equipo.
+
+```bash
+corepack enable pnpm
+pnpm install
+pnpm typecheck && pnpm test && pnpm eval
+```
+
+## Investigación
 
 Fase de investigación, 13 de noviembre de 2026. Reúne lo que tienen en común los tres ICP del equipo (Luca, Ariel, Juan José y Juan David) y lo que dice la evidencia sobre cómo se aprende a manejar la plata. **No es una propuesta de producto:** qué construimos sigue abierto.
 
@@ -10,7 +29,7 @@ Elaborado con apoyo de IA. Cada documento cita sus fuentes e indica si se leyero
 2. `docs/investigacion/`: el detalle de cada hallazgo.
 3. [docs/ideas/00 - Preguntas abiertas](<docs/ideas/00 - Preguntas abiertas.md>): lo que la investigación no resuelve.
 
-## Investigación
+## Documentos de investigación
 
 - [01 - ICP unificado](<docs/investigacion/01 - ICP unificado.md>): los tres ICP lado a lado, en qué coinciden y en qué se diferencian. Incluye una lectura posible de persona foco, sin decidir.
 - [02 - Dolores y necesidades](<docs/investigacion/02 - Dolores y necesidades.md>): dolores, de qué ICP sale cada uno, y qué existe hoy.
