@@ -46,6 +46,7 @@ Posibilidades que salieron de la investigación. Ninguna es una decisión.
 - [04 - Propuesta AI First](<docs/ideas/04 - Propuesta AI First.md>): la idea de subir un documento propio y que de ahí salga una lección.
 - [05 - Primer flujo a prototipar](<docs/ideas/05 - Primer flujo a prototipar.md>): un flujo posible para el entregable del 22 de noviembre.
 - [09 - Cómo se ve y se usa el producto](<docs/ideas/09 - Como se ve y se usa el producto.md>): una hipótesis de frecuencia, canal y métricas.
+- [10 - Currículo completo](<docs/ideas/10 - Curriculo completo.md>): propuesta de todo lo que la app enseñaría: capacidades, 28 módulos, rutas por persona y decisiones abiertas.
 
 ## Estructura
 
