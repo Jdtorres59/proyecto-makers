@@ -12,7 +12,7 @@ Documento de relevo. Quien termina una tarea lo actualiza para que la siguiente 
 | `packages/core`, `conocimiento`, `ai` | Listo | `pnpm test`: 13 pruebas |
 | API | Lista con dobles | Pruebas de 401, 400, 404, 429 y streaming; además se levantó por HTTP y `curl` recibió la respuesta por partes |
 | Evals | Arnés listo | `pnpm eval`: 3 casos contra el proveedor simulado |
-| App | Compila | `expo-doctor` 20/20 y tipos limpios. Ver "Qué falta" |
+| App | Compila y muestra el login | `expo-doctor` 20/20, Metro empaqueta para iOS y el login se vio en la versión web. No se abrió en un celular ni en el simulador. Ver "Qué falta" |
 | Base de datos | Migración escrita, **sin aplicar** | No se ha corrido contra ningún Postgres |
 
 ## Qué falta para que corra de punta a punta
