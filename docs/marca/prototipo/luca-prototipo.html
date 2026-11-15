@@ -461,6 +461,127 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;bac
 .borrar{margin:26px auto 0;color:var(--aji)}
 .op-sel{display:grid;gap:8px;margin:14px 0 18px}
 
+/* Resortes: suben el tacto de todo lo que se presiona o aparece */
+:root{
+  --spring:linear(0,.006,.025 2.8%,.101 6.1%,.539 18.9%,.721 25.3%,.849 31.5%,.937 38.1%,.968 41.8%,.991 45.7%,1.006 50.1%,1.015 55%,1.017 63.9%,1.001 85.4%,1);
+  --rebote:linear(0,.009,.035 2.1%,.141,.281 6.7%,.723 12.9%,.938 16.7%,1.017,1.077,1.121,1.149 24.3%,1.159,1.163,1.161,1.154 29.9%,1.129 32.8%,1.051 39.6%,1.017 43.1%,.991,.977 51%,.974 53.8%,.975 57.1%,.997 69.8%,1.003 76.9%,1);
+}
+.btn,.chip,.ord,.opt,.opcion,.archivo,.seguir,.nodo,.ic,.av,.ctl button,.dop,.doc-sub{transition-timing-function:var(--spring)!important;transition-duration:.38s!important}
+.chip[aria-pressed=true],.ord[data-n] .num{animation-timing-function:var(--rebote)!important;animation-duration:.6s!important}
+.hoja{transition-timing-function:var(--spring);transition-duration:.6s}
+.tabs .pildora{transition:transform .55s var(--spring)}
+
+/* Números que ruedan cifra por cifra */
+.rueda{display:inline-flex;align-items:baseline;white-space:nowrap}
+.rueda .dg{display:inline-block;height:1em;line-height:1;overflow:hidden;vertical-align:baseline;position:relative}
+.rueda .dg>span{display:flex;flex-direction:column;transform:translateY(calc(var(--d,0)*-1em));transition:transform .7s var(--spring)}
+.rueda .dg>span>span{height:1em;line-height:1}
+.rueda .sg{display:inline-block;line-height:1}
+
+/* Entradas al flujo de decisión */
+.decide-card{display:flex;align-items:center;gap:14px;width:100%;text-align:left;margin-top:16px;padding:16px;border-radius:26px;border:2px solid var(--tx);background:var(--papel);box-shadow:0 4px 0 var(--sombra)}
+.decide-card:active{transform:translateY(4px);box-shadow:none}
+.decide-card .luca{width:46px;height:46px}
+.decide-card .txt{flex:1}
+.decide-card .txt b{display:block;font:750 17px/1.2 var(--f);letter-spacing:-.01em}
+.decide-card .txt small{display:block;color:var(--sx);font-size:14px;margin-top:3px}
+.decide-card .flecha{width:40px;height:40px;border-radius:50%;background:var(--maiz);color:var(--tinta);display:grid;place-items:center;flex:none}
+.tuyas{display:grid;gap:10px;margin-bottom:18px}
+.tuya{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px;border-radius:22px;border:2px solid var(--tx);background:var(--maiz);color:var(--tinta);box-shadow:0 4px 0 var(--sombra-pri);border-color:var(--borde-pri)}
+.tuya .txt{flex:1}.tuya b{display:block;font:750 16px var(--f)}.tuya small{font-size:13.5px}
+
+/* Conversación */
+.chat{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+.yo-dice{align-self:flex-end;max-width:84%;background:var(--maiz);color:var(--tinta);border:2px solid var(--borde-pri);border-radius:22px 22px 6px 22px;padding:12px 15px;font-size:16.5px;line-height:1.4;box-shadow:0 3px 0 var(--sombra-pri);animation:sube .5s var(--spring)}
+.puntos-p{display:inline-flex;gap:5px;padding:4px 2px}
+.puntos-p i{width:8px;height:8px;border-radius:50%;background:var(--sx);animation:salto-p 1s var(--e-io) infinite}
+.puntos-p i:nth-child(2){animation-delay:.15s}.puntos-p i:nth-child(3){animation-delay:.3s}
+@keyframes salto-p{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+.ejemplos{display:flex;gap:8px;overflow-x:auto;margin:0 -20px;padding:2px 20px 8px;scrollbar-width:none}
+.ejemplos::-webkit-scrollbar{display:none}
+.ejemplos button{flex:none;min-height:40px;border-radius:999px;border:1.5px solid var(--sx);background:none;padding:0 13px;font:600 14px var(--f);color:var(--sx);white-space:nowrap}
+.redactor{margin-top:auto;padding-top:16px;display:flex;gap:10px;align-items:flex-end}
+.redactor textarea{flex:1;min-height:104px;resize:none;border-radius:22px;border:2px solid var(--tx);background:var(--papel);padding:14px 16px;font:500 16.5px/1.4 var(--f);color:var(--tx)}
+.redactor .enviar{width:56px;height:56px;border-radius:50%;border:2px solid var(--borde-pri);background:var(--maiz);color:var(--tinta);display:grid;place-items:center;box-shadow:0 4px 0 var(--sombra-pri);flex:none}
+.redactor .enviar:active{transform:translateY(4px);box-shadow:none}
+.redactor .enviar svg{width:22px;height:22px;stroke:currentColor;stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.pide{display:grid;gap:10px;animation:sube .55s var(--spring)}
+.doc-sub{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px;border-radius:22px;border:2px dashed var(--tx);background:none;transition:background .3s,border-color .3s}
+.doc-sub .doc-ico{width:44px;height:52px;border-radius:8px;border:2px solid var(--tx);display:grid;place-items:center;font:800 11px var(--f);flex:none;background:var(--sup);position:relative}
+.doc-sub b{display:block;font-weight:700}
+.doc-sub small{color:var(--sx);font-size:14px}
+.doc-sub .estado-d{margin-left:auto;font:650 14px var(--f);font-stretch:80%;color:var(--sx)}
+.doc-sub[data-listo]{border-style:solid;background:var(--papel);box-shadow:0 3px 0 var(--sombra)}
+.doc-sub[data-listo] .estado-d{width:30px;height:30px;border-radius:50%;background:var(--hoja);color:var(--bg);display:grid;place-items:center;animation:pop .6s var(--rebote)}
+
+/* Lectura de dos documentos */
+.pila{display:grid;gap:12px;margin-top:16px}
+.pila .papel{padding:14px 16px 4px}
+.pila .renglon{padding:8px 0;font-size:14px}
+
+/* Decisión: pasos */
+#decision .paso{display:flex;flex-direction:column;flex:1}
+.adivina .opt{justify-content:space-between}
+.adivina .opt small{color:var(--sx);font:600 13px var(--f);font-stretch:80%}
+.adivina .opt[aria-pressed=true]{background:var(--maiz);color:var(--tinta);border-color:var(--borde-pri)}
+.adivina .opt[aria-pressed=true] small{color:var(--tinta)}
+.veredicto{margin-top:4px;padding:16px 18px;border-radius:24px;background:var(--tinta);color:var(--crema);animation:sube .5s var(--spring)}
+.veredicto b{color:var(--maiz)}
+.veredicto .k{color:var(--maiz)}
+.comps{display:grid;gap:12px;margin-top:16px}
+.comp{border:2px solid var(--tx);border-radius:26px;background:var(--papel);box-shadow:0 4px 0 var(--sombra);overflow:hidden;transition:box-shadow .3s,transform .38s var(--spring)}
+.comp[data-abierta]{box-shadow:0 6px 0 var(--sombra)}
+.comp-cab{all:unset;box-sizing:border-box;display:grid;grid-template-columns:1fr auto;gap:4px 12px;width:100%;padding:16px 16px 14px;cursor:pointer}
+.comp-cab:focus-visible{outline:3px solid var(--foco);outline-offset:-5px;border-radius:24px}
+.comp-cab .nom{font:750 17px/1.2 var(--f);letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.comp-cab .nom i{width:12px;height:12px;border-radius:50%;border:2px solid var(--tx);flex:none}
+.comp-cab .sub{grid-column:1;font-size:13.5px;color:var(--sx)}
+.comp-cab .tot{grid-row:1/3;grid-column:2;text-align:right;align-self:center}
+.comp-cab .tot b{display:block;font:800 23px/1 var(--f);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.comp-cab .tot small{font:600 12px var(--f);font-stretch:80%;color:var(--sx)}
+.costo{grid-column:1/-1;display:flex;height:12px;border-radius:6px;overflow:hidden;margin-top:8px;background:var(--ln)}
+.costo i{display:block;height:100%;transition:width .7s var(--spring)}
+.costo .cap{background:var(--tx)}
+.costo .int{background:repeating-linear-gradient(135deg,var(--aji) 0 4px,color-mix(in srgb,var(--aji) 70%,transparent) 4px 8px)}
+.comp-det{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--spring)}
+.comp[data-abierta] .comp-det{grid-template-rows:1fr}
+.comp-det>div{overflow:hidden}
+.comp-det .dentro{padding:2px 16px 16px;display:grid;gap:14px}
+.datos3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.datos3 div{background:var(--sup);border-radius:16px;padding:10px 11px}
+.datos3 div>span{display:block;font:600 12px var(--f);font-stretch:80%;color:var(--sx)}
+.datos3 b{font:800 16px var(--f);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.plazo label{display:flex;justify-content:space-between;font:700 15px var(--f)}
+.plazo label b{font-variant-numeric:tabular-nums}
+.medidor{display:grid;gap:6px}
+.medidor .pista{height:14px;border-radius:7px;background:var(--sup);position:relative;overflow:hidden;border:2px solid var(--tx)}
+.medidor .pista i{position:absolute;inset:0 auto 0 0;border-radius:0 5px 5px 0;transition:width .7s var(--spring),background .3s}
+.medidor .pista::after{content:"";position:absolute;top:0;bottom:0;left:33.3%;border-left:2px dashed var(--tx);opacity:.5}
+.medidor p{font-size:14px;color:var(--sx)}
+.medidor p b{color:var(--tx)}
+.leyenda{display:flex;gap:14px;font-size:13px;color:var(--sx);margin-top:10px}
+.leyenda span{display:flex;align-items:center;gap:6px}
+.leyenda i{width:12px;height:12px;border-radius:3px}
+.porque{margin-top:18px}
+.porque .exp{border-top:1.5px solid var(--ln)}
+.porque .exp:first-child{border-top:0}
+.porque .pq{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 2px;font:700 16px var(--f)}
+.porque .pq::after{content:"";width:9px;height:9px;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;rotate:45deg;flex:none;transition:rotate .35s var(--spring);margin-right:4px}
+.porque .exp[aria-expanded=true] .pq::after{rotate:225deg}
+.elige{display:grid;gap:10px;margin-top:16px}
+.elige .opt{justify-content:space-between;min-height:62px}
+.elige .opt b{font:800 16px var(--f);font-variant-numeric:tabular-nums}
+.elige .opt[aria-pressed=true]{background:var(--maiz);color:var(--tinta);border-color:var(--borde-pri);box-shadow:0 3px 0 var(--sombra-pri)}
+.motivo textarea{width:100%;min-height:84px;resize:none;border-radius:18px;border:2px solid var(--tx);background:var(--papel);padding:12px 14px;font:500 16px/1.4 var(--f);color:var(--tx);margin-top:10px}
+.decision-final{margin-top:18px;padding:20px;border-radius:28px;background:var(--maiz);color:var(--tinta);border:2px solid var(--borde-pri);box-shadow:0 5px 0 var(--sombra-pri)}
+.decision-final .t2{font-size:28px;margin:6px 0 10px}
+.decision-final q{display:block;font-size:16px;quotes:none;font-style:italic}
+.decision-final q::before,.decision-final q::after{content:none}
+@media (prefers-reduced-motion:reduce){
+  .rueda .dg>span,.costo i,.medidor .pista i,.comp-det{transition-duration:.01s!important}
+  .yo-dice,.pide,.veredicto,.doc-sub[data-listo] .estado-d,.puntos-p i{animation:none!important}
+}
+
 @media (prefers-reduced-motion:reduce){
   .pan[class*=entra-]{animation:entraF .18s linear both}
   .pan[class*=sale-]{animation:salir .12s linear both}
@@ -583,6 +704,7 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;bac
         <h1 class="sr" id="t-inicio" tabindex="-1">Inicio</h1>
         <div class="msg" data-a><span class="luca"></span><div><div class="quien">Luca</div><p class="burbuja" data-dice id="dice-inicio"></p></div></div>
         <div class="tarjeta grano" data-a id="tarjeta-prima"></div>
+        <button class="decide-card" type="button" data-ir="decidir" data-a><span class="luca"></span><span class="txt"><b>¿Tienes una decisión de plata?</b><small>Debo y no sé cómo pagar, me ofrecieron un crédito, no sé si diferir...</small></span><span class="flecha" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></span></button>
         <div class="sec" data-a><h2 class="t3">Lo que viene</h2><span class="k">Hoy, 15 nov</span></div>
         <ul class="viene" id="viene" data-a></ul>
         <div class="sec" data-a><h2 class="t3">Sigue aprendiendo</h2></div>
@@ -632,6 +754,7 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;bac
       <!-- 9. Aprender -->
       <section class="pan con-tabs" id="aprender" data-titulo="Aprender" aria-labelledby="t-aprender" hidden>
         <h1 class="t1" id="t-aprender" tabindex="-1" style="margin:6px 0 16px" data-a>Aprender</h1>
+        <div class="tuyas" id="tuyas" data-a></div>
         <div class="caps" id="caps" role="group" aria-label="Caminos" data-a></div>
         <div class="cap-card" id="cap-card" data-a></div>
         <div class="camino" id="camino"></div>
@@ -675,6 +798,100 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;bac
         <div id="yo-grupos"></div>
         <div class="pronto" data-a><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 10h18M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18M12 3l9 5H3z"/></svg><span><b>Conectar tu banco</b>Próximamente</span></div>
         <button class="lnk borrar" type="button" id="b-borrar">Borrar todo lo que sé</button>
+      </section>
+
+      <!-- 14. Tengo una decisión: conversación -->
+      <section class="pan" id="decidir" data-titulo="Tengo una decisión" aria-labelledby="t-decidir" hidden>
+        <div class="cab"><button class="ic" type="button" data-atras aria-label="Atrás"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><span class="t3">Tengo una decisión</span></div>
+        <h1 class="sr" id="t-decidir" tabindex="-1">Tengo una decisión</h1>
+        <div class="chat" id="chat">
+          <div class="msg" data-a><span class="luca"></span><div><div class="quien">Luca</div><p class="burbuja" data-dice>Cuéntame qué está pasando, con tus palabras. Lo convierto en algo que puedas ver con tus números antes de decidir.</p></div></div>
+        </div>
+        <div id="chat-pide"></div>
+        <div id="redactor-w" style="margin-top:auto">
+          <div class="redactor" data-a>
+            <label class="sr" for="cuenta">Tu situación</label>
+            <textarea id="cuenta">Debo $2.400.000 en la tarjeta y no sé si pagar el mínimo, diferir a cuotas o pedir un préstamo.</textarea>
+            <button class="enviar" type="button" id="b-enviar" aria-label="Enviar"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 15. Leyendo los dos documentos -->
+      <section class="pan" id="dec-leer" data-titulo="Leyendo tus papeles" aria-labelledby="t-dec-leer" hidden>
+        <div class="cab"><span class="t3 k" style="flex:1">2 documentos</span></div>
+        <h1 class="t2" id="t-dec-leer" tabindex="-1" data-a>Leyendo tus papeles</h1>
+        <div class="pila">
+          <div class="papel" data-a><div class="haz"></div>
+            <div class="emp">Tarjeta de crédito</div><div class="sub">Extracto de noviembre de 2026</div>
+            <div class="renglon"><span>Saldo total</span><span class="v cifra">$2.400.000</span></div>
+            <div class="renglon"><span>Tasa de interés</span><span class="v cifra">26,50 % E.A.</span></div>
+            <div class="renglon"><span>Pago mínimo</span><span class="v cifra" id="ext-min"></span></div>
+            <div class="renglon"><span>Fecha límite de pago</span><span class="v">12 dic 2026</span></div>
+          </div>
+          <div class="papel" data-a>
+            <div class="emp">Préstamo de libre inversión</div><div class="sub">Oferta preaprobada</div>
+            <div class="renglon"><span>Monto</span><span class="v cifra">$2.400.000</span></div>
+            <div class="renglon"><span>Tasa de interés</span><span class="v cifra">18,90 % E.A.</span></div>
+            <div class="renglon"><span>Plazo</span><span class="v">6 a 36 meses</span></div>
+            <div class="renglon"><span>Seguro de vida</span><span class="v cifra">$4.800 al mes</span></div>
+          </div>
+        </div>
+        <div class="leyendo-estado" role="status" aria-live="polite"><span class="luca piensa"></span><p id="estado-dec">Leyendo tu extracto</p></div>
+      </section>
+
+      <!-- 16. La decisión, como lección -->
+      <section class="pan" id="decision" data-titulo="Tu decisión" aria-labelledby="t-decision" hidden>
+        <div class="cab"><button class="ic" type="button" data-atras aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="tajadas" id="dec-prog" role="img"></div><span style="width:44px"></span></div>
+        <h1 class="sr" id="t-decision" tabindex="-1">Tu decisión</h1>
+        <div class="paso" data-paso="1">
+          <p class="k">Lo que leí</p>
+          <h2 class="t2" style="margin-top:6px" tabindex="-1">Esto es lo que tienes sobre la mesa</h2>
+          <div class="lista" style="margin-top:16px">
+            <div class="fila"><div class="txt"><span>Debes en la tarjeta</span><b>$2.400.000 a 26,50 % E.A.</b></div></div>
+            <div class="fila"><div class="txt"><span>Te ofrecen un préstamo</span><b>18,90 % E.A. más seguro de $4.800</b></div></div>
+            <div class="fila"><div class="txt"><span>Tu sueldo</span><b class="cifra" id="dec-neto"></b></div></div>
+            <div class="fila"><div class="txt"><span>Ya pagas</span><b id="dec-ya"></b></div></div>
+            <div class="fila"><div class="txt"><span>Te llega pronto</span><b id="dec-prima"></b></div></div>
+          </div>
+          <div class="msg" style="margin-top:16px"><span class="luca"></span><div><div class="quien">Luca</div><p class="burbuja" data-dice>Con esto veo cuatro caminos. Te los muestro con tus números y tú decides.</p></div></div>
+          <div class="pie-acc"><button class="btn pri" type="button" data-dpaso="2">Ver los caminos</button></div>
+        </div>
+        <div class="paso" data-paso="2" hidden>
+          <p class="k">Antes de ver las cuentas</p>
+          <div class="msg" style="margin-top:12px"><span class="luca"></span><div><div class="quien">Luca</div><h2 class="burbuja t3" style="font-size:21px;line-height:1.25" tabindex="-1">¿Con cuál crees que pagas menos en total?</h2></div></div>
+          <div class="opts adivina" id="adivina"></div>
+          <div id="veredicto" style="margin-top:14px" aria-live="polite"></div>
+          <div class="pie-acc"><button class="btn pri" type="button" data-dpaso="3" id="b-adivina" disabled>Comparar con mis números</button></div>
+        </div>
+        <div class="paso" data-paso="3" hidden>
+          <div class="msg"><span class="luca"></span><div><div class="quien">Luca</div><h2 class="burbuja" id="dice-comp" tabindex="-1"></h2></div></div>
+          <div class="leyenda" aria-hidden="true"><span><i style="background:var(--tx)"></i>Lo que debes</span><span><i style="background:var(--aji)"></i>Intereses y seguro</span></div>
+          <div class="comps" id="comps"></div>
+          <div class="porque" id="porque"></div>
+          <div class="pie-acc"><button class="btn pri" type="button" data-dpaso="4">Ya entendí, quiero decidir</button></div>
+        </div>
+        <div class="paso" data-paso="4" hidden>
+          <p class="k">Tu decisión</p>
+          <h2 class="t2" style="margin-top:6px" tabindex="-1">¿Qué camino tomas?</h2>
+          <div class="elige" id="elige" role="group" aria-label="Caminos"></div>
+          <div class="motivo" style="margin-top:20px">
+            <p class="t3" style="font-size:17px">¿Por qué lo escoges?</p>
+            <div class="chips" id="motivos" style="margin-top:10px"></div>
+            <label class="sr" for="motivo-txt">Tu porqué, con tus palabras</label>
+            <textarea id="motivo-txt" placeholder="Si quieres, dilo con tus palabras"></textarea>
+          </div>
+          <div class="pie-acc"><button class="btn pri" type="button" id="b-decidir" disabled>Esta es mi decisión</button></div>
+        </div>
+        <div class="paso" data-paso="5" hidden>
+          <div class="cierre" style="justify-content:flex-start;padding-top:10px">
+            <span class="luca solo-con" id="luca-dec" style="width:96px;height:96px;margin-bottom:16px"></span>
+            <h2 class="t1" tabindex="-1">Decidiste tú.</h2>
+            <div class="decision-final" id="decision-final"></div>
+            <div class="regla grano" style="margin-top:16px"><p class="k">Lo que te llevas</p><q>Comparo el total, no la cuota.</q></div>
+          </div>
+          <div class="pie-acc"><button class="btn pri" type="button" id="b-dec-fin">Volver al inicio</button><button class="lnk" type="button" id="b-dec-aprender">Verla en Aprender</button></div>
+        </div>
       </section>
 
       <nav class="tabs fuera" id="tabs" aria-label="Secciones">
@@ -740,7 +957,7 @@ $('#wm-panel').innerHTML = wm() + '<span class="sr"> prototipo</span>';
 const E = {
   salario: 3600000, diaPago: 30, empresa: 'Logística Andina S.A.S.', ingreso: '1 de octubre de 2026',
   deudas: new Set(['celular']), cuota: 186000, quedan: 3, meta: 'Irme a vivir sola', vive: 'Con mi familia',
-  plan: null, prog: { E1: 6, E4: 1 }, cap: 'E', primaVista: false,
+  plan: null, prog: { E1: 6, E4: 1 }, cap: 'E', primaVista: false, decision: null,
 };
 const D = {
   get neto() { return E.salario * .92; }, get salud() { return E.salario * .04; },
@@ -945,7 +1162,10 @@ const viene = () => {
   l.push({ d: 20, m: 'dic', t: 'Tu prima', s: E.plan ? 'Ya tiene plan' : 'Todavía sin plan', v: D.prima, prox: true });
   l.push({ d: 31, m: 'ene', t: 'Intereses de cesantías', s: 'Llegan a tu cuenta', v: D.intereses });
   l.push({ d: 15, m: 'feb', t: 'Tus cesantías', s: 'Van a tu fondo, no a tu cuenta', v: D.ces, fondo: true });
-  return l;
+  const d = E.decision;
+  if (d) l.push(d.id === 'prima' ? { d: 20, m: 'dic', t: 'Abono a la tarjeta', s: 'Lo decidiste tú', v: -abono() } : { d: 15, m: 'ene', t: d.id === 'prestamo' ? 'Primera cuota del préstamo' : 'Cuota de la tarjeta', s: `Lo decidiste tú · ${d.meses} meses`, v: -d.c1 });
+  const ord = (x) => ['nov', 'dic', 'ene', 'feb'].indexOf(x.m) * 100 + x.d;
+  return l.sort((a, b) => ord(a) - ord(b));
 };
 ENTRAR.inicio = () => {
   const plan = E.plan;
@@ -1095,7 +1315,7 @@ function nodoSVG(n, h, chico) {
 }
 ENTRAR.aprender = () => {
   $('#caps').innerHTML = CAPS.map(([id, n]) => `<button type="button" data-cap="${id}" aria-pressed="${E.cap === id}"><b>${id}</b>${n}</button>`).join('');
-  pintarCamino();
+  pintarTuyas(); pintarCamino();
 };
 function pintarCamino(animar) {
   const [id, n, puede, mods] = CAPS.find((c) => c[0] === E.cap);
@@ -1210,8 +1430,214 @@ $('#yo-grupos').addEventListener('click', (e) => {
 });
 $('#b-borrar').onclick = () => abrirHoja(`<h2 class="t2">¿Borro todo lo que sé?</h2><p class="sx">Tus documentos, tus respuestas y tus planes. No se puede deshacer.</p><div style="display:grid;gap:12px;margin-top:20px"><button class="btn" type="button" id="b-no">Mejor no</button><button class="lnk" type="button" id="b-si" style="color:var(--aji)">Sí, borrar todo</button></div>`, (h) => { $('#b-no', h).onclick = () => cerrarHoja(); $('#b-si', h).onclick = () => { reiniciar(); }; });
 
+// ---------- Números que ruedan ----------
+function rueda(el, txt) {
+  if (!el) return;
+  const chars = [...txt], patron = chars.map((c) => /\d/.test(c) ? 'd' : c).join('');
+  let vis = el.querySelector('.rueda');
+  if (!vis || el.dataset.pat !== patron) {
+    el.dataset.pat = patron;
+    el.innerHTML = `<span class="sr"></span><span class="rueda" aria-hidden="true">${chars.map((c) => /\d/.test(c) ? `<span class="dg"><span>${[...'0123456789'].map((x) => `<span>${x}</span>`).join('')}</span></span>` : `<span class="sg">${c}</span>`).join('')}</span>`;
+    vis = el.querySelector('.rueda'); void vis.offsetWidth;
+  }
+  el.querySelector('.sr').textContent = txt;
+  const dgs = vis.querySelectorAll('.dg>span'); let k = 0;
+  chars.forEach((c) => { if (/\d/.test(c)) dgs[k++].style.setProperty('--d', c); });
+}
+
+// ---------- 14 a 16. Tengo una decisión ----------
+// Las cuentas son deterministas: en la app real viven en packages/core y el modelo solo las explica.
+const DEC = { saldo: 2400000, eaT: .265, eaP: .189, seguro: 4800, usura: .2834, plazoT: 12, plazoP: 12 };
+const im = (ea) => Math.pow(1 + ea, 1 / 12) - 1;
+// Tarjeta: cuota de capital fija más intereses sobre el saldo; a una cuota no cobra interés.
+const tarj = (p, n) => n === 1 ? { total: p, c1: p, int: 0 } : { total: p + im(DEC.eaT) * p * (n + 1) / 2, c1: p / n + im(DEC.eaT) * p, int: im(DEC.eaT) * p * (n + 1) / 2 };
+// Préstamo: cuota fija (sistema francés) más el seguro de cada mes.
+const pres = (p, n) => { const i = im(DEC.eaP), c = p * i / (1 - Math.pow(1 + i, -n)) + DEC.seguro; return { total: c * n, c1: c, int: c * n - p }; };
+const abono = () => Math.min(D.prima, DEC.saldo);
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const fin = (n, corto) => { const m = MESES[(n - 1) % 12]; return `${corto ? m.slice(0, 3) : m}${corto ? ' ' : ' de '}${2027 + Math.floor((n - 1) / 12)}`; };
+const OPC = [
+  { id: 'minimo', n: 'Pagar el mínimo', col: 'var(--aji)', sub: () => 'La tarjeta lo reparte en 36 meses', calc: () => tarj(DEC.saldo, 36), meses: () => 36, cuota: 'Primera cuota' },
+  { id: 'diferir', n: 'Diferir a menos cuotas', col: 'var(--maiz)', sub: () => `En la tarjeta, a ${DEC.plazoT} ${DEC.plazoT === 1 ? 'cuota' : 'cuotas'}`, calc: () => tarj(DEC.saldo, DEC.plazoT), meses: () => DEC.plazoT, rango: ['plazoT', 1, 24], cuota: 'Primera cuota' },
+  { id: 'prestamo', n: 'Pedir el préstamo', col: 'var(--hoja)', sub: () => `Pagas la tarjeta y le debes al banco, a ${DEC.plazoP} meses`, calc: () => pres(DEC.saldo, DEC.plazoP), meses: () => DEC.plazoP, rango: ['plazoP', 6, 36], cuota: 'Cuota fija' },
+  { id: 'prima', n: 'Abonar tu prima', col: 'var(--naranja)', sub: () => `${cop(abono())} el 20 de diciembre y el resto a 12 cuotas`, calc: () => { const r = tarj(DEC.saldo - abono(), 12); return { total: r.total + abono(), c1: r.c1, int: r.int }; }, meses: () => 12, cuota: 'Primera cuota' },
+];
+const peso = (c1) => (c1 + (E.deudas.has('celular') ? E.cuota : 0)) / D.neto;
+let decPaso = 1, decRevisar = false, guess = null, elegido = null, motivos = new Set(), docsListos = new Set();
+
+ENTRAR.decidir = () => {
+  $$('#chat > :not(:first-child)').forEach((n) => n.remove());
+  $('#chat-pide').innerHTML = ''; $('#redactor-w').hidden = false; docsListos = new Set();
+};
+$('#b-enviar').onclick = () => {
+  const t = $('#cuenta').value.trim(); if (!t) { $('#cuenta').focus(); return; }
+  const chat = $('#chat');
+  chat.insertAdjacentHTML('beforeend', `<p class="yo-dice">${esc(t)}</p><div class="msg" id="pensando"><span class="luca piensa"></span><div><div class="quien">Luca</div><p class="burbuja" aria-label="Luca está escribiendo"><span class="puntos-p"><i></i><i></i><i></i></span></p></div></div>`);
+  pintarLucas(chat); $('#redactor-w').hidden = true;
+  setTimeout(() => {
+    $('#pensando')?.remove();
+    chat.insertAdjacentHTML('beforeend', `<div class="msg"><span class="luca"></span><div><div class="quien">Luca</div><p class="burbuja" data-dice>Entiendo. Para mostrarte qué implica cada camino con tus números necesito dos papeles: <b>el extracto de la tarjeta</b> y <b>la oferta del préstamo</b>.</p></div></div>`);
+    const m = chat.lastElementChild; pintarLucas(m); palabras(m); gesto($('.luca', m), 'habla');
+    $('#chat-pide').innerHTML = `<div class="pide" style="margin-top:16px">
+      <button class="doc-sub" type="button" data-doc="ext"><span class="doc-ico">PDF</span><span><b>Extracto de la tarjeta</b><small>Toca para subirlo</small></span><span class="estado-d">Subir</span></button>
+      <button class="doc-sub" type="button" data-doc="ofe"><span class="doc-ico">PDF</span><span><b>Oferta del préstamo</b><small>Toca para subirla</small></span><span class="estado-d">Subir</span></button>
+      <div class="pie-acc" style="padding-top:10px"><button class="btn pri" type="button" id="b-leer2" disabled>Leer mis papeles</button></div></div>`;
+    $('#decidir').scrollTo({ top: 9999, behavior: reducido() ? 'auto' : 'smooth' });
+    $('[data-doc="ext"]').focus({ preventScroll: true });
+  }, reducido() ? 200 : 1300);
+};
+$('#chat-pide').addEventListener('click', (e) => {
+  const d = e.target.closest('[data-doc]');
+  if (d && !d.dataset.listo) {
+    d.dataset.listo = '1'; docsListos.add(d.dataset.doc);
+    $('small', d).textContent = d.dataset.doc === 'ext' ? 'extracto-nov-2026.pdf' : 'oferta-prestamo.pdf';
+    $('.estado-d', d).innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg><span class="sr">Subido</span>';
+    $('#b-leer2').disabled = docsListos.size < 2;
+    if (docsListos.size === 2) $('#b-leer2').focus();
+  }
+  if (e.target.closest('#b-leer2')) ir('dec-leer');
+});
+
+let lectura2 = [];
+ENTRAR['dec-leer'] = () => {
+  lectura2.forEach(clearTimeout); lectura2 = [];
+  $('#ext-min').textContent = cop(tarj(DEC.saldo, 36).c1);
+  const filas = $$('#dec-leer .renglon'), est = ['Leyendo tu extracto', 'Revisando la tasa', 'Leyendo la oferta', 'Sumando seguros y plazos'];
+  filas.forEach((f) => f.classList.remove('leida')); $('#estado-dec').textContent = est[0];
+  const paso = reducido() ? 120 : 380;
+  filas.forEach((f, i) => lectura2.push(setTimeout(() => { f.classList.add('leida'); $('#estado-dec').textContent = est[Math.floor(i / 2)]; }, 400 + i * paso)));
+  lectura2.push(setTimeout(() => { if (actual === 'dec-leer') ir('decision', 'adelante', { sinHist: true }); }, 900 + filas.length * paso));
+};
+
+function irDec(n) {
+  decPaso = n;
+  $('#dec-prog').innerHTML = [1, 2, 3, 4, 5].map((i) => `<i class="${i <= n ? 'si' : ''}"></i>`).join('');
+  $('#dec-prog').setAttribute('aria-label', `Paso ${n} de 5`);
+  const pan = $('#decision');
+  $$('.paso', pan).forEach((p) => p.hidden = +p.dataset.paso !== n);
+  const p = $(`.paso[data-paso="${n}"]`, pan);
+  [...p.children].forEach((el, i) => { el.setAttribute('data-a', ''); el.style.setProperty('--i', i); });
+  if (n === 2) pintarAdivina();
+  if (n === 3) pintarComps();
+  if (n === 4) pintarElige();
+  if (n === 5) cierreDec();
+  pan.scrollTop = 0; pan.classList.remove('entrando'); void pan.offsetWidth; pan.classList.add('entrando');
+  palabras(p); setTimeout(() => gesto($('.msg .luca', p), 'habla'), 200);
+  ($('[tabindex="-1"]', p) || $('#t-decision')).focus({ preventScroll: true });
+}
+ENTRAR.decision = () => {
+  $('#dec-neto').textContent = `${cop(D.neto)} el ${E.diaPago} de cada mes`;
+  $('#dec-ya').textContent = E.deudas.has('celular') ? `Celular: ${cop(E.cuota)} al mes, quedan ${E.quedan}` : 'Ninguna otra cuota';
+  $('#dec-prima').textContent = `Tu prima, ${cop(D.prima)}, el 20 de diciembre`;
+  if (!decRevisar) { guess = null; elegido = null; motivos = new Set(); $('#motivo-txt').value = ''; }
+  setTimeout(() => irDec(decRevisar ? 3 : 1)); decRevisar = false;
+};
+$('#decision').addEventListener('click', (e) => { const b = e.target.closest('[data-dpaso]'); if (b && !b.disabled) irDec(+b.dataset.dpaso); });
+
+function pintarAdivina() {
+  $('#adivina').innerHTML = OPC.map((o) => `<button class="opt" type="button" data-g="${o.id}" aria-pressed="${guess === o.id}"><span>${o.n}</span><small>${o.id === 'prima' ? 'y el resto a cuotas' : o.id === 'minimo' ? '36 meses' : '12 meses'}</small></button>`).join('');
+  $('#veredicto').innerHTML = ''; $('#b-adivina').disabled = !guess;
+  if (guess) veredicto();
+}
+function veredicto() {
+  const tot = OPC.map((o) => ({ o, t: o.id === 'diferir' ? tarj(DEC.saldo, 12).total : o.id === 'prestamo' ? pres(DEC.saldo, 12).total : o.calc().total })).sort((a, b) => a.t - b.t);
+  const mejor = tot[0].o, peor = tot[tot.length - 1];
+  $('#veredicto').innerHTML = `<div class="veredicto"><p class="k">${guess === mejor.id ? 'Le pegaste' : 'No era esa'}</p><p style="margin-top:6px">La que menos cuesta en total es <b>${mejor.n.toLowerCase()}</b>. La más cara, ${peor.o.n.toLowerCase()}: <b>${cop(peor.t - tot[0].t)} más</b>. Pero que algo cueste menos no lo hace mejor para ti. Míralo con tu mes.</p></div>`;
+  $('#b-adivina').disabled = false;
+}
+$('#adivina').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-g]'); if (!b || guess) return;
+  guess = b.dataset.g; $$('#adivina [data-g]').forEach((x) => x.setAttribute('aria-pressed', x === b));
+  veredicto(); gesto($('#decision .paso[data-paso="2"] .luca'), guess === 'prima' ? 'fiesta' : 'habla', 1100);
+});
+
+let abierta = null;
+function pintarComps() {
+  $('#comps').innerHTML = OPC.map((o) => `<div class="comp" data-c="${o.id}">
+    <button class="comp-cab" type="button" aria-expanded="false" aria-controls="det-${o.id}"><span class="nom"><i style="background:${o.col}"></i>${o.n}</span><span class="sub" data-sub></span><span class="tot"><b data-tot></b><small>en total</small></span><span class="costo" aria-hidden="true"><i class="cap"></i><i class="int"></i></span></button>
+    <div class="comp-det" id="det-${o.id}"><div><div class="dentro">
+      <div class="datos3"><div><span>${o.cuota}</span><b data-c1></b></div><div><span>Meses</span><b data-me></b></div><div><span>Terminas</span><b data-fin></b></div></div>
+      ${o.rango ? `<div class="plazo"><label for="r-${o.id}">Plazo <b data-pl></b></label><input type="range" id="r-${o.id}" min="${o.rango[1]}" max="${o.rango[2]}" step="1" value="${DEC[o.rango[0]]}" data-rango="${o.id}"></div>` : ''}
+      <div class="medidor"><div class="pista"><i data-med></i></div><p data-medt></p></div>
+    </div></div></div></div>`).join('');
+  $('#porque').innerHTML = [
+    ['¿Por qué el mínimo sale tan caro?', () => { const i1 = im(DEC.eaT) * DEC.saldo; return `Al principio casi todo lo que pagas son intereses. Con el mínimo, en enero pagarías <b>${cop(i1)}</b> de intereses y tu deuda bajaría solo <b>${cop(DEC.saldo / 36)}</b>.`; }],
+    ['26,50 % E.A., ¿es mucho?', () => `Es lo que te cobra la tarjeta en un año. Al mes es ${(im(DEC.eaT) * 100).toFixed(2).replace('.', ',')} %. La usura de noviembre de 2026, el máximo que permite la ley, es <b>28,34 %</b>: tu tarjeta está cerca del tope.`],
+    ['La tasa del préstamo es más baja, ¿por qué cuesta casi igual?', () => `Porque al préstamo se le suma un seguro de <b>${cop(DEC.seguro)}</b> cada mes. A 12 meses son ${cop(DEC.seguro * 12)}. Por eso se compara el total, no solo la tasa.`],
+  ].map(([q, a], i) => `<button class="exp" type="button" aria-expanded="false" aria-controls="pq${i}"><span class="pq">${q}</span></button><div class="expl" id="pq${i}"><div><p>${a()}</p></div></div>`).join('');
+  abierta = null; updComps(); decirComp();
+}
+function updComps(soloId) {
+  const datos = OPC.map((o) => ({ o, r: o.calc() })), max = Math.max(...datos.map((d) => d.r.total));
+  datos.forEach(({ o, r }) => {
+    const c = $(`[data-c="${o.id}"]`), n = o.meses(), w = peso(r.c1);
+    $('[data-sub]', c).textContent = o.sub();
+    rueda($('[data-tot]', c), cop(r.total));
+    $('.cap', c).style.width = (DEC.saldo / max * 100) + '%'; $('.int', c).style.width = (r.int / max * 100) + '%';
+    rueda($('[data-c1]', c), cop(r.c1)); $('[data-me]', c).textContent = n; $('[data-fin]', c).textContent = fin(n, true);
+    if (o.rango) $('[data-pl]', c).textContent = `${n} ${n === 1 ? (o.id === 'diferir' ? 'cuota' : 'mes') : (o.id === 'diferir' ? 'cuotas' : 'meses')}`;
+    const med = $('[data-med]', c); med.style.width = Math.min(100, w * 100) + '%'; med.style.background = w < .2 ? 'var(--hoja)' : w < .334 ? 'var(--maiz)' : 'var(--aji)';
+    $('[data-medt]', c).innerHTML = `En enero, <b>${Math.round(w * 100)} % de tu sueldo</b> se iría en cuotas${E.deudas.has('celular') ? ', contando el celular' : ''}.${w >= .334 ? ' Más de un tercio.' : ''}`;
+  });
+}
+function decirComp(id) {
+  const o = OPC.find((x) => x.id === id), d = $('#dice-comp');
+  let t = 'Este es el costo de cada camino, en total. Toca uno para ver cómo queda tu mes.';
+  if (o) {
+    const r = o.calc(), n = o.meses();
+    if (id === 'minimo') t = `Con el mínimo terminas en ${fin(36)} y pagas <b>${cop(r.int)}</b> de intereses.`;
+    if (id === 'diferir') t = n === 1 ? `A una cuota no pagas intereses, pero en enero se te irían <b>${cop(r.c1)}</b>: ${Math.round(peso(r.c1) * 100)} % de tu sueldo.` : `A ${n} cuotas pagas <b>${cop(r.int)}</b> de intereses.${n > 12 ? ' La cuota baja, pero el total sube.' : n < 12 ? ' Cuota más alta, menos intereses.' : ''}`;
+    if (id === 'prestamo') { const dif = tarj(DEC.saldo, n <= 24 ? n : 24).total - r.total; t = `A ${n} meses la cuota es de <b>${cop(r.c1)}</b> y pagas ${cop(r.int)} entre intereses y seguro.${n <= 24 ? ` Frente a diferir a ${n} en la tarjeta, ${dif >= 0 ? `ahorras <b>${cop(dif)}</b>` : `pagas <b>${cop(-dif)}</b> más`}.` : ''}`; }
+    if (id === 'prima') t = `Es el camino que menos cuesta, pero usa tu prima.${E.plan ? ' Tu plan de la prima tendría que cambiar.' : ' Esa plata ya no iría a tu colchón ni a tu meta.'}`;
+  }
+  if (d.dataset.orig !== t) decir(d, t);
+}
+$('#comps').addEventListener('click', (e) => {
+  const b = e.target.closest('.comp-cab'); if (!b) return;
+  const c = b.closest('.comp'), id = c.dataset.c, abrir = abierta !== id;
+  $$('#comps .comp').forEach((x) => { x.toggleAttribute('data-abierta', abrir && x === c); $('.comp-cab', x).setAttribute('aria-expanded', abrir && x === c); });
+  abierta = abrir ? id : null; decirComp(abierta);
+});
+$('#comps').addEventListener('input', (e) => {
+  const r = e.target.closest('[data-rango]'); if (!r) return;
+  const o = OPC.find((x) => x.id === r.dataset.rango); DEC[o.rango[0]] = +r.value;
+  r.setAttribute('aria-valuetext', `${r.value} ${o.id === 'diferir' ? 'cuotas' : 'meses'}`);
+  updComps(); decirComp(o.id);
+});
+$('#porque').addEventListener('click', (e) => { const b = e.target.closest('.exp'); if (b) b.setAttribute('aria-expanded', b.getAttribute('aria-expanded') !== 'true'); });
+
+const MOTIVOS = ['Me sale más barato', 'La cuota me cabe en el mes', 'No quiero tocar mi prima', 'Quiero salir rápido de la deuda', 'Prefiero una sola deuda'];
+function pintarElige() {
+  $('#elige').innerHTML = OPC.map((o) => { const r = o.calc(); return `<button class="opt" type="button" data-e="${o.id}" aria-pressed="${elegido === o.id}"><span>${o.n}<br><small class="sx" style="font:500 13px var(--f)">${o.sub()}</small></span><b>${cop(r.total)}</b></button>`; }).join('');
+  $('#motivos').innerHTML = MOTIVOS.map((m) => `<button class="chip" type="button" data-m="${m}" aria-pressed="${motivos.has(m)}">${m}</button>`).join('');
+  $('#b-decidir').disabled = !elegido;
+}
+$('#elige').addEventListener('click', (e) => { const b = e.target.closest('[data-e]'); if (!b) return; elegido = b.dataset.e; $$('#elige [data-e]').forEach((x) => x.setAttribute('aria-pressed', x === b)); $('#b-decidir').disabled = false; });
+$('#motivos').addEventListener('click', (e) => { const b = e.target.closest('[data-m]'); if (!b) return; const m = b.dataset.m; motivos.has(m) ? motivos.delete(m) : motivos.add(m); b.setAttribute('aria-pressed', motivos.has(m)); });
+$('#b-decidir').onclick = () => {
+  const o = OPC.find((x) => x.id === elegido), r = o.calc(), propio = $('#motivo-txt').value.trim();
+  E.decision = { id: o.id, n: o.n, sub: o.sub(), total: r.total, c1: r.c1, meses: o.meses(), motivo: propio || [...motivos].join(', ') };
+  E.deudas.add(o.id === 'prestamo' ? 'prestamo' : 'tarjeta');
+  if (o.id === 'prima') E.plan = null;
+  irDec(5);
+};
+function cierreDec() {
+  const d = E.decision; if (!d) return;
+  $('#decision-final').innerHTML = `<p class="k" style="color:var(--tinta)">Tu camino</p><p class="t2">${d.n}</p><p>Pagas <b>${cop(d.total)}</b> en total y terminas en ${fin(d.meses)}.${d.id === 'prima' ? ' Tu plan de la prima queda libre para rehacerlo.' : ''}</p>${d.motivo ? `<q style="margin-top:10px">Porque: ${esc(d.motivo.charAt(0).toLowerCase() + d.motivo.slice(1))}.</q>` : ''}`;
+  if (!$('#luca-dec').firstChild) $('#luca-dec').innerHTML = svgLuca;
+  setTimeout(() => { gesto($('#luca-dec'), 'fiesta', 1200); chispas($('#luca-dec').offsetParent ? $('#luca-dec') : $('#decision-final'), 20); }, 300);
+}
+$('#b-dec-fin').onclick = () => { historial = []; ir('inicio', 'atras', { sinHist: true }); };
+$('#b-dec-aprender').onclick = () => { historial = []; ir('aprender', 'adelante', { sinHist: true }); };
+function pintarTuyas() {
+  $('#tuyas').innerHTML = `<button class="decide-card" type="button" data-ir="decidir" style="margin-top:0"><span class="luca"></span><span class="txt"><b>Convierte una decisión en lección</b><small>Cuéntame qué pasa y súbeme tus papeles</small></span><span class="flecha" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></span></button>`
+    + (E.decision ? `<button class="tuya" type="button" id="b-tuya"><span class="txt"><b>¿Mínimo, diferir o préstamo?</b><small>Con tu extracto de noviembre · decidiste: ${E.decision.n.toLowerCase()}</small></span><span class="pas osc">Tuya</span></button>` : '');
+  pintarLucas($('#tuyas'));
+  $('#b-tuya')?.addEventListener('click', () => { decRevisar = true; ir('decision'); });
+}
+
 // ---------- Controles del prototipo ----------
-const SALTOS = [['entrada', 'Entrada'], ['conocer', 'Conocerte'], ['leyendo', 'Leyendo el documento'], ['leido', 'Lo que leí'], ['preguntas', 'Tres preguntas'], ['listo', 'Listo'], ['inicio', 'Inicio'], ['prima', 'Tu prima, como lección'], ['aprender', 'Aprender'], ['leccion', 'Una lección'], ['documentos', 'Mis documentos'], ['doc', 'Documento explicado'], ['yo', 'Lo que Luca sabe']];
+const SALTOS = [['entrada', 'Entrada'], ['conocer', 'Conocerte'], ['leyendo', 'Leyendo el documento'], ['leido', 'Lo que leí'], ['preguntas', 'Tres preguntas'], ['listo', 'Listo'], ['inicio', 'Inicio'], ['prima', 'Tu prima, como lección'], ['decidir', 'Tengo una decisión'], ['dec-leer', 'Leyendo tus papeles'], ['decision', 'Tu decisión, como lección'], ['aprender', 'Aprender'], ['leccion', 'Una lección'], ['documentos', 'Mis documentos'], ['doc', 'Documento explicado'], ['yo', 'Lo que Luca sabe']];
 $('#saltos').innerHTML = SALTOS.map(([id, n], i) => `<li><button type="button" data-salto="${id}">${n}<small>${String(i + 1).padStart(2, '0')}</small></button></li>`).join('');
 $('#salto-sel').innerHTML = SALTOS.map(([id, n], i) => `<option value="${id}">${i + 1}. ${n}</option>`).join('');
 function saltar(id) {
@@ -1230,7 +1656,7 @@ $('[data-ctl=tema]').addEventListener('click', (e) => { const b = e.target.close
 $('[data-ctl=personaje]').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) personaje(b.dataset.v === 'con'); });
 $('#b-tema').onclick = () => { const cur = document.documentElement.dataset.theme || 'auto'; tema(TEMAS[(TEMAS.indexOf(cur) + 1) % 3]); };
 $('#b-per').onclick = () => personaje(app.classList.contains('sin-luca'));
-function reiniciar() { cerrarHoja(true); Object.assign(E, { deudas: new Set(['celular']), plan: null, prog: { E1: 6, E4: 1 }, cap: 'E', primaVista: false, meta: 'Irme a vivir sola', vive: 'Con mi familia' }); historial = []; ir('entrada', 'atras', { sinHist: true }); }
+function reiniciar() { cerrarHoja(true); Object.assign(E, { deudas: new Set(['celular']), plan: null, prog: { E1: 6, E4: 1 }, cap: 'E', primaVista: false, decision: null, meta: 'Irme a vivir sola', vive: 'Con mi familia' }); DEC.plazoT = 12; DEC.plazoP = 12; historial = []; ir('entrada', 'atras', { sinHist: true }); }
 
 // ---------- Arranque ----------
 try { const t = localStorage.getItem('luca-tema'); if (t) tema(t); } catch (e) {}
