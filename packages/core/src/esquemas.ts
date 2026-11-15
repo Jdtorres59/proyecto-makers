@@ -31,6 +31,8 @@ export const Deuda = z.object({
   saldo: Plata.nullable(),
   /** Tasa efectiva anual en porcentaje, por ejemplo 26.5. */
   tasaEA: z.number().nonnegative().nullable(),
+  /** Día del mes en que se paga la cuota. Opcional para no romper datos de muestra anteriores. */
+  diaDePago: z.number().int().min(1).max(31).nullable().optional(),
 });
 export type Deuda = z.infer<typeof Deuda>;
 
