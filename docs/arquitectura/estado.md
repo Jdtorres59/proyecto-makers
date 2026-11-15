@@ -2,7 +2,22 @@
 
 Documento de relevo. Quien termina una tarea lo actualiza para que la siguiente persona o agente sepa dónde va el trabajo.
 
-Última actualización: 14 de noviembre de 2026 (rama `base-tecnica`).
+Última actualización: 15 de noviembre de 2026 (rama `v1`).
+
+## Luca 1.0: en qué paso va
+
+Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el currículo.
+
+| Paso | Qué | Estado |
+|---|---|---|
+| 0 | Rama `v1`, contratos en `packages/core/src/esquemas.ts` | Hecho |
+| 1 | Dirección visual y personaje (tres propuestas, Juan David elige) | En curso |
+| 2 | Biblioteca de assets en `apps/mobile/assets` | Pendiente |
+| 3 | App con datos de muestra | Pendiente |
+| 4 | Backend: cuentas, tablas, agentes y rutas | En curso |
+| 5 | Conectar app y API | Pendiente |
+| 6 | Contenido de los 12 módulos | Pendiente |
+| 7 | Pulido y verificación | Pendiente |
 
 ## Qué funciona y cómo se comprobó
 

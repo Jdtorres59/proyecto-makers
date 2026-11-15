@@ -2,6 +2,24 @@
 
 Una entrada corta por decisión: qué, por qué y qué la haría cambiar. Las nuevas van arriba.
 
+## 2026-11-15 · Luca 1.0
+
+**El producto es Luca y la 1.0 sale del prototipo cálido.** El equipo eligió el tono cálido (maíz y tinta, Bricolage Grotesque). El prototipo es la base de flujos, no el techo del diseño: la 1.0 debe verse bastante mejor. "Luca" es nombre de trabajo.
+
+**Luca lleva un personaje propio y una biblioteca de ilustraciones.** La moneda con tajada no puede ser el único recurso gráfico. Se toma de EZ (app anterior de Juan David) la mascota con poses, la portada ilustrada por tema y las medallas; estas últimas se ganan con la acción de cada módulo, no con un quiz.
+
+**Sin racha diaria ni registro de gastos.** Luca gira alrededor de las fechas de la plata de la persona ("Lo que viene"), no de entrar todos los días, y no es una central bancaria. Cambiaría si el equipo ve que hace falta un motivo de regreso diario.
+
+**"Aprender" muestra el núcleo de 12 módulos**, no los 28 del prototipo. Un módulo con cifras sin verificar por una persona va con `publicado: false` y la app lo muestra bloqueado.
+
+**Primero lo visual, después el contenido.** Los 12 módulos se escriben cuando el diseño de la app esté aprobado.
+
+**Los contratos entre app y API viven en `packages/core/src/esquemas.ts`.** La app arma sus datos de muestra con esos tipos y la API responde con ellos, para que las dos se construyan en paralelo.
+
+**La regla 8 (la IA no recomienda productos) sigue vigente.** La opción de nombrar productos de inversión como hechos espera al equipo y a un abogado.
+
+**Proveedor de modelo sin confirmar.** Se construye contra el proveedor simulado; la propuesta es Amazon Bedrock con créditos.
+
 ## 2026-11-14 · Base técnica
 
 **App móvil multiplataforma con Expo.** El equipo quiere una app de teléfono para iOS y Android y probarla en sus propios celulares. Expo da un solo código en TypeScript. Cambiaría si el producto termina siendo sobre todo WhatsApp o web.

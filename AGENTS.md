@@ -4,7 +4,9 @@ Reglas del repo para personas y agentes. `CLAUDE.md` importa este archivo: se ed
 
 ## Qué es esto
 
-Base técnica de una EdTech de finanzas AI-first (Makers Fellowship). **El producto no está definido.** Lo que hay en `docs/ideas/` son posibilidades, no decisiones. No construyas features de producto sin una decisión del equipo anotada en `docs/arquitectura/decisiones.md`.
+Luca (nombre de trabajo): app de educación financiera AI-first para jóvenes colombianos en sus primeros meses de empleo formal (Makers Fellowship). Luca conoce los números de la persona (salario, fechas, deudas) y le ayuda a entender y decidir; no decide por ella ni es un banco. Además tiene módulos para aprender un tema.
+
+La versión 1.0 se construye en la rama `v1` a partir del prototipo `docs/marca/prototipo/luca-prototipo.html` y del núcleo de 12 módulos de `docs/ideas/10 - Curriculo completo.md`. Lo que no esté anotado en `docs/arquitectura/decisiones.md` no está decidido.
 
 Antes de empezar una tarea, lee `docs/arquitectura/estado.md`.
 
@@ -14,12 +16,15 @@ Antes de empezar una tarea, lee `docs/arquitectura/estado.md`.
 |---|---|
 | `apps/mobile` | App Expo (iOS, Android, web). Tiene su propio `AGENTS.md` con reglas de Expo |
 | `apps/api` | Servidor Hono. Único lugar con llaves secretas y acceso al modelo |
-| `packages/core` | Dominio determinista: plata en COP, cálculos, esquemas compartidos |
+| `apps/mobile/assets` | Biblioteca de ilustraciones: personaje, portadas, medallas, escenas |
+| `packages/core` | Dominio determinista: plata en COP, cálculos y los contratos entre app y API (`esquemas.ts`) |
+| `packages/contenido` | Los módulos y lecciones, con el esquema `Modulo` de `core` |
 | `packages/ai` | Capa de IA: proveedor, modelos, prompts, herramientas, agentes, registro |
 | `packages/conocimiento` | Normas colombianas con cifra, fuente y vigencia |
 | `supabase/migrations` | Esquema de la base de datos y políticas RLS |
 | `evals` | Casos que la IA no puede fallar |
 | `docs/investigacion`, `docs/ideas`, `insumos`, `build` | Investigación previa. No se toca desde tareas de código |
+| `docs/marca` | Exploración de marca y prototipo navegable. Referencia, no código de la app |
 | `docs/arquitectura` | Mapa del sistema, decisiones y estado del trabajo |
 
 ## Comandos
@@ -46,6 +51,7 @@ Corre `pnpm typecheck && pnpm test && pnpm eval` antes de dar una tarea por term
 - Toda tabla nueva lleva RLS activo y políticas de "solo el dueño".
 - Idioma: dominio, documentación y textos de la app en español. Tablas y columnas de la base de datos en inglés `snake_case`.
 - Dependencias: no agregues una por pocas líneas. Las versiones compartidas viven en el catálogo de `pnpm-workspace.yaml`. En `apps/mobile` se instalan con `npx expo install`.
+- Mientras dure la 1.0 cada sesión toca solo sus carpetas: diseño (`docs/marca`, `apps/mobile/assets`, `DESIGN.md`), app (`apps/mobile` menos `assets`), backend (`apps/api`, `packages/*`, `supabase`, `evals`), currículo (`packages/contenido`). Los contratos de `packages/core/src/esquemas.ts` los edita solo backend.
 - Al terminar: actualiza `docs/arquitectura/estado.md`. Si tomaste una decisión que otro debería conocer, anótala en `decisiones.md`.
 
 ## Reglas de IA
@@ -67,4 +73,4 @@ Salen de la investigación del equipo (`docs/ideas/04`, `docs/investigacion/08`)
 - **Una herramienta:** en `packages/ai/src/herramientas.ts`, con esquema zod. La lógica va en `packages/core` con su prueba.
 - **Una norma:** en `packages/conocimiento/src/normas.ts`, verificada contra la fuente oficial.
 - **Una tabla:** migración nueva con RLS y políticas. Revisa los avisos de seguridad de Supabase después de aplicarla.
-- **Una pantalla:** archivo en `apps/mobile/src/app/`. El diseño visual todavía no tiene dirección: no inventes una sin acordarla.
+- **Una pantalla:** archivo en `apps/mobile/src/app/`. Sigue `DESIGN.md` y usa los assets por nombre desde `apps/mobile/assets`. Todo texto cumple contraste 4,5:1 en claro y oscuro.
