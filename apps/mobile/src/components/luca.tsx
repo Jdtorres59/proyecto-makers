@@ -13,7 +13,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Espacio, Forma, Movimiento, Tipo, useTema } from '@/constants/tema';
-import { asset, familiaDe, grabado, type NombreAsset, type Pose } from '@/lib/assets';
+import { asset, familiaDe, type NombreAsset, type Pose } from '@/lib/assets';
 
 import { MarcoGrabado } from './marco-grabado';
 import { Texto } from './texto';
@@ -54,7 +54,8 @@ type Props = {
 
 /**
  * Luca, el personaje. Entra con un resorte, saluda meciéndose, celebra saltando y da un saltico cuando habla.
- * Sobre fondo oscuro, si es pequeño, lleva un halo maíz suave detrás (DESIGN.md) porque la tinta café se pierde.
+ * Sobre fondo oscuro, si es pequeño, se apoya en un sello redondo de papel claro: el halo de DESIGN.md no alcanzaba
+ * para que brazos y piernas en tinta café se distingan del fondo.
  * Es decorativo: lo que dice siempre está en texto.
  */
 export function Luca({ pose = 'saluda', tamano, gesto = 'entra', latido = 0, nombre }: Props) {
@@ -86,10 +87,10 @@ export function Luca({ pose = 'saluda', tamano, gesto = 'entra', latido = 0, nom
     transform: [{ translateY: y.value }, { scale: escala.value }, { rotate: `${giro.value}deg` }],
   }));
 
-  const halo = tema.oscuro && tamano <= 120;
+  const sello = tema.oscuro && tamano <= 120;
   return (
     <View style={{ width: tamano, height: tamano }} accessible={false} importantForAccessibility="no-hide-descendants">
-      {halo ? <Image source={grabado('halo', true)} style={[StyleSheet.absoluteFill, { transform: [{ scale: 1.25 }] }]} accessible={false} /> : null}
+      {sello ? <View style={[estilos.sello, { borderRadius: tamano / 2 }]} /> : null}
       <Animated.View style={[StyleSheet.absoluteFill, animado]}>
         <Ilustracion nombre={nombre ?? `luca/luca-${pose}`} ancho={tamano} />
       </Animated.View>
@@ -163,6 +164,8 @@ function TextoHablado({ trozos, completo, grande }: { trozos: { t: string; fuert
 }
 
 const estilos = StyleSheet.create({
+  // Papel claro de DESIGN.md con contorno maíz: un sello que lee bien sobre #1D1812.
+  sello: { ...StyleSheet.absoluteFillObject, backgroundColor: '#F6EEDC', borderWidth: 2, borderColor: '#D99A2B', transform: [{ scale: 1.04 }] },
   burbujaFila: { flexDirection: 'row', alignItems: 'flex-end', gap: Espacio.s },
   burbujaCuerpo: { flex: 1, gap: Espacio.xs },
   burbuja: {
