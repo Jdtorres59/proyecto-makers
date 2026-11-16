@@ -51,8 +51,9 @@ export default function Decidir() {
     haptica.firme();
     setProblema(null);
     setEnviado(mensaje);
+    let decisionId: string;
     try {
-      await iniciarDecision(mensaje);
+      decisionId = (await iniciarDecision(mensaje)).id;
     } catch (e) {
       setProblema(comoProblema(e));
       setEnviado(null);
@@ -61,7 +62,7 @@ export default function Decidir() {
     // La conversación es un acompañamiento: si el modelo no responde (tope, red), los caminos igual se pueden ver.
     try {
       let dicho = '';
-      await conversar(mensaje, [], (ev) => {
+      await conversar(decisionId, mensaje, [], (ev) => {
         if (ev.tipo === 'texto') setRespuesta((dicho += ev.delta));
         if (ev.tipo === 'fin' && ev.estado !== 'ok' && !dicho.trim()) setRespuesta(RESPUESTA_SIN_MODELO);
       });

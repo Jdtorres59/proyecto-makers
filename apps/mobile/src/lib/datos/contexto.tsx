@@ -49,7 +49,8 @@ type Estado = {
   ganarMedalla(modulo: string): void;
   guardarPlanPrima(plan: Destino[]): void;
   iniciarDecision(pregunta: string): Promise<Decision>;
-  conversar(mensaje: string, historial: Turno[], alEvento: (e: EventoIA) => void): Promise<void>;
+  /** `decisionId` explícito: justo después de crearla, el estado todavía no se actualizó. */
+  conversar(decisionId: string, mensaje: string, historial: Turno[], alEvento: (e: EventoIA) => void): Promise<void>;
   guardarPapel(cual: 'extracto' | 'oferta', docId: string): void;
   cerrarDecision(cierre: Cierre, resumen: ResumenDecision): Promise<void>;
   borrarTodo(): Promise<void>;
@@ -219,9 +220,8 @@ export function ProveedorLuca({ children, demo, activo }: { children: ReactNode;
       setPapeles({ extracto: null, oferta: null });
       return d;
     },
-    async conversar(mensaje, historial, alEvento) {
-      if (!decisionEnCurso) return;
-      await fuente.conversar(decisionEnCurso.id, mensaje, historial, [papeles.extracto, papeles.oferta].filter((x) => x !== null), alEvento);
+    async conversar(decisionId, mensaje, historial, alEvento) {
+      await fuente.conversar(decisionId, mensaje, historial, [papeles.extracto, papeles.oferta].filter((x) => x !== null), alEvento);
     },
     guardarPapel: (cual, docId) => setPapeles((p) => ({ ...p, [cual]: docId })),
     async cerrarDecision(cierre, resumen) {

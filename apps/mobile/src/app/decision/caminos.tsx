@@ -39,6 +39,7 @@ export default function Caminos() {
   const extracto = documentos.find((d) => d.id === ids.extracto);
   const oferta = documentos.find((d) => d.id === ids.oferta);
   const [corregidos, setCorregidos] = useState<Partial<Papeles>>({});
+  const [borradores, setBorradores] = useState<Partial<Record<keyof Papeles, string>>>({});
   const [cerrando, setCerrando] = useState(false);
   const [problemaCierre, setProblemaCierre] = useState<ProblemaLuca | null>(null);
   const [paso, setPaso] = useState(revisar ? 3 : 1);
@@ -60,9 +61,11 @@ export default function Caminos() {
     );
   }
 
-  const papeles: Papeles = { ...papelesDesde(extracto, oferta), ...corregidos };
+  const leidos = papelesDesde(extracto, oferta);
   // Lo que la lectura no encontró, la persona lo escribe: sin estos tres datos no hay cuentas.
-  const faltan = (['saldo', 'tasaTarjeta', 'tasaPrestamo'] as const).filter((k) => !(papeles[k] > 0));
+  const porPedir = (['saldo', 'tasaTarjeta', 'tasaPrestamo'] as const).filter((k) => !(leidos[k] > 0));
+  const papeles: Papeles = { ...leidos, ...corregidos };
+  const faltan = porPedir.filter((k) => !(papeles[k] > 0));
   const prima = eventos.find((e) => e.tipo === 'prima');
   const neto = netoDelMes(perfil.salario, hoy);
   const celular = perfil.deudas.find((d) => d.tipo === 'celular' && d.cuotaMensual);
@@ -95,8 +98,8 @@ export default function Caminos() {
 
   if (paso === 1) {
     const filas: [string, string][] = [
-      ['Debes en la tarjeta', `${formatearCOP(papeles.saldo)} a ${porcentaje(papeles.tasaTarjeta)} E.A.`],
-      ['Te ofrecen un préstamo', `${porcentaje(papeles.tasaPrestamo)} E.A. más seguro de ${formatearCOP(papeles.seguroMensual)}`],
+      ['Debes en la tarjeta', papeles.saldo > 0 && papeles.tasaTarjeta > 0 ? `${formatearCOP(papeles.saldo)} a ${porcentaje(papeles.tasaTarjeta)} E.A.` : 'Falta un dato, escríbelo abajo'],
+      ['Te ofrecen un préstamo', papeles.tasaPrestamo > 0 ? `${porcentaje(papeles.tasaPrestamo)} E.A.${papeles.seguroMensual ? ` más seguro de ${formatearCOP(papeles.seguroMensual)}` : ''}` : 'Falta la tasa, escríbela abajo'],
       ['Tu sueldo', `${formatearCOP(neto)}${perfil.diaDePago ? ` el ${perfil.diaDePago} de cada mes` : ''}`],
       ['Ya pagas', celular ? `${celular.nombre}: ${formatearCOP(celular.cuotaMensual!)} al mes, quedan ${celular.cuotasRestantes}` : 'Ninguna otra cuota'],
       ['Te llega pronto', prima?.monto ? `Tu prima, ${formatearCOP(prima.monto)}, el ${fechaLarga(prima.fecha)}` : 'Nada en las próximas semanas'],
@@ -121,28 +124,30 @@ export default function Caminos() {
             </View>
           ))}
         </Entrada>
-        {faltan.length ? (
+        {porPedir.length ? (
           <Entrada indice={2} style={{ gap: Espacio.m }}>
             <BurbujaLuca pose="atento" texto="Hay datos que no pude leer en tus papeles. Escríbelos tal como aparecen y sigo." />
-            {faltan.map((k) => (
+            {porPedir.map((k) => (
               <Campo
                 key={k}
                 etiqueta={{ saldo: 'Saldo total de la tarjeta', tasaTarjeta: 'Tasa de la tarjeta (% E.A.)', tasaPrestamo: 'Tasa del préstamo (% E.A.)' }[k]}
                 keyboardType={k === 'saldo' ? 'number-pad' : 'decimal-pad'}
                 esCifra
-                onEndEditing={(e) => {
-                  const t = e.nativeEvent.text;
+                value={borradores[k] ?? ''}
+                onChangeText={(t) => {
+                  setBorradores((b) => ({ ...b, [k]: t }));
                   const v = k === 'saldo' ? Number(t.replace(/\D/g, '')) : tasaDe(t);
-                  if (v > 0) setCorregidos((c) => ({ ...c, [k]: v }));
+                  setCorregidos((c) => ({ ...c, [k]: v > 0 && (k === 'saldo' || v < 100) ? v : 0 }));
                 }}
               />
             ))}
           </Entrada>
-        ) : (
-          <Entrada indice={2}>
+        ) : null}
+        {!faltan.length ? (
+          <Entrada indice={3}>
             <BurbujaLuca texto="Con esto veo cuatro caminos. Te los muestro con tus números y tú decides." />
           </Entrada>
-        )}
+        ) : null}
       </Pantalla>
     );
   }

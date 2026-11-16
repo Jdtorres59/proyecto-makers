@@ -41,6 +41,7 @@ export function Campo({ etiqueta, esCifra, style, onFocus, onBlur, ...resto }: P
 
 const estilos = StyleSheet.create({
   envoltura: { gap: Espacio.xs + 2 },
-  campo: { minHeight: 52, borderRadius: Forma.radioChico, paddingHorizontal: Espacio.l, paddingVertical: Espacio.m },
+  // position relative: en web el absoluto de la sombra pintaría encima de un elemento estático.
+  campo: { position: 'relative', minHeight: 52, borderRadius: Forma.radioChico, paddingHorizontal: Espacio.l, paddingVertical: Espacio.m },
   sombra: { position: 'absolute', left: 0, right: 0, top: Forma.sombra, bottom: 0, borderRadius: Forma.radioChico },
 });

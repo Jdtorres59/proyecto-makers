@@ -18,6 +18,7 @@ import { moduloAbierto, moduloTerminado, useLuca } from '@/lib/datos/contexto';
 import type { NombreAsset } from '@/lib/assets';
 import { diasHasta, fechaCorta, fechaLarga } from '@/lib/fechas';
 import { haptica } from '@/lib/haptica';
+import { useSesion } from '@/lib/sesion';
 
 /** Lo que dice cada fecha debajo del título en "Lo que viene". */
 function detalle(e: EventoDePlata, empresa: string | null, cuotas: Map<string, number | null>, conPlan: boolean) {
@@ -42,6 +43,7 @@ function detalle(e: EventoDePlata, empresa: string | null, cuotas: Map<string, n
 }
 
 export default function Inicio() {
+  const { sesion } = useSesion();
   const tema = useTema();
   const { perfil, eventos, hoy, planPrima, modulos, progreso, decision, verBorradores } = useLuca();
   if (!perfil) return null;
@@ -59,7 +61,8 @@ export default function Inicio() {
   const { dia: diaHoy, mes: mesHoy } = fechaCorta(hoy);
   // El primer módulo que se puede abrir y no está terminado.
   const siguiente = modulos.find((m) => moduloAbierto(m, verBorradores) && !moduloTerminado(m, progreso));
-  const inicial = perfil.nombre?.trim()[0]?.toUpperCase() ?? '?';
+  // Sin nombre en el perfil (cuenta nueva), la inicial del correo.
+  const inicial = (perfil.nombre?.trim() || sesion?.user.email || '?')[0].toUpperCase();
 
   return (
     <Pantalla conPestanas>
