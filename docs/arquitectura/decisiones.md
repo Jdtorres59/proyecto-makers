@@ -2,7 +2,16 @@
 
 Una entrada corta por decisión: qué, por qué y qué la haría cambiar. Las nuevas van arriba.
 
-## 2026-11-16 · Despliegue y Bedrock
+## 2026-11-16 · Primer despliegue
+
+**Todo se despliega en el espacio personal de Vercel `juan-david-torres-casas-projects` (plan Hobby).** Lo decidió Juan David. Nunca en los equipos `topwdown` ni `nicolas-abril`. Proyectos: `luca-api` y `luca-demo`.
+
+**Producción usa la API de Anthropic directa (`AI_PROVIDER=anthropic`), no Bedrock.** Es la llave que hay hoy, con tope de 10 dólares. Bedrock sigue en el código; cambiar es mover variables en Vercel.
+
+**Se despliega desde la CLI con una copia limpia del commit (`git archive HEAD`), no conectando el repo a Vercel.** Así solo sube lo versionado (nunca un `.env` ni `docs/entregas/`) y no hace falta dar a Vercel acceso al repo de GitHub. Costo: cada publicación es manual (ver "Cómo volver a publicar" en `estado.md`). Cambia si el equipo quiere publicar en cada push: se conecta el repo y se deja la rama de producción.
+
+**La web pública lleva `EXPO_PUBLIC_MODO_DEMO=si`.** Muestra "Probar sin cuenta" junto al ingreso real, para que el enlace siga sirviendo de demo.
+
 
 **La API va a Vercel empaquetada con esbuild.** Los paquetes del monorepo son TypeScript sin compilar, con imports sin extensión: Node no los corre tal cual y el compilador de Vercel tampoco los resuelve. Un solo `dist/server.js` evita depender de cómo Vercel trate el monorepo. Cambia si los paquetes pasan a compilarse por su cuenta.
 

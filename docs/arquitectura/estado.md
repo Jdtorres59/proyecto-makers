@@ -2,20 +2,18 @@
 
 Documento de relevo. Quien termina una tarea lo actualiza para que la siguiente persona o agente sepa dónde va el trabajo.
 
-Última actualización: 16 de noviembre de 2026 (rama `v1`; backend en `claude/backend-v1-0eae5c`).
+Última actualización: 16 de noviembre de 2026 (rama `v1`; primer despliegue a producción).
 
 ## Pendiente al 16 de noviembre de 2026
 
-Demo web publicada (solo modo "Probar sin cuenta", datos ficticios): https://luca-demo-delta.vercel.app
+Web publicada y conectada a la API: https://luca-demo-delta.vercel.app (ingreso real más "Probar sin cuenta"). API: https://luca-api-flax.vercel.app. Detalle en "Producción".
 
 Lo que falta para cerrar la app 1.0, en orden:
 
-1. Terminar de verificar la conexión de la app con la API (el código está en `v1`; el recorrido completo con datos reales no terminó).
-2. Desplegar la API en Vercel y volver a publicar la web conectada a ella.
-3. Primera llamada real al modelo (hay llave con tope; ninguna llamada real se ha hecho).
-4. Probar un ingreso real con Google y con código al correo. Apple está sin configurar.
-5. Pasada final: ícono de la app, lector de pantalla, pantallas chicas.
-6. Build de iPhone, después de la web.
+1. Hecho el 16 de noviembre: API desplegada, web conectada y primeras llamadas reales al modelo (ver "Producción").
+2. Juan David: agregar la URL de la web en Supabase > Authentication > URL Configuration y probar un ingreso real con Google y con código al correo. Apple está sin configurar.
+3. Pasada final: ícono de la app, lector de pantalla, pantallas chicas.
+4. Build de iPhone, después de la web.
 
 Contenido: 1 de 12 módulos escrito (prima y cesantías). Los otros 11 se escriben en `packages/contenido`, cada persona en su rama desde `v1` y con PR hacia `v1`, tocando solo `packages/contenido` y `packages/conocimiento`. No se edita `packages/core/src/esquemas.ts` desde esas ramas.
 
@@ -125,7 +123,41 @@ Las rutas con IA respetan el tope diario.
 4. Auxilio de transporte: con salario hasta 2 SMMLV, `eventosDePlata` devuelve los montos en null porque la norma de 2026 no se confirmó. Es justo el rango de mucha gente de la persona foco.
 5. Que una persona verifique las normas y cambie `verificadoPor`.
 
-## Despliegue de la API en Vercel (listo, sin desplegar)
+## Producción (16 de noviembre de 2026)
+
+Espacio de Vercel `juan-david-torres-casas-projects` (Hobby). Ningún dominio propio ni recurso de pago.
+
+| Proyecto | URL | Root Directory | Variables de producción (solo nombres) |
+|---|---|---|---|
+| `luca-api` | https://luca-api-flax.vercel.app | `apps/api` | `SUPABASE_URL`, `SUPABASE_SECRET_KEY` (secreta), `ANTHROPIC_API_KEY` (secreta), `AI_PROVIDER=anthropic`, `TOPE_DIARIO_USD`, `ORIGENES_PERMITIDOS` (la web y `http://localhost:8081`), `ENABLE_EXPERIMENTAL_COREPACK=1` |
+| `luca-demo` | https://luca-demo-delta.vercel.app | `apps/mobile` | `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `EXPO_PUBLIC_API_URL` (la API), `EXPO_PUBLIC_MODO_DEMO=si`, `ENABLE_EXPERIMENTAL_COREPACK=1` |
+
+Sin `AI_MODELO`: todos los agentes usan el predeterminado, Haiku 5.5. Node 24 en ambos. Las dos construyen en Vercel desde el código (no se sube una carpeta ya exportada).
+
+**Cómo volver a publicar** (no hay integración con GitHub, a propósito: ver `decisiones.md`). Desde una copia limpia del commit, para que no suba nada fuera de git:
+
+```bash
+D=$(mktemp -d) && git archive HEAD | tar -x -C "$D" && cd "$D"
+vercel link --yes --scope juan-david-torres-casas-projects --project luca-api && vercel deploy --prod --yes
+# para la web, en otra copia: --project luca-demo
+```
+
+`vercel link` crea un `.env.local` con un token temporal de Vercel en esa carpeta; se borra con la carpeta.
+
+**Verificado:**
+
+- API: `GET /health` da 200 con `{"ok":true,"proveedor":"anthropic"}`; `GET /perfil` sin token da 401; la consulta previa de CORS devuelve `access-control-allow-origin` para la web y para `http://localhost:8081`, y no lo devuelve para otro origen.
+- Web: el paquete trae la URL de la API y la de Supabase, y ninguna llave secreta (lo que coincide con `sb_secret` es código de supabase-js). En el navegador a 375 px: carga el login, "Probar sin cuenta" recorre autorización, conocerte, confirmar, preguntas y listo hasta inicio con "Lo que viene"; consola sin errores. Una ruta interna (`/inicio`) responde 200.
+- Primera llamada real (local, `pnpm --filter @makers/api humo` con `AI_PROVIDER=anthropic`): estado `ok`, `claude-haiku-5-5`, 3.491 tokens de entrada y 544 de salida, US$0,0006, 4,2 s. Los cuatro renglones coinciden con el PDF ficticio (salario 3.600.000, salud 144.000, pensión 144.000, neto 3.312.000), todos con confianza alta. `humo` ahora imprime la salida.
+- Punta a punta contra producción, con un usuario `@luca.test` creado por la API de administración: autorización, perfil, subida del PDF al bucket con el token de la persona, lectura real (200, mismos cuatro renglones), confirmación, `GET /eventos` con sueldo 30 nov, prima 20 dic $900.000, intereses 31 ene $27.000 y cesantías 14 feb, una fila en `ai_runs` (`leer_documento`, `claude-haiku-5-5`, `anthropic`, `ok`, 3.491/592 tokens, US$0,000645), `DELETE /yo` 204 con tablas y bucket en cero, y usuario borrado sin archivos restantes.
+
+**Gasto real en modelo:** dos llamadas, unos US$0,0013 en total.
+
+**Sin probar en producción:** ingreso real con Google o con código al correo (falta la URL en Supabase), la explicación de renglones y la decisión con el modelo real, el tope 429 en vivo, los evals contra el modelo real.
+
+**Para Juan David** (Supabase > Authentication > URL Configuration): agregar en Redirect URLs `https://luca-demo-delta.vercel.app/**`. Si se quiere que sea la dirección principal, poner `https://luca-demo-delta.vercel.app` en Site URL. Para probar: abrir la web, "Seguir con correo", escribir un correo de un miembro del proyecto y entrar con el código (la plantilla Magic Link debe incluir `{{ .Token }}`). Google necesita además activarse en Providers.
+
+## Despliegue de la API en Vercel (instrucciones originales)
 
 La API sale como una sola función de Vercel. `pnpm build` en `apps/api` empaqueta `src/index.ts` con esbuild en `dist/server.js`: los paquetes `@makers/*` son TypeScript sin compilar y Vercel no los ejecutaría tal cual. `hono` queda por fuera del paquete porque Vercel busca el archivo de entrada por la línea `from "hono"`. `apps/api/vercel.json` fija el preset Hono, el build y la carpeta `dist`. `pnpm dev:api` no cambia.
 
