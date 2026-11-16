@@ -5,7 +5,9 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown, LinearTransition } from 'react-native-reanimated';
 
+import { Aviso } from '@/components/aviso';
 import { Boton } from '@/components/boton';
+import { Campo } from '@/components/campo';
 import { Celebracion } from '@/components/celebracion';
 import { Chip } from '@/components/chip';
 import { Cifra } from '@/components/cifra';
@@ -21,7 +23,8 @@ import { Tarjeta } from '@/components/tarjeta';
 import { Texto } from '@/components/texto';
 import { Espacio, Forma, Fuente, Movimiento, Tipo, useTema } from '@/constants/tema';
 import { useLuca } from '@/lib/datos/contexto';
-import { type Camino, caminos, type IdCamino, papelesDesde, terminaEn } from '@/lib/decision';
+import { type Camino, caminos, type IdCamino, type Papeles, papelesDesde, tasaDe, terminaEn } from '@/lib/decision';
+import { comoProblema, type ProblemaLuca } from '@/lib/datos/errores';
 import { fechaLarga } from '@/lib/fechas';
 import { haptica } from '@/lib/haptica';
 
@@ -32,9 +35,12 @@ const porcentaje = (n: number) => `${n.toFixed(2).replace('.', ',')} %`;
 export default function Caminos() {
   const tema = useTema();
   const { revisar } = useLocalSearchParams<{ revisar?: string }>();
-  const { perfil, documentos, eventos, hoy, decision, planPrima, guardarDecision } = useLuca();
-  const extracto = documentos.find((d) => d.tipo === 'extracto');
-  const oferta = documentos.find((d) => d.tipo === 'oferta_credito');
+  const { perfil, documentos, eventos, hoy, decision, planPrima, cerrarDecision, papeles: ids } = useLuca();
+  const extracto = documentos.find((d) => d.id === ids.extracto);
+  const oferta = documentos.find((d) => d.id === ids.oferta);
+  const [corregidos, setCorregidos] = useState<Partial<Papeles>>({});
+  const [cerrando, setCerrando] = useState(false);
+  const [problemaCierre, setProblemaCierre] = useState<ProblemaLuca | null>(null);
   const [paso, setPaso] = useState(revisar ? 3 : 1);
   const [plazos, setPlazos] = useState({ diferir: 12, prestamo: 12 });
   const [adivina, setAdivina] = useState<IdCamino | null>(null);
@@ -43,15 +49,20 @@ export default function Caminos() {
   const [motivos, setMotivos] = useState<string[]>([]);
   const [nota, setNota] = useState('');
 
-  if (!perfil || !extracto || !oferta || perfil.salario === null) {
+  if (!perfil || (!revisar && (!extracto || !oferta)) || perfil.salario === null) {
     return (
       <Pantalla pie={<Boton titulo="Volver" onPress={() => router.back()} />}>
-        <BurbujaLuca pose="atento" texto="Me faltan papeles para mostrarte los caminos. Súbelos desde la conversación." />
+        <BurbujaLuca
+          pose="atento"
+          texto={perfil?.salario === null ? 'Para ver cómo queda tu mes necesito tu salario. Cuéntamelo en Sobre mí.' : 'Me faltan papeles para mostrarte los caminos. Súbelos desde la conversación.'}
+        />
       </Pantalla>
     );
   }
 
-  const papeles = papelesDesde(extracto, oferta);
+  const papeles: Papeles = { ...papelesDesde(extracto, oferta), ...corregidos };
+  // Lo que la lectura no encontró, la persona lo escribe: sin estos tres datos no hay cuentas.
+  const faltan = (['saldo', 'tasaTarjeta', 'tasaPrestamo'] as const).filter((k) => !(papeles[k] > 0));
   const prima = eventos.find((e) => e.tipo === 'prima');
   const neto = netoDelMes(perfil.salario, hoy);
   const celular = perfil.deudas.find((d) => d.tipo === 'celular' && d.cuotaMensual);
@@ -91,7 +102,7 @@ export default function Caminos() {
       ['Te llega pronto', prima?.monto ? `Tu prima, ${formatearCOP(prima.monto)}, el ${fechaLarga(prima.fecha)}` : 'Nada en las próximas semanas'],
     ];
     return (
-      <Pantalla cabecera={cabecera} pie={<Boton titulo="Ver los caminos" onPress={() => ir(2)} />}>
+      <Pantalla cabecera={cabecera} pie={<Boton titulo="Ver los caminos" disabled={faltan.length > 0} onPress={() => ir(2)} />}>
         <Entrada indice={0} style={{ gap: 4 }}>
           <Texto tipo="pequeno" suave>
             Lo que leí
@@ -110,9 +121,28 @@ export default function Caminos() {
             </View>
           ))}
         </Entrada>
-        <Entrada indice={2}>
-          <BurbujaLuca texto="Con esto veo cuatro caminos. Te los muestro con tus números y tú decides." />
-        </Entrada>
+        {faltan.length ? (
+          <Entrada indice={2} style={{ gap: Espacio.m }}>
+            <BurbujaLuca pose="atento" texto="Hay datos que no pude leer en tus papeles. Escríbelos tal como aparecen y sigo." />
+            {faltan.map((k) => (
+              <Campo
+                key={k}
+                etiqueta={{ saldo: 'Saldo total de la tarjeta', tasaTarjeta: 'Tasa de la tarjeta (% E.A.)', tasaPrestamo: 'Tasa del préstamo (% E.A.)' }[k]}
+                keyboardType={k === 'saldo' ? 'number-pad' : 'decimal-pad'}
+                esCifra
+                onEndEditing={(e) => {
+                  const t = e.nativeEvent.text;
+                  const v = k === 'saldo' ? Number(t.replace(/\D/g, '')) : tasaDe(t);
+                  if (v > 0) setCorregidos((c) => ({ ...c, [k]: v }));
+                }}
+              />
+            ))}
+          </Entrada>
+        ) : (
+          <Entrada indice={2}>
+            <BurbujaLuca texto="Con esto veo cuatro caminos. Te los muestro con tus números y tú decides." />
+          </Entrada>
+        )}
       </Pantalla>
     );
   }
@@ -311,23 +341,30 @@ export default function Caminos() {
   }
 
   if (paso === 4) {
-    const decidir = () => {
+    const decidir = async () => {
       const c = camino(elegido)!;
-      haptica.logro();
-      guardarDecision({
-        id: `muestra-decision-${Date.now()}`,
-        pregunta: '¿Mínimo, diferir o préstamo?',
-        documentos: [extracto.id, oferta.id],
-        caminoElegido: c.nombre,
-        motivos,
-        nota: nota.trim() || null,
-        creadaEn: new Date().toISOString(),
-        resumen: { total: c.total, primeraCuota: c.costo.primeraCuota, cuotas: c.costo.cuotas, abono: c.abono },
-      });
-      setPaso(5);
+      setCerrando(true);
+      setProblemaCierre(null);
+      try {
+        await cerrarDecision(
+          { caminoElegido: c.nombre, motivos, nota: nota.trim() || null, documentos: [extracto?.id, oferta?.id].filter((x) => !!x) as string[] },
+          { total: c.total, primeraCuota: c.costo.primeraCuota, cuotas: c.costo.cuotas, abono: c.abono },
+        );
+        haptica.logro();
+        setPaso(5);
+      } catch (e) {
+        setProblemaCierre(comoProblema(e));
+      } finally {
+        setCerrando(false);
+      }
     };
     return (
-      <Pantalla cabecera={cabecera} pie={<Boton titulo="Esta es mi decisión" disabled={!elegido} onPress={decidir} />}>
+      <Pantalla cabecera={cabecera} pie={
+          <>
+            {problemaCierre ? <Aviso texto={problemaCierre.mensaje} /> : null}
+            <Boton titulo="Esta es mi decisión" disabled={!elegido} cargando={cerrando} onPress={() => void decidir()} />
+          </>
+        }>
         <Entrada indice={0} style={{ gap: 4 }}>
           <Texto tipo="pequeno" suave>
             Tu decisión

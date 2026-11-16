@@ -43,10 +43,12 @@ type FilaProps = {
   alGuardar?: (texto: string) => boolean;
   valorEditable?: string;
   numerico?: boolean;
+  /** Luca no leyó este dato con seguridad (confianza media o baja): se marca para que la persona lo revise. */
+  revisar?: 'media' | 'baja';
 };
 
 /** Fila de "lo que leí": se corrige en el mismo lugar. Después de cambiarla queda marcada. */
-export function FilaEditable({ etiqueta, valor, alGuardar, valorEditable = valor, numerico }: FilaProps) {
+export function FilaEditable({ etiqueta, valor, alGuardar, valorEditable = valor, numerico, revisar }: FilaProps) {
   const tema = useTema();
   const [editando, setEditando] = useState(false);
   const [borrador, setBorrador] = useState(valorEditable);
@@ -63,7 +65,9 @@ export function FilaEditable({ etiqueta, valor, alGuardar, valorEditable = valor
   };
 
   return (
-    <Animated.View layout={LinearTransition.springify().damping(Movimiento.resorte.damping)} style={[estilos.fila, { borderBottomColor: tema.lineaSuave }]}>
+    <Animated.View
+      layout={LinearTransition.springify().damping(Movimiento.resorte.damping)}
+      style={[estilos.fila, { borderBottomColor: tema.lineaSuave }, revisar && !cambiada && { borderLeftWidth: 4, borderLeftColor: tema.maiz, paddingLeft: Espacio.m }]}>
       {editando ? (
         <Animated.View entering={FadeIn.duration(Movimiento.rapido)} style={estilos.edicion}>
           <Campo
@@ -92,6 +96,14 @@ export function FilaEditable({ etiqueta, valor, alGuardar, valorEditable = valor
             <Texto tipo="cuerpoFuerte" esCifra={numerico}>
               {valor}
             </Texto>
+            {revisar && !cambiada ? (
+              <View style={estilos.cambiada}>
+                <Icono nombre="info" tamano={14} color={tema.texto} />
+                <Texto tipo="pequeno" style={{ flexShrink: 1 }}>
+                  {revisar === 'baja' ? 'No lo leí bien. Revísalo.' : 'No estoy del todo seguro. Revísalo.'}
+                </Texto>
+              </View>
+            ) : null}
             {cambiada ? (
               <Animated.View entering={FadeIn} style={estilos.cambiada}>
                 <Icono nombre="check" tamano={14} color={tema.verde} />

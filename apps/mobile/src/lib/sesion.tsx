@@ -12,9 +12,14 @@ type Estado = {
   consentido: boolean | undefined;
   aceptarConsentimiento(): Promise<void>;
   salir(): Promise<void>;
-  /** Solo en desarrollo: entra sin cuenta, con los datos de muestra, para recorrer la app. */
+  /** true en el modo demostración: sesión local, sin cuenta, con los datos ficticios de Valentina. */
+  deMuestra: boolean;
+  /** Entra al modo demostración. Solo existe si DEMO_DISPONIBLE. */
   entrarDeMuestra?: () => void;
 };
+
+/** El modo demostración se habilita con EXPO_PUBLIC_MODO_DEMO=si (siempre en desarrollo). */
+export const DEMO_DISPONIBLE = __DEV__ || process.env.EXPO_PUBLIC_MODO_DEMO === 'si';
 
 const Contexto = createContext<Estado | null>(null);
 
@@ -66,8 +71,8 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
   }
 
-  // Sesión falsa y local: nunca toca Supabase ni existe en un build de producción.
-  const entrarDeMuestra = __DEV__
+  // Sesión falsa y local: nunca toca Supabase. No existe si el modo demostración no está habilitado.
+  const entrarDeMuestra = DEMO_DISPONIBLE
     ? () => {
         setDeMuestra(true);
         setConsentidoDeMuestra(false);
@@ -75,5 +80,5 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
       }
     : undefined;
 
-  return <Contexto value={{ sesion, consentido, aceptarConsentimiento, salir, entrarDeMuestra }}>{children}</Contexto>;
+  return <Contexto value={{ sesion, consentido, aceptarConsentimiento, salir, deMuestra, entrarDeMuestra }}>{children}</Contexto>;
 }

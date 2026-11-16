@@ -108,25 +108,34 @@ export function BurbujaLuca({
   pose = 'explica',
   grande,
   tamanoLuca = 56,
+  sinVoz,
 }: {
   texto: string | (string | { fuerte: string })[];
   pose?: Pose;
   grande?: boolean;
   tamanoLuca?: number;
+  /** Texto que ya llega por partes (streaming): se muestra tal cual, sin la voz palabra por palabra. */
+  sinVoz?: boolean;
 }) {
   const tema = useTema();
   const trozos = (typeof texto === 'string' ? [texto] : texto).map((t) => (typeof t === 'string' ? { t, fuerte: false } : { t: t.fuerte, fuerte: true }));
   const completo = trozos.map((x) => x.t).join('');
   return (
     <View style={estilos.burbujaFila}>
-      <Luca pose={pose} tamano={tamanoLuca} latido={completo.length} />
+      <Luca pose={pose} tamano={tamanoLuca} latido={sinVoz ? 0 : completo.length} />
       <View style={estilos.burbujaCuerpo}>
         <Texto tipo="pequeno" suave>
           Luca
         </Texto>
         <View style={[estilos.burbuja, { backgroundColor: tema.papel, borderColor: tema.linea }]}>
           {/* La clave reinicia la voz cuando cambia lo que dice. */}
-          <TextoHablado key={completo} trozos={trozos} completo={completo} grande={grande} />
+          {sinVoz ? (
+            <Texto tipo={grande ? 'titulo3' : 'cuerpo'} accessibilityLiveRegion="polite">
+              {completo}
+            </Texto>
+          ) : (
+            <TextoHablado key={completo} trozos={trozos} completo={completo} grande={grande} />
+          )}
         </View>
       </View>
     </View>

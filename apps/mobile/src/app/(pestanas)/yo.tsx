@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
+import { Aviso } from '@/components/aviso';
 import { Boton } from '@/components/boton';
 import { Campo } from '@/components/campo';
 import { Chip } from '@/components/chip';
@@ -14,6 +15,7 @@ import { Pantalla } from '@/components/pantalla';
 import { Texto } from '@/components/texto';
 import { Espacio, Forma, useTema } from '@/constants/tema';
 import { useLuca } from '@/lib/datos/contexto';
+import { comoProblema, type ProblemaLuca } from '@/lib/datos/errores';
 import { fechaLarga } from '@/lib/fechas';
 import { haptica } from '@/lib/haptica';
 import { useSesion } from '@/lib/sesion';
@@ -32,7 +34,9 @@ const numero = (t: string) => Number(t.replace(/\D/g, '')) || 0;
 /** "Lo que Luca sabe de ti": todo lo que sabe, agrupado, editable y borrable. */
 export default function SobreMi() {
   const tema = useTema();
-  const { perfil, hoy, actualizarPerfil, borrarTodo } = useLuca();
+  const { perfil, hoy, actualizarPerfil, borrarTodo, problemaGuardado, demo } = useLuca();
+  const [borrando, setBorrando] = useState(false);
+  const [problemaBorrar, setProblemaBorrar] = useState<ProblemaLuca | null>(null);
   const { salir } = useSesion();
   const [editando, setEditando] = useState<Editable | null>(null);
   const [borrador, setBorrador] = useState({ a: '', b: '' });
@@ -114,6 +118,7 @@ export default function SobreMi() {
       <Entrada indice={1}>
         <BurbujaLuca texto="Esto es todo lo que sé. Si algo está mal o cambió, tócalo y lo corriges." />
       </Entrada>
+      {problemaGuardado ? <Aviso texto={`No pude guardar tu último cambio. ${problemaGuardado.mensaje}`} /> : null}
 
       {grupos.map((g, i) => (
         <Entrada key={g.titulo} indice={2 + i} style={{ gap: Espacio.xs }}>
@@ -181,7 +186,7 @@ export default function SobreMi() {
       </Entrada>
       <Entrada indice={7} style={{ gap: Espacio.xs }}>
         <Boton titulo="Borrar todo lo que sé" variante="texto" onPress={() => setConfirmarBorrar(true)} />
-        <Boton titulo="Cerrar sesión" variante="texto" onPress={salir} />
+        <Boton titulo={demo ? 'Salir de la demostración' : 'Cerrar sesión'} variante="texto" onPress={salir} />
       </Entrada>
 
       <Hoja visible={editando !== null} alCerrar={() => setEditando(null)} titulo={editando ? TITULOS[editando] : ''}>
@@ -231,13 +236,23 @@ export default function SobreMi() {
           <Texto style={{ flex: 1 }}>Tus documentos, tus respuestas, tus lecciones y tus planes. No se puede deshacer. Tu cuenta se queda.</Texto>
         </View>
         <Boton titulo="Mejor no" onPress={() => setConfirmarBorrar(false)} />
+        {problemaBorrar ? <Aviso texto={problemaBorrar.mensaje} /> : null}
         <Boton
           titulo="Sí, borrar todo"
           variante="texto"
+          cargando={borrando}
           onPress={async () => {
             haptica.firme();
-            setConfirmarBorrar(false);
-            await borrarTodo();
+            setBorrando(true);
+            setProblemaBorrar(null);
+            try {
+              await borrarTodo();
+              setConfirmarBorrar(false);
+            } catch (e) {
+              setProblemaBorrar(comoProblema(e));
+            } finally {
+              setBorrando(false);
+            }
           }}
         />
       </Hoja>

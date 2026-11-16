@@ -1,8 +1,10 @@
 import { cesantias, formatearCOP, prima } from '@makers/core';
 import { useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { Aviso } from '@/components/aviso';
+import { Boton } from '@/components/boton';
 import { Entrada } from '@/components/entrada';
 import { Expandible } from '@/components/expandible';
 import { BurbujaLuca, Luca } from '@/components/luca';
@@ -11,6 +13,7 @@ import { Tarjeta } from '@/components/tarjeta';
 import { Texto } from '@/components/texto';
 import { Espacio, useTema } from '@/constants/tema';
 import { useLuca } from '@/lib/datos/contexto';
+import { comoProblema, type ProblemaLuca } from '@/lib/datos/errores';
 
 const DESCUENTOS = ['salud', 'pension', 'solidaridad'];
 
@@ -22,13 +25,15 @@ export default function DocumentoPantalla() {
   const doc = documentos.find((d) => d.id === id);
   const explicado = !!doc && doc.renglones.every((x) => x.explicacion);
 
+  const [problema, setProblema] = useState<ProblemaLuca | null>(null);
+  const [intento, setIntento] = useState(0);
   useEffect(() => {
-    if (id) explicarDocumento(id);
+    if (id) explicarDocumento(id).catch((e) => setProblema(comoProblema(e)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, intento]);
 
   if (!doc) return null;
-  const salario = doc.tipo === 'desprendible' ? (doc.renglones.find((x) => x.clave === 'salario')?.monto ?? perfil?.salario ?? null) : null;
+  const salario = doc.tipo === 'desprendible' ? (doc.renglones.find((x) => x.clave === 'salario_basico' || x.clave === 'salario')?.monto ?? perfil?.salario ?? null) : null;
 
   return (
     <Pantalla cabecera={<Cabecera />}>
@@ -41,6 +46,11 @@ export default function DocumentoPantalla() {
       <Entrada indice={1}>
         {explicado ? (
           <BurbujaLuca pose="muestra" texto="Toca cualquier línea y te cuento qué es." />
+        ) : problema ? (
+          <View style={{ gap: Espacio.s }}>
+            <Aviso texto={`${problema.mensaje} Mientras tanto, aquí está lo que leí.`} />
+            {problema.tipo !== 'tope' ? <Boton titulo="Intentar de nuevo" variante="texto" onPress={() => (setProblema(null), setIntento((n) => n + 1))} /> : null}
+          </View>
         ) : (
           <View style={estilos.leyendo} accessibilityLiveRegion="polite">
             <Luca pose="lee" tamano={64} />

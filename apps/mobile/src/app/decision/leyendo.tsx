@@ -18,8 +18,8 @@ const ESTADOS = ['Leyendo tu extracto', 'Revisando la tasa', 'Leyendo la oferta'
 /** Luca lee los dos papeles de la decisión, renglón por renglón. */
 export default function LeyendoPapeles() {
   const reducido = useReducedMotion();
-  const { documentos } = useLuca();
-  const papeles = [documentos.find((d) => d.tipo === 'extracto'), documentos.find((d) => d.tipo === 'oferta_credito')].filter((d) => !!d);
+  const { documentos, papeles: ids } = useLuca();
+  const papeles = [ids.extracto, ids.oferta].map((id) => documentos.find((d) => d.id === id)).filter((d) => !!d);
   const renglones = papeles.flatMap((d) => d.renglones.map((r) => `${d.id}:${r.clave}`));
   const total = renglones.length;
   const [leidos, setLeidos] = useState(0);

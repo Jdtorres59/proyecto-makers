@@ -2,7 +2,7 @@ import type { Provider } from '@supabase/supabase-js';
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
-import { Platform, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { Aviso } from '@/components/aviso';
@@ -100,10 +100,7 @@ export default function Login() {
       </Entrada>
 
       <Entrada indice={1} style={estilos.marca}>
-        {/* En desarrollo, mantener presionado el nombre entra con los datos de muestra (sin cuenta). */}
-        <Pressable onLongPress={entrarDeMuestra} disabled={!entrarDeMuestra} accessible={false}>
-          <Wordmark alto={64} />
-        </Pressable>
+        <Wordmark alto={64} />
       </Entrada>
 
       <Entrada indice={2} style={estilos.textos}>
@@ -128,6 +125,9 @@ export default function Login() {
         ))}
         <Boton titulo="Seguir con correo" variante="texto" disabled={ocupado} onPress={() => (setError(''), setHojaCorreo(true))} />
         {!hojaCorreo ? mensajeError : null}
+        {entrarDeMuestra ? (
+          <Boton titulo="Probar sin cuenta" variante="texto" disabled={ocupado} onPress={entrarDeMuestra} />
+        ) : null}
         <Texto tipo="pequeno" suave style={estilos.legal}>
           Al seguir aceptas los términos y la política de datos.
         </Texto>

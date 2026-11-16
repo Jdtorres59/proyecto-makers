@@ -3,17 +3,18 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { Boton } from '@/components/boton';
 import { Entrada } from '@/components/entrada';
-import { Hoja } from '@/components/hoja';
+import { Aviso } from '@/components/aviso';
+import { HojaSubir } from '@/components/hoja-subir';
 import { Icono } from '@/components/icono';
-import { BurbujaLuca, Ilustracion } from '@/components/luca';
+import { BurbujaLuca, Ilustracion, Luca } from '@/components/luca';
 import { Pantalla } from '@/components/pantalla';
 import { Pdf } from '@/components/pdf';
 import { Texto } from '@/components/texto';
 import { Espacio, Forma, Fuente, useTema } from '@/constants/tema';
 import { useLuca } from '@/lib/datos/contexto';
-import { ARCHIVOS_DE_MUESTRA } from '@/lib/datos/muestra';
+import { comoProblema, type ProblemaLuca } from '@/lib/datos/errores';
+import type { Archivo } from '@/lib/datos/fuente';
 import { haptica } from '@/lib/haptica';
 
 const NOMBRE_TIPO: Record<TipoDocumento, string> = {
@@ -28,17 +29,22 @@ const TAMBIEN = ['Extractos de tarjeta', 'Cuentas de cobro', 'Certificado de ces
 
 export default function Documentos() {
   const tema = useTema();
-  const { documentos, leerDocumento } = useLuca();
+  const { documentos, leerDocumento, demo } = useLuca();
   const [hoja, setHoja] = useState(false);
-  const [leyendo, setLeyendo] = useState<TipoDocumento | null>(null);
+  const [leyendo, setLeyendo] = useState<string | null>(null);
+  const [problema, setProblema] = useState<ProblemaLuca | null>(null);
 
-  const subir = async (tipo: TipoDocumento) => {
-    setLeyendo(tipo);
-    const doc = await leerDocumento(tipo);
-    setLeyendo(null);
-    setHoja(false);
-    // iOS pierde un push que llega mientras se desmonta el Modal de la hoja.
-    setTimeout(() => router.push({ pathname: '/documento/[id]', params: { id: doc.id } }), 120);
+  const subir = async (archivo: Archivo) => {
+    setProblema(null);
+    setLeyendo(archivo.nombre);
+    try {
+      const doc = await leerDocumento(archivo);
+      router.push({ pathname: '/documento/[id]', params: { id: doc.id } });
+    } catch (e) {
+      setProblema(comoProblema(e));
+    } finally {
+      setLeyendo(null);
+    }
   };
 
   return (
@@ -60,8 +66,19 @@ export default function Documentos() {
         </Entrada>
       )}
 
+      {leyendo ? (
+        <View style={estilos.leyendo} accessibilityLiveRegion="polite">
+          <Luca pose="lee" tamano={56} />
+          <Texto tipo="cuerpoFuerte" style={{ flex: 1 }}>
+            Leyendo {leyendo}…
+          </Texto>
+        </View>
+      ) : null}
+      {problema ? <Aviso texto={problema.mensaje} /> : null}
+
       <Entrada indice={2}>
         <Pressable
+          disabled={!!leyendo}
           onPress={() => (haptica.toque(), setHoja(true))}
           accessibilityRole="button"
           accessibilityLabel="Subir otro documento"
@@ -84,28 +101,15 @@ export default function Documentos() {
         </View>
       </Entrada>
 
-      <Hoja visible={hoja} alCerrar={() => setHoja(false)} titulo="Sube un documento">
-        <Texto suave>Un extracto, una oferta de crédito o un desprendible nuevo.</Texto>
-        {/* Datos de muestra: el selector de archivos real llega con la API (paso 5). */}
-        {ARCHIVOS_DE_MUESTRA.map((a) => (
-          <Pressable
-            key={a.nombre}
-            onPress={() => subir(a.tipo)}
-            disabled={leyendo !== null}
-            accessibilityRole="button"
-            accessibilityLabel={`${a.nombre}, ${a.donde}`}
-            style={({ pressed }) => [estilos.archivo, { borderColor: tema.linea, backgroundColor: pressed ? tema.superficie : tema.papel }]}>
-            <Pdf />
-            <View style={{ flex: 1 }}>
-              <Texto tipo="cuerpoFuerte">{a.nombre}</Texto>
-              <Texto tipo="pequeno" suave>
-                {leyendo === a.tipo ? 'Leyendo…' : a.donde}
-              </Texto>
-            </View>
-          </Pressable>
-        ))}
-        <Boton titulo="Tomar una foto" variante="secundario" icono={<Icono nombre="camara" tamano={20} color={tema.sobreVerde} />} disabled={leyendo !== null} onPress={() => subir('desprendible')} />
-      </Hoja>
+      <HojaSubir
+        visible={hoja}
+        alCerrar={() => setHoja(false)}
+        titulo="Sube un documento"
+        texto="Un extracto, una oferta de crédito o un desprendible nuevo."
+        demo={demo}
+        pistas={['extracto', 'oferta_credito', 'desprendible']}
+        alElegir={subir}
+      />
     </Pantalla>
   );
 }
@@ -141,6 +145,7 @@ function FilaDocumento({ doc, nuevo }: { doc: DocumentoLeido; nuevo: boolean }) 
 }
 
 const estilos = StyleSheet.create({
+  leyendo: { flexDirection: 'row', alignItems: 'center', gap: Espacio.m },
   archivo: { flexDirection: 'row', alignItems: 'center', gap: Espacio.m, borderWidth: Forma.contorno, borderRadius: Forma.radio, padding: Espacio.m, minHeight: 72 },
   subir: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: Espacio.s, borderWidth: Forma.contorno, borderStyle: 'dashed', borderRadius: Forma.radio, minHeight: 56 },
   pildoras: { flexDirection: 'row', flexWrap: 'wrap', gap: Espacio.s },

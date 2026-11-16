@@ -5,7 +5,9 @@ import { KeyboardAvoidingView, Platform, Pressable, ScrollView, type ScrollViewI
 import Animated, { FadeIn, FadeInDown, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Aviso } from '@/components/aviso';
 import { Boton } from '@/components/boton';
+import { HojaSubir } from '@/components/hoja-subir';
 import { Icono } from '@/components/icono';
 import { BurbujaLuca, Luca } from '@/components/luca';
 import { Cabecera, Grano } from '@/components/pantalla';
@@ -13,49 +15,79 @@ import { Pdf } from '@/components/pdf';
 import { Texto } from '@/components/texto';
 import { Espacio, Forma, Movimiento, Tipo, useTema } from '@/constants/tema';
 import { useLuca } from '@/lib/datos/contexto';
+import { comoProblema, type ProblemaLuca } from '@/lib/datos/errores';
+import type { Archivo } from '@/lib/datos/fuente';
 import { haptica } from '@/lib/haptica';
 
-const PAPELES: { tipo: TipoDocumento; titulo: string; archivo: string }[] = [
-  { tipo: 'extracto', titulo: 'Extracto de la tarjeta', archivo: 'extracto-nov-2026.pdf' },
-  { tipo: 'oferta_credito', titulo: 'Oferta del préstamo', archivo: 'oferta-prestamo.pdf' },
+const PAPELES: { cual: 'extracto' | 'oferta'; pista: TipoDocumento; titulo: string }[] = [
+  { cual: 'extracto', pista: 'extracto', titulo: 'Extracto de la tarjeta' },
+  { cual: 'oferta', pista: 'oferta_credito', titulo: 'Oferta del préstamo' },
 ];
+const RESPUESTA_SIN_MODELO = 'Entiendo. Miremos los caminos con tus números antes de decidir.';
 
 /** "Tengo una decisión": la persona cuenta con sus palabras y Luca le pide los papeles para verlo con sus números. */
 export default function Decidir() {
   const tema = useTema();
   const reducido = useReducedMotion();
-  const { leerDocumento } = useLuca();
+  const { leerDocumento, iniciarDecision, conversar, guardarPapel, papeles, documentos, demo } = useLuca();
   const scroll = useRef<ScrollViewInstance>(null);
-  const [texto, setTexto] = useState('Debo $2.400.000 en la tarjeta y no sé si pagar el mínimo, diferir a cuotas o pedir un préstamo.');
+  const [texto, setTexto] = useState(demo ? 'Debo $2.400.000 en la tarjeta y no sé si pagar el mínimo, diferir a cuotas o pedir un préstamo.' : '');
   const [enviado, setEnviado] = useState<string | null>(null);
+  const [respuesta, setRespuesta] = useState('');
   const [respondio, setRespondio] = useState(false);
-  const [subidos, setSubidos] = useState<TipoDocumento[]>([]);
-  const [subiendo, setSubiendo] = useState<TipoDocumento | null>(null);
-
-  useEffect(() => {
-    if (!enviado) return;
-    const id = setTimeout(() => setRespondio(true), reducido ? 200 : 1300);
-    return () => clearTimeout(id);
-  }, [enviado, reducido]);
+  const [problema, setProblema] = useState<ProblemaLuca | null>(null);
+  const [hojaPara, setHojaPara] = useState<(typeof PAPELES)[number] | null>(null);
+  const [subiendo, setSubiendo] = useState<'extracto' | 'oferta' | null>(null);
+  const [problemaPapel, setProblemaPapel] = useState<ProblemaLuca | null>(null);
 
   useEffect(() => {
     const id = setTimeout(() => scroll.current?.scrollToEnd({ animated: !reducido }), 120);
     return () => clearTimeout(id);
-  }, [enviado, respondio, subidos.length, reducido]);
+  }, [enviado, respondio, respuesta, papeles, reducido]);
 
-  const enviar = () => {
-    if (!texto.trim()) return;
+  const enviar = async () => {
+    const mensaje = texto.trim();
+    if (!mensaje) return;
     haptica.firme();
-    setEnviado(texto.trim());
+    setProblema(null);
+    setEnviado(mensaje);
+    try {
+      await iniciarDecision(mensaje);
+    } catch (e) {
+      setProblema(comoProblema(e));
+      setEnviado(null);
+      return;
+    }
+    // La conversación es un acompañamiento: si el modelo no responde (tope, red), los caminos igual se pueden ver.
+    try {
+      let dicho = '';
+      await conversar(mensaje, [], (ev) => {
+        if (ev.tipo === 'texto') setRespuesta((dicho += ev.delta));
+        if (ev.tipo === 'fin' && ev.estado !== 'ok' && !dicho.trim()) setRespuesta(RESPUESTA_SIN_MODELO);
+      });
+      if (!dicho.trim()) setRespuesta(RESPUESTA_SIN_MODELO);
+    } catch (e) {
+      const p = comoProblema(e);
+      setProblema(p.tipo === 'tope' ? p : null);
+      setRespuesta(RESPUESTA_SIN_MODELO);
+    }
+    setRespondio(true);
   };
-  const subir = async (tipo: TipoDocumento) => {
-    if (subidos.includes(tipo) || subiendo) return;
-    haptica.toque();
-    setSubiendo(tipo);
-    await leerDocumento(tipo);
-    setSubiendo(null);
-    setSubidos((s) => [...s, tipo]);
+
+  const subir = async (papel: (typeof PAPELES)[number], archivo: Archivo) => {
+    setProblemaPapel(null);
+    setSubiendo(papel.cual);
+    try {
+      const doc = await leerDocumento({ ...archivo, pista: papel.pista });
+      guardarPapel(papel.cual, doc.id);
+    } catch (e) {
+      setProblemaPapel(comoProblema(e));
+    } finally {
+      setSubiendo(null);
+    }
   };
+  const nombreDe = (id: string | null) => documentos.find((d) => d.id === id)?.titulo ?? 'Listo';
+  const listos = !!papeles.extracto && !!papeles.oferta;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: tema.fondo }}>
@@ -71,28 +103,31 @@ export default function Decidir() {
               <Texto color={tema.sobreVerde}>{enviado}</Texto>
             </Animated.View>
           ) : null}
-          {enviado && !respondio ? <Escribiendo /> : null}
+          {enviado && !respuesta ? <Escribiendo /> : null}
+          {respuesta ? <BurbujaLuca pose="explica" texto={respuesta} sinVoz /> : null}
+          {problema ? <Aviso texto={problema.mensaje} /> : null}
           {respondio ? (
             <Animated.View entering={FadeIn} style={{ gap: Espacio.m }}>
               <BurbujaLuca
                 pose="explica"
-                texto={['Entiendo. Para mostrarte qué implica cada camino con tus números necesito dos papeles: ', { fuerte: 'el extracto de la tarjeta' }, ' y ', { fuerte: 'la oferta del préstamo' }, '.']}
+                texto={['Para mostrarte qué implica cada camino con tus números necesito dos papeles: ', { fuerte: 'el extracto de la tarjeta' }, ' y ', { fuerte: 'la oferta del préstamo' }, '.']}
               />
               {PAPELES.map((p) => {
-                const listo = subidos.includes(p.tipo);
+                const id = papeles[p.cual];
+                const listo = !!id;
                 return (
                   <Pressable
-                    key={p.tipo}
-                    onPress={() => subir(p.tipo)}
-                    disabled={listo}
+                    key={p.cual}
+                    onPress={() => (haptica.toque(), setHojaPara(p))}
+                    disabled={listo || !!subiendo}
                     accessibilityRole="button"
                     accessibilityLabel={`${p.titulo}. ${listo ? 'Subido' : 'Toca para subirlo'}`}
                     style={({ pressed }) => [estilos.papel, { borderColor: tema.linea, backgroundColor: pressed ? tema.superficie : tema.papel }]}>
                     <Pdf />
                     <View style={{ flex: 1 }}>
                       <Texto tipo="cuerpoFuerte">{p.titulo}</Texto>
-                      <Texto tipo="pequeno" suave>
-                        {listo ? p.archivo : subiendo === p.tipo ? 'Subiendo…' : 'Toca para subirlo'}
+                      <Texto tipo="pequeno" suave numberOfLines={1}>
+                        {listo ? nombreDe(id) : subiendo === p.cual ? 'Leyendo…' : 'Toca para subirlo'}
                       </Texto>
                     </View>
                     <View style={[estilos.estado, { borderColor: tema.linea, backgroundColor: listo ? tema.verde : 'transparent' }]}>
@@ -101,7 +136,8 @@ export default function Decidir() {
                   </Pressable>
                 );
               })}
-              <Boton titulo="Leer mis papeles" disabled={subidos.length < 2} onPress={() => router.replace('/decision/leyendo')} />
+              {problemaPapel ? <Aviso texto={problemaPapel.mensaje} /> : null}
+              <Boton titulo="Leer mis papeles" disabled={!listos} onPress={() => router.replace('/decision/leyendo')} />
             </Animated.View>
           ) : null}
         </ScrollView>
@@ -119,7 +155,7 @@ export default function Decidir() {
               style={[Tipo.cuerpo, estilos.campo, { color: tema.texto, backgroundColor: tema.papel, borderColor: tema.linea }]}
             />
             <Pressable
-              onPress={enviar}
+              onPress={() => void enviar()}
               accessibilityRole="button"
               accessibilityLabel="Enviar"
               disabled={!texto.trim()}
@@ -129,6 +165,15 @@ export default function Decidir() {
           </View>
         ) : null}
       </KeyboardAvoidingView>
+      <HojaSubir
+        visible={!!hojaPara}
+        alCerrar={() => setHojaPara(null)}
+        titulo={hojaPara?.titulo ?? ''}
+        texto={hojaPara?.cual === 'extracto' ? 'El extracto más reciente de tu tarjeta.' : 'La oferta del préstamo que te hicieron.'}
+        demo={demo}
+        pistas={hojaPara ? [hojaPara.pista] : []}
+        alElegir={(a) => hojaPara && subir(hojaPara, a)}
+      />
       <Grano />
     </SafeAreaView>
   );

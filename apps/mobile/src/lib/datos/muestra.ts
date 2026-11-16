@@ -5,6 +5,7 @@ import {
   formatearCOP,
   netoDelMes,
   type PerfilFinanciero,
+  type Progreso,
   type Renglon,
   type TipoDocumento,
 } from '@makers/core';
@@ -48,7 +49,7 @@ function desprendible(salario: number): DocumentoLeido {
     periodo: '1 al 30 de noviembre de 2026',
     subidoEn: `${HOY}T14:20:00.000Z`,
     renglones: [
-      r('salario', 'Salario básico', 'Salario básico', salario),
+      r('salario_basico', 'Salario básico', 'Salario básico', salario),
       r('salud', 'Salud', 'Aporte salud 4 %', salud),
       r('pension', 'Pensión', 'Aporte pensión 4 %', pension),
       ...(solidaridad > 0 ? [r('solidaridad', 'Fondo de Solidaridad', 'FSP 1 %', solidaridad)] : []),
@@ -64,7 +65,7 @@ const extracto = (): DocumentoLeido => ({
   periodo: 'Extracto de noviembre de 2026',
   subidoEn: `${HOY}T15:02:00.000Z`,
   renglones: [
-    r('saldo', 'Saldo total', 'Saldo total', PAPELES_DECISION.saldo),
+    r('saldo_total', 'Saldo total', 'Saldo total', PAPELES_DECISION.saldo),
     r('tasa_ea', 'Tasa de interés', tasa(PAPELES_DECISION.tasaTarjeta), null),
     r('fecha_limite', 'Fecha límite de pago', '12 dic 2026', null),
   ],
@@ -89,12 +90,12 @@ function explicar(doc: DocumentoLeido): DocumentoLeido {
   const monto = (clave: string) => doc.renglones.find((x) => x.clave === clave)?.monto ?? 0;
   const c = (n: number) => formatearCOP(n).slice(1);
   const textos: Record<string, string> = {
-    salario: 'Lo que pactaste en el contrato por un mes completo. De aquí salen casi todas las demás cuentas: salud, pensión, prima y cesantías.',
-    salud: `Va a tu EPS y es lo que te da derecho a citas, exámenes y urgencias. Es el 4 % de tu salario: ${c(monto('salario'))} × 4 % = ${c(monto('salud'))}.`,
+    salario_basico: 'Lo que pactaste en el contrato por un mes completo. De aquí salen casi todas las demás cuentas: salud, pensión, prima y cesantías.',
+    salud: `Va a tu EPS y es lo que te da derecho a citas, exámenes y urgencias. Es el 4 % de tu salario: ${c(monto('salario_basico'))} × 4 % = ${c(monto('salud'))}.`,
     pension: 'Va a tu ahorro para la vejez, a tu nombre. También es el 4 % de tu salario. Tu empresa pone otra parte que no ves en este papel.',
     solidaridad: 'Un aporte extra a pensión que pagan quienes ganan desde cuatro salarios mínimos.',
-    neto: `Lo que te consignan: el salario menos los descuentos. ${c(monto('salario'))} − ${c(monto('salud'))} − ${c(monto('pension'))}.`,
-    saldo: 'Todo lo que le debes hoy a la tarjeta, incluidas las compras a cuotas que aún no has pagado.',
+    neto: `Lo que te consignan: el salario menos los descuentos. ${c(monto('salario_basico'))} − ${c(monto('salud'))} − ${c(monto('pension'))}.`,
+    saldo_total: 'Todo lo que le debes hoy a la tarjeta, incluidas las compras a cuotas que aún no has pagado.',
     tasa_ea: 'Lo que te cobran de interés en un año. Para comparar dos créditos, compara esta tasa y el costo total, no la cuota.',
     fecha_limite: 'Hasta ese día puedes pagar sin que te cobren intereses de mora ni te reporten.',
     monto: 'La plata que te prestan. Con ella pagarías la tarjeta completa.',
@@ -120,17 +121,24 @@ export const PERFIL_VACIO: PerfilFinanciero = {
 
 let guardado: PerfilFinanciero = PERFIL_VACIO;
 
+let documentosGuardados: DocumentoLeido[] = [];
+let progresoGuardado: Progreso = { leccionesTerminadas: [], medallas: [] };
+
+/** Respuesta escrita de Luca en la conversación de la decisión (sin modelo). */
+const RESPUESTA_DEMO = 'Entiendo. Es una decisión que vale la pena mirar con calma y con tus números, no a ojo.';
+
 export const fuenteDeMuestra: FuenteDeDatos = {
   hoy: () => HOY,
   perfil: async () => guardado,
   guardarPerfil: async (perfil) => {
     guardado = perfil;
   },
-  leerDocumento: async (tipo, perfil) => {
+  documentos: async () => documentosGuardados,
+  leerDocumento: async (archivo) => {
     await esperar(300);
-    if (tipo === 'extracto') return extracto();
-    if (tipo === 'oferta_credito') return oferta();
-    return desprendible(perfil.salario ?? PAPEL.salario);
+    const doc = archivo.pista === 'extracto' ? extracto() : archivo.pista === 'oferta_credito' ? oferta() : desprendible(PAPEL.salario);
+    documentosGuardados = [doc, ...documentosGuardados.filter((d) => d.id !== doc.id)];
+    return doc;
   },
   explicarDocumento: async (doc) => {
     await esperar(300);
@@ -138,14 +146,38 @@ export const fuenteDeMuestra: FuenteDeDatos = {
   },
   eventos: async (perfil) => eventosDePlata(perfil, HOY),
   modulos: async (perfil) => modulosPara(perfil, HOY),
+  progreso: async () => progresoGuardado,
+  sumarProgreso: async (p) => {
+    const unir = (a: string[], b: string[]) => [...new Set([...a, ...b])];
+    progresoGuardado = { leccionesTerminadas: unir(progresoGuardado.leccionesTerminadas, p.leccionesTerminadas), medallas: unir(progresoGuardado.medallas, p.medallas) };
+    return progresoGuardado;
+  },
+  crearDecision: async (pregunta) => ({ id: `demo-${Date.now()}`, pregunta, documentos: [], caminoElegido: null, motivos: [], nota: null, creadaEn: new Date().toISOString() }),
+  conversar: async (_id, _mensaje, _historial, _docs, alEvento) => {
+    for (const palabra of RESPUESTA_DEMO.split(/(?<= )/)) {
+      await esperar(40);
+      alEvento({ tipo: 'texto', delta: palabra });
+    }
+    alEvento({ tipo: 'fin', runId: null, estado: 'ok' });
+  },
+  cerrarDecision: async (id, cierre) => ({ id, pregunta: '¿Mínimo, diferir o préstamo?', documentos: cierre.documentos, caminoElegido: cierre.caminoElegido, motivos: cierre.motivos, nota: cierre.nota, creadaEn: new Date().toISOString() }),
   borrarTodo: async () => {
     guardado = PERFIL_VACIO;
+    documentosGuardados = [];
+    progresoGuardado = { leccionesTerminadas: [], medallas: [] };
   },
 };
 
+/** Vuelve al estado inicial: cada vez que alguien entra a la demostración empieza de cero. */
+export function reiniciarMuestra() {
+  guardado = PERFIL_VACIO;
+  documentosGuardados = [];
+  progresoGuardado = { leccionesTerminadas: [], medallas: [] };
+}
+
 /** Lo que el desprendible le enseña a Luca del perfil. */
 export function perfilDesdeDesprendible(perfil: PerfilFinanciero, doc: DocumentoLeido): PerfilFinanciero {
-  const salario = doc.renglones.find((x) => x.clave === 'salario')?.monto ?? perfil.salario;
+  const salario = doc.renglones.find((x) => x.clave === 'salario_basico')?.monto ?? perfil.salario;
   return { ...perfil, empresa: doc.titulo, cargo: PAPEL.cargo, fechaIngreso: PAPEL.fechaIngreso, diaDePago: PAPEL.diaDePago, salario };
 }
 

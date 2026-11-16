@@ -10,9 +10,13 @@ import { DarkTheme, DefaultTheme, router, Stack, ThemeProvider } from 'expo-rout
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Image } from 'expo-image';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { useTema } from '@/constants/tema';
+import { Problema } from '@/components/problema';
+import { Forma, useTema } from '@/constants/tema';
+import { grabado } from '@/lib/assets';
 import { ProveedorLuca, useLuca } from '@/lib/datos/contexto';
 import { ProveedorSesion, useSesion } from '@/lib/sesion';
 
@@ -37,20 +41,50 @@ export default function Layout() {
       <ThemeProvider value={navegacion}>
         <StatusBar style={tema.oscuro ? 'light' : 'dark'} />
         <ProveedorSesion>
-          <ProveedorLuca>
-            <Pantallas />
-          </ProveedorLuca>
+          <Marco>
+            <ConDatos />
+          </Marco>
         </ProveedorSesion>
       </ThemeProvider>
     </GestureHandlerRootView>
   );
 }
 
+/** Los datos de Luca dependen de quién entró: cambiar de persona o de modo los monta de cero. */
+function ConDatos() {
+  const { sesion, consentido, deMuestra } = useSesion();
+  const llave = deMuestra ? 'demo' : (sesion?.user.id ?? 'nadie');
+  return (
+    <ProveedorLuca key={llave} demo={deMuestra} activo={!!sesion && !!consentido}>
+      <Pantallas />
+    </ProveedorLuca>
+  );
+}
+
+/**
+ * En pantallas anchas (web en computador) la app se presenta como una columna de teléfono centrada
+ * sobre el papel de la marca, no estirada.
+ */
+function Marco({ children }: { children: React.ReactNode }) {
+  const tema = useTema();
+  const { width } = useWindowDimensions();
+  if (Platform.OS !== 'web' || width < 640) return <>{children}</>;
+  return (
+    <View style={[estilos.mesa, { backgroundColor: tema.superficie }]}>
+      <Image source={grabado('forma-mancha', tema.oscuro)} style={[estilos.mancha, { left: -120, top: -80 }]} contentFit="contain" accessible={false} />
+      <Image source={grabado('forma-sol', tema.oscuro)} style={[estilos.sol, { right: -60, bottom: -40 }]} contentFit="contain" accessible={false} />
+      <View style={[estilos.columna, { backgroundColor: tema.fondo, borderColor: tema.linea }]}>{children}</View>
+    </View>
+  );
+}
+
 /** La app tiene cuatro estados; `destino` es la primera pantalla de cada uno. */
 function Pantallas() {
-  const { sesion, consentido } = useSesion();
-  const { bienvenidaLista, perfil } = useLuca();
-  const cargando = sesion === undefined || (sesion && consentido === undefined) || !perfil;
+  const tema = useTema();
+  const { sesion, consentido, salir } = useSesion();
+  const { bienvenidaLista, carga, recargar } = useLuca();
+  const adentro = !!sesion && !!consentido;
+  const cargando = sesion === undefined || (sesion && consentido === undefined) || (adentro && carga === 'cargando');
 
   const destino = !sesion ? '/login' : !consentido ? '/consentimiento' : !bienvenidaLista ? '/conocerte' : '/';
 
@@ -70,6 +104,13 @@ function Pantallas() {
   }, [cargando, destino]);
 
   if (cargando) return null;
+  if (adentro && typeof carga === 'object') {
+    return (
+      <View style={{ flex: 1, backgroundColor: tema.fondo, padding: 24, justifyContent: 'center' }}>
+        <Problema problema={carga} alReintentar={recargar} alVolver={carga.tipo === 'sesion' ? salir : undefined} textoVolver="Entrar de nuevo" />
+      </View>
+    );
+  }
   return (
     <Stack screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
       <Stack.Screen name="login" options={{ animation: 'fade' }} />
@@ -90,3 +131,10 @@ function Pantallas() {
     </Stack>
   );
 }
+
+const estilos = StyleSheet.create({
+  mesa: { flex: 1, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
+  mancha: { position: 'absolute', width: 520, height: 360, opacity: 0.6 },
+  sol: { position: 'absolute', width: 320, height: 320, opacity: 0.7 },
+  columna: { width: 430, height: '100%', maxHeight: 932, borderWidth: Forma.contorno, borderRadius: 24, overflow: 'hidden' },
+});

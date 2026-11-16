@@ -5,7 +5,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 
 import { Boton } from '@/components/boton';
 import { Entrada } from '@/components/entrada';
-import { Hoja } from '@/components/hoja';
+import { HojaSubir } from '@/components/hoja-subir';
 import { Icono } from '@/components/icono';
 import { BurbujaLuca, Ilustracion } from '@/components/luca';
 import { Pantalla } from '@/components/pantalla';
@@ -16,15 +16,9 @@ import { haptica } from '@/lib/haptica';
 
 export default function Conocerte() {
   const tema = useTema();
-  const { perfil } = useLuca();
+  const { perfil, demo, elegirArchivo } = useLuca();
   const [hojaSubir, setHojaSubir] = useState(false);
   const nombre = perfil?.nombre?.split(' ')[0];
-
-  const leer = () => {
-    setHojaSubir(false);
-    // iOS pierde un push que llega mientras se desmonta el Modal de la hoja: se navega cuando ya se fue.
-    setTimeout(() => router.push('/leyendo'), 120);
-  };
 
   return (
     <Pantalla>
@@ -64,28 +58,14 @@ export default function Conocerte() {
         </Texto>
       </Entrada>
 
-      <Hoja visible={hojaSubir} alCerrar={() => setHojaSubir(false)} titulo="Sube tu desprendible">
-        <Texto suave>El de este mes o el último que tengas.</Texto>
-        {/* Datos de muestra: el selector de archivos real llega con la API (paso 5). */}
-        <Pressable
-          onPress={leer}
-          accessibilityRole="button"
-          accessibilityLabel="desprendible-nov-2026.pdf, en Descargas, de hace 2 días"
-          style={({ pressed }) => [estilos.archivo, { borderColor: tema.linea, backgroundColor: pressed ? tema.superficie : tema.papel }]}>
-          <View style={[estilos.pdf, { backgroundColor: tema.maiz, borderColor: tema.linea }]}>
-            <Texto tipo="pequeno" color={tema.sobreMaiz} style={{ fontFamily: 'BricolageGrotesque_800ExtraBold' }}>
-              PDF
-            </Texto>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Texto tipo="cuerpoFuerte">desprendible-nov-2026.pdf</Texto>
-            <Texto tipo="pequeno" suave>
-              Descargas · hace 2 días
-            </Texto>
-          </View>
-        </Pressable>
-        <Boton titulo="Tomar una foto" variante="secundario" icono={<Icono nombre="camara" tamano={20} color={tema.sobreVerde} />} onPress={leer} />
-      </Hoja>
+      <HojaSubir
+        visible={hojaSubir}
+        alCerrar={() => setHojaSubir(false)}
+        titulo="Sube tu desprendible"
+        texto="El de este mes o el último que tengas."
+        demo={demo}
+        alElegir={(archivo) => (elegirArchivo(archivo), router.push('/leyendo'))}
+      />
     </Pantalla>
   );
 }

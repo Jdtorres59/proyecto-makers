@@ -7,15 +7,16 @@ import { type CostoDeuda, costoPagoMinimo, costoPrestamo, costoTarjeta, CUOTAS_P
 
 export type Papeles = { saldo: number; tasaTarjeta: number; tasaPrestamo: number; seguroMensual: number };
 
-const tasaDe = (texto: string) => Number(texto.replace(/[^\d,]/g, '').replace(',', '.'));
+/** "26,50 % E.A." o "26.5%" a 26.5; 0 si no hay número. */
+export const tasaDe = (texto: string) => Number(texto.match(/\d+(?:[.,]\d+)?/)?.[0].replace(',', '.') ?? 0);
 
-/** Lo que la decisión necesita, tal como quedó en los renglones del extracto y la oferta. */
-export function papelesDesde(extracto: DocumentoLeido, oferta: DocumentoLeido): Papeles {
-  const renglon = (doc: DocumentoLeido, clave: string) => doc.renglones.find((x) => x.clave === clave);
+/** Lo que la decisión necesita, tal como quedó en los renglones del extracto y la oferta. Lo que falte queda en 0. */
+export function papelesDesde(extracto: DocumentoLeido | undefined, oferta: DocumentoLeido | undefined): Papeles {
+  const renglon = (doc: DocumentoLeido | undefined, ...claves: string[]) => doc?.renglones.find((x) => claves.includes(x.clave));
   return {
-    saldo: renglon(extracto, 'saldo')?.monto ?? 0,
-    tasaTarjeta: tasaDe(renglon(extracto, 'tasa_ea')?.texto ?? '0'),
-    tasaPrestamo: tasaDe(renglon(oferta, 'tasa_ea')?.texto ?? '0'),
+    saldo: renglon(extracto, 'saldo_total', 'saldo')?.monto ?? 0,
+    tasaTarjeta: tasaDe(renglon(extracto, 'tasa_ea')?.texto ?? ''),
+    tasaPrestamo: tasaDe(renglon(oferta, 'tasa_ea')?.texto ?? ''),
     seguroMensual: renglon(oferta, 'seguro')?.monto ?? 0,
   };
 }
