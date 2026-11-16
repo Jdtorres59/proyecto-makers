@@ -15,7 +15,7 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 | 2 | Biblioteca de assets en `apps/mobile/assets` | Parcial: 3 poses, desprendible y 20 íconos. El resto espera a la generación de imágenes |
 | 3 | App con datos de muestra | Dos tandas hechas en `claude/app-v1-020a11`: bienvenida, inicio, Aprender con lecciones, prima, documentos, decisión y Sobre mí. Falta conectar la API (paso 5) |
 | 4 | Backend: cuentas, tablas, agentes y rutas | Hecho y fusionado en `v1`. Migración `20261115000000_luca.sql` aplicada en `makers-dev` el 15 de noviembre: avisos de seguridad en cero y prueba de aislamiento entre dos usuarios (revertida) |
-| 5 | Conectar app y API | Pendiente |
+| 5 | Conectar app y API | Hecho en `claude/app-v1-020a11`: fuente real contra la API, subida al bucket, modo demostración y web lista para Vercel (sin desplegar) |
 | 6 | Contenido de los 12 módulos | Pendiente |
 | 7 | Pulido y verificación | Pendiente |
 
@@ -58,6 +58,28 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 **Verificado en el simulador de iOS (iPhone 17 Pro):** recorrido completo en oscuro (login a decisión, lecciones, medalla, borrar todo) y las pantallas principales en claro; 51 capturas en `apps/mobile/capturas/tanda-2/`. Contraste: los colores nuevos salen de los mismos tokens ya medidos (peor texto 5,17:1).
 
 **No verificado:** VoiceOver; Android; pantallas de 375 pt; letra grande en las pantallas nuevas; un botón dentro de una hoja con el campo enfocado a veces pide dos toques en el simulador.
+
+## App de Luca 1.0: fase 4 (datos reales y web)
+
+**Fuente de datos.** `lib/datos/api.ts` implementa `FuenteDeDatos` con el cliente tipado `hc<AppType>`: perfil, eventos, progreso, decisiones (crear, conversar con NDJSON, cerrar), `DELETE /yo` y documentos. Subir un documento: selector (`expo-document-picker`) o cámara (`expo-image-picker`), archivo al bucket privado `documentos` en `<user_id>/...`, fila en `documents`, `POST /documentos/:id/leer`, y `/explicar` al abrirlo. La lista de documentos sale de `documents` y `GET /documentos/:id`. El contenido de Aprender sigue saliendo de `@makers/contenido` en la app. `lib/datos/contexto.tsx` elige la fuente por sesión y se monta de cero al cambiar de persona o de modo.
+
+**Modo demostración.** `EXPO_PUBLIC_MODO_DEMO=si` muestra "Probar sin cuenta" en el login (en desarrollo siempre está): sesión local con los datos ficticios de Valentina, sin tocar Supabase ni la API, y empieza de cero cada vez. Con cuenta real no hay datos ficticios: una cuenta nueva empieza vacía y pasa por conocerte; quien ya tiene salario guardado entra directo al inicio.
+
+**Errores.** `lib/datos/errores.ts` traduce cada falla a `sin-conexion`, `tope` (429, mensaje propio), `sesion`, `archivo` o `servidor`, con texto llano. `components/problema.tsx` los muestra con `escenas/sin-conexion` o Luca atento, y "Intentar de nuevo". Carga inicial, lectura, explicación, subida, decisión, cierre y borrar todo tienen su estado de error.
+
+**Confirmar lo leído** muestra los renglones tal como los leyó la API, con aviso cuando la confianza es media o baja, y se corrigen en el mismo lugar. Empresa, día de pago y fecha de ingreso se piden aparte (el desprendible real no los trae en renglones) porque sin ellos no hay fechas. En la decisión, si la lectura no trae saldo o tasas, la persona los escribe.
+
+**Navegación.** `_layout.tsx` es una guarda: cada estado tiene sus rutas y, si la actual no es del estado, reemplaza la pila. Usa `setTimeout` y espera a `useRootNavigationState().key`, porque en web con la pestaña en segundo plano `requestAnimationFrame` no corre y el router procesaba la URL inicial después del primer reemplazo.
+
+**Web.** `app.json` con `web.output: "single"` (SPA) y `apps/mobile/vercel.json` con install desde la raíz, `expo export -p web`, salida `dist` y reescritura de todas las rutas a `/`. En pantallas de 640 px o más, la app es una columna de teléfono centrada sobre el papel de la marca. `npx expo export -p web` sale sin errores (7 MB) y el paquete no lleva secretos.
+
+**Recorrido con datos reales** (API local con `AI_PROVIDER=mock`, Supabase `makers-dev`, usuario `.test` creado y borrado al final, web a 375 px y a 1440 px): autorización, subida del PDF de `evals/fixtures` al bucket, lectura, confirmación con aviso de confianza y corrección, preguntas, inicio con prima de $900.000 calculada por la API, una lección (progreso guardado), decisión con conversación en streaming, dos papeles, datos faltantes escritos a mano, cierre guardado en `decisions`, y borrar todo: tablas y bucket en cero. Sin conexión: pantalla de problema y recuperación al volver la API. Capturas en `apps/mobile/capturas/fase-4/`.
+
+**No verificado:** ingreso real con Google y con código al correo en el navegador (Google no está activo en Supabase; el código depende de la plantilla de correo), el tope 429 en vivo, la app nativa con la API (solo web), el modelo real (solo el simulado). Con la ventana de Claude sin mostrar, algunas transiciones de pantalla no terminaban en el navegador de pruebas; el contenido sí estaba y en pantalla visible funcionaron.
+
+**Para publicar la web** (quien tenga la cuenta de Vercel): proyecto nuevo con Root Directory `apps/mobile` (toma `vercel.json`), `ENABLE_EXPERIMENTAL_COREPACK=1`, y las variables de `.env.example`: `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `EXPO_PUBLIC_API_URL` (dominio de la API) y `EXPO_PUBLIC_MODO_DEMO`. En la API, `ORIGENES_PERMITIDOS` con el dominio de la web. En Supabase, Authentication > URL Configuration: el dominio de la web en Site URL y Redirect URLs (`https://<dominio>/**`), y activar Google si se va a usar.
+
+**Falta:** el plan de la prima vive solo en el teléfono (la API no tiene dónde guardarlo); un enlace directo a una ruta interna funciona, pero si los datos todavía cargan, la persona ve el problema o el inicio primero.
 
 ## Backend de Luca 1.0
 

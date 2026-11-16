@@ -6,7 +6,7 @@ import {
   BricolageGrotesque_800ExtraBold,
   useFonts,
 } from '@expo-google-fonts/bricolage-grotesque';
-import { DarkTheme, DefaultTheme, router, Stack, ThemeProvider } from 'expo-router';
+import { DarkTheme, DefaultTheme, router, Stack, ThemeProvider, usePathname, useRootNavigationState } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -21,6 +21,8 @@ import { ProveedorLuca, useLuca } from '@/lib/datos/contexto';
 import { ProveedorSesion, useSesion } from '@/lib/sesion';
 
 SplashScreen.preventAutoHideAsync();
+
+const BIENVENIDA = ['/conocerte', '/leyendo', '/confirmar', '/preguntas', '/listo'];
 
 export default function Layout() {
   const tema = useTema();
@@ -88,23 +90,42 @@ function Pantallas() {
 
   const destino = !sesion ? '/login' : !consentido ? '/consentimiento' : !bienvenidaLista ? '/conocerte' : '/';
 
-  // Cada estado (sin sesión, sin autorización, conociéndote, adentro) tiene su primera pantalla. Al cambiar
-  // de estado se vacía la pila y se reemplaza: no se puede volver atrás a un estado anterior.
+  // Cada estado (sin sesión, sin autorización, conociéndote, adentro) tiene sus rutas. Si la ruta actual no es
+  // del estado, se vacía la pila y se va a la primera del estado. Se revisa cada vez que cambia la ruta: en web
+  // el router procesa la URL inicial después del primer reemplazo y podía devolver a la persona a "/".
   // shortcut: Stack.Protected de Expo Router 58 no lleva bien a un grupo sin índice ni a pantallas sueltas
   // (ROUTE_NAMES_CHANGED sin manejar); probar de nuevo con guardas al subir de versión.
+  const ruta = usePathname();
+  const navegadorListo = !!useRootNavigationState()?.key;
+  const permitida = !sesion
+    ? ruta === '/login'
+    : !consentido
+      ? ruta === '/consentimiento'
+      : !bienvenidaLista
+        ? BIENVENIDA.includes(ruta)
+        : ruta !== '/login' && ruta !== '/consentimiento' && !BIENVENIDA.includes(ruta);
   useEffect(() => {
-    if (cargando) return;
-    const id = requestAnimationFrame(() => {
+    if (cargando || !navegadorListo) return;
+    if (permitida) {
+      // La pantalla de arranque se va cuando ya está la pantalla correcta, sin destello de otra.
+      const id = setTimeout(() => SplashScreen.hideAsync(), 60);
+      return () => clearTimeout(id);
+    }
+    // setTimeout y no requestAnimationFrame: en una pestaña en segundo plano RAF no corre y nadie redirigía.
+    const id = setTimeout(() => {
       if (router.canDismiss()) router.dismissAll();
       router.replace(destino);
-      // La pantalla de arranque se va cuando ya está la pantalla correcta, sin destello del inicio.
-      setTimeout(() => SplashScreen.hideAsync(), 60);
-    });
-    return () => cancelAnimationFrame(id);
-  }, [cargando, destino]);
+    }, 0);
+    return () => clearTimeout(id);
+  }, [cargando, destino, navegadorListo, permitida, ruta]);
+
+  const conProblema = adentro && typeof carga === 'object';
+  useEffect(() => {
+    if (conProblema) SplashScreen.hideAsync();
+  }, [conProblema]);
 
   if (cargando) return null;
-  if (adentro && typeof carga === 'object') {
+  if (conProblema && typeof carga === 'object') {
     return (
       <View style={{ flex: 1, backgroundColor: tema.fondo, padding: 24, justifyContent: 'center' }}>
         <Problema problema={carga} alReintentar={recargar} alVolver={carga.tipo === 'sesion' ? salir : undefined} textoVolver="Entrar de nuevo" />
