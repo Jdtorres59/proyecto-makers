@@ -71,8 +71,8 @@ function Marco({ children }: { children: React.ReactNode }) {
   if (Platform.OS !== 'web' || width < 640) return <>{children}</>;
   return (
     <View style={[estilos.mesa, { backgroundColor: tema.superficie }]}>
-      <Image source={grabado('forma-mancha', tema.oscuro)} style={[estilos.mancha, { left: -120, top: -80 }]} contentFit="contain" accessible={false} />
-      <Image source={grabado('forma-sol', tema.oscuro)} style={[estilos.sol, { right: -60, bottom: -40 }]} contentFit="contain" accessible={false} />
+      <Image source={grabado('forma-mancha', tema.oscuro)} style={[estilos.mancha, { left: -120, top: -80 }]} contentFit="contain" alt="" />
+      <Image source={grabado('forma-sol', tema.oscuro)} style={[estilos.sol, { right: -60, bottom: -40 }]} contentFit="contain" alt="" />
       <View style={[estilos.columna, { backgroundColor: tema.fondo, borderColor: tema.linea }]}>{children}</View>
     </View>
   );

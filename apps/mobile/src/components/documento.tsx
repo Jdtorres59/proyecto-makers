@@ -26,7 +26,7 @@ export function RenglonDocumento({ renglon, leido = true, total }: { renglon: Re
           {leido ? <Icono nombre="check" tamano={12} color={tema.sobreVerde} /> : null}
         </View>
         <Texto tipo={total ? 'cuerpoFuerte' : 'cuerpo'} style={{ flexShrink: 1 }}>
-          {renglon.monto === null ? renglon.etiqueta : renglon.texto}
+          {renglon.etiqueta}
         </Texto>
       </View>
       <Texto tipo="cuerpoFuerte" esCifra>

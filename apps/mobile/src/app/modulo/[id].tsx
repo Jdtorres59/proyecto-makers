@@ -31,7 +31,7 @@ export default function ModuloPantalla() {
       <Entrada indice={0}>
         <View style={{ width: ancho, height: (ancho * 2) / 3 }}>
           <Ilustracion nombre={`portadas/${m.portada}` as NombreAsset} ancho={ancho} alto={(ancho * 2) / 3} />
-          <Image source={grabado('marco-portada', tema.oscuro)} style={StyleSheet.absoluteFill} contentFit="fill" accessible={false} />
+          <Image source={grabado('marco-portada', tema.oscuro)} style={StyleSheet.absoluteFill} contentFit="fill" alt="" />
         </View>
       </Entrada>
       <Entrada indice={1} style={{ gap: Espacio.s }}>
@@ -87,7 +87,7 @@ export default function ModuloPantalla() {
           {ganada ? (
             <Ilustracion nombre={`medallas/${m.medalla}` as NombreAsset} ancho={72} />
           ) : (
-            <Image source={grabado('medalla-bloqueada', tema.oscuro)} style={{ width: 72, height: 72 }} accessible={false} />
+            <Image source={grabado('medalla-bloqueada', tema.oscuro)} style={{ width: 72, height: 72 }} alt="" />
           )}
           <View style={{ flex: 1, gap: 2 }}>
             <Texto tipo="cuerpoFuerte">{ganada ? 'Tu medalla' : 'La medalla de este módulo'}</Texto>

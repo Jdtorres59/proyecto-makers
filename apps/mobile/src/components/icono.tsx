@@ -11,7 +11,7 @@ export function Icono({ nombre, tamano = 24, color }: { nombre: NombreIcono; tam
       source={ICONOS[nombre]}
       tintColor={color ?? tema.texto}
       style={{ width: tamano, height: tamano }}
-      accessible={false}
+      alt=""
       importantForAccessibility="no"
     />
   );

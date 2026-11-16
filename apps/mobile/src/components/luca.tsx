@@ -34,12 +34,12 @@ export function Ilustracion({ nombre, ancho, alto = ancho }: IlustracionProps) {
         <View style={StyleSheet.absoluteFill}>
           <MarcoGrabado familia={familia} ancho={ancho} alto={alto} />
         </View>
-        <Image source={base} style={{ width: ancho * 0.8, height: alto * 0.8 }} contentFit="contain" accessible={false} />
+        <Image source={base} style={{ width: ancho * 0.8, height: alto * 0.8 }} contentFit="contain" alt="" />
       </View>
     );
   }
   if (!fuente) return <MarcoGrabado familia={familia} ancho={ancho} alto={alto} />;
-  return <Image source={fuente} style={{ width: ancho, height: alto }} contentFit="contain" accessible={false} />;
+  return <Image source={fuente} style={{ width: ancho, height: alto }} contentFit="contain" alt="" />;
 }
 
 type Props = {

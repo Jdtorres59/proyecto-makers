@@ -58,10 +58,13 @@ export function Grano() {
   const columnas = Math.ceil(width / LADO_GRANO);
   const filas = Math.ceil(height / LADO_GRANO);
   return (
-    <View style={[estilos.grano, { width: columnas * LADO_GRANO, height: filas * LADO_GRANO }]} pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants">
-      {Array.from({ length: columnas * filas }, (_, i) => (
-        <Image key={i} source={grabado('grano', oscuro)} style={{ width: LADO_GRANO, height: LADO_GRANO }} cachePolicy="memory" />
-      ))}
+    // El contenedor recorta: la grilla mide más que la pantalla y en web haría scroll horizontal.
+    <View style={[StyleSheet.absoluteFill, { overflow: 'hidden' }]} pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants">
+      <View style={[estilos.grano, { width: columnas * LADO_GRANO, height: filas * LADO_GRANO }]}>
+        {Array.from({ length: columnas * filas }, (_, i) => (
+          <Image key={i} source={grabado('grano', oscuro)} style={{ width: LADO_GRANO, height: LADO_GRANO }} cachePolicy="memory" alt="" />
+        ))}
+      </View>
     </View>
   );
 }
