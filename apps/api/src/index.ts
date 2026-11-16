@@ -5,7 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { crearApp, type Datos } from "./app";
 
-const { SUPABASE_URL, SUPABASE_SECRET_KEY, TOPE_DIARIO_USD } = process.env;
+const { SUPABASE_URL, SUPABASE_SECRET_KEY, TOPE_DIARIO_USD, ORIGENES_PERMITIDOS } = process.env;
 if (!SUPABASE_URL || !SUPABASE_SECRET_KEY) throw new Error("Faltan SUPABASE_URL o SUPABASE_SECRET_KEY (ver .env.example)");
 
 // La llave secreta salta RLS: este cliente solo existe en el servidor. Por eso cada consulta filtra por user_id.
@@ -206,6 +206,8 @@ export default crearApp({
   topeDiarioUsd: Number(TOPE_DIARIO_USD ?? 0.5),
   datos,
   hoy: hoyEnColombia,
+  // Lista separada por comas, por ejemplo "https://luca.vercel.app,http://localhost:8081".
+  origenesPermitidos: ORIGENES_PERMITIDOS?.trim() ? ORIGENES_PERMITIDOS.split(",").map((o) => o.trim()).filter(Boolean) : undefined,
 
   // shortcut: una ida a Supabase por petición. Si pesa, validar el JWT localmente con las llaves públicas del proyecto.
   async verificarToken(token) {
