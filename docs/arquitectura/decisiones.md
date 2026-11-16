@@ -14,6 +14,10 @@ Una entrada corta por decisión: qué, por qué y qué la haría cambiar. Las nu
 
 **CORS por lista de orígenes** (`ORIGENES_PERMITIDOS`; por defecto `http://localhost:8081`). Va antes de la sesión, porque la consulta previa del navegador no lleva token.
 
+## 2026-11-16 · Modelo predeterminado
+
+**Todos los agentes usan Haiku 5.5 (`economico`) por ahora.** Lo pidió Juan David el 16 de noviembre: la llave de pruebas tiene un tope de 10 dólares y Opus 5.5 cuesta unas 40 veces más por token. Es una decisión de presupuesto, no de calidad: ningún eval ha corrido contra un modelo real. Se revisa corriendo `AI_MODELO=principal pnpm eval` contra `AI_MODELO=economico` cuando haya presupuesto, sobre todo en `leer_documento`.
+
 ## 2026-11-15 · Backend de Luca 1.0
 
 **Las cuentas leen sus cifras legales de `conocimiento` en la fecha de la cuenta y fallan si no hay norma vigente.** `core` depende de `conocimiento`. Mejor un error que una cifra vieja.

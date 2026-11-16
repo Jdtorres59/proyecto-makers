@@ -34,7 +34,7 @@ export const AGENTES: Record<string, Agente> = {
   // Agente de prueba de la base técnica. No es una feature de producto.
   base: {
     nombre: "base",
-    modelo: "principal",
+    modelo: "economico",
     prompt: {
       version: "1",
       texto: "Responde de forma breve a lo que te pregunten. Usa las herramientas cuando la pregunta tenga cifras.",
@@ -43,21 +43,21 @@ export const AGENTES: Record<string, Agente> = {
   },
   leer_documento: {
     nombre: "leer_documento",
-    modelo: "principal",
+    modelo: "economico",
     prompt: leerDocumento,
     herramientas: [],
     salida: LecturaDocumento,
   },
   explicar_documento: {
     nombre: "explicar_documento",
-    modelo: "principal",
+    modelo: "economico",
     prompt: explicarDocumento,
     herramientas: [calcularNeto, calcularPrestaciones, calcularPorcentaje, consultarNormaVigente],
     salida: Explicaciones,
   },
   acompanar_decision: {
     nombre: "acompanar_decision",
-    modelo: "principal",
+    modelo: "economico",
     prompt: acompanarDecision,
     herramientas: [costoDeTarjeta, costoDePagoMinimo, costoDePrestamo, porcentajeDelSueldoEnCuotas, calcularNeto, consultarNormaVigente],
   },

@@ -11,7 +11,7 @@ export const MODELOS = {
     esfuerzo: "medium",
     usdPorMTok: { entrada: 4, salida: 20, cacheLectura: 0.2, cacheEscritura: 5 },
   },
-  /** Para probar despliegues y flujos sin gastar. No es el predeterminado: cambiarlo se decide con evals. */
+  /** El que usan hoy todos los agentes (agentes.ts), por presupuesto. Subir a "principal" se decide con evals contra el modelo real. */
   economico: {
     id: "claude-haiku-5-5",
     esfuerzo: "medium",
@@ -22,7 +22,7 @@ export const MODELOS = {
 
 export type NombreModelo = keyof typeof MODELOS;
 
-/** AI_MODELO fuerza un modelo para todos los agentes (por ejemplo "economico" en pruebas). Sin ella, cada agente usa el suyo. */
+/** AI_MODELO fuerza un modelo para todos los agentes (por ejemplo "principal" para comparar calidad). Sin ella, cada agente usa el suyo. */
 export function modeloEfectivo(delAgente: NombreModelo, env: Record<string, string | undefined> = process.env): NombreModelo {
   const forzado = env.AI_MODELO;
   if (!forzado) return delAgente;
