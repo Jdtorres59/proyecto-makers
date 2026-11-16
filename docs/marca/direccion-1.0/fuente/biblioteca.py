@@ -154,6 +154,33 @@ def procesar(crudo):
     print(f'{hechos} de {len(P)} piezas procesadas')
 
 
+def destino(carpeta, nombre):
+    if carpeta == 'icono': return 'images/icon.png (y android-icon-*.png, favicon.png, icono/icono.png)'
+    return f'{carpeta}/{nombre}.webp'
+
+
+def lista():
+    """Escribe la lista cerrada de la biblioteca al final de prompts.md."""
+    titulos = {'icono': 'Ícono de app', 'portadas': 'Portadas de módulo (3:2, opacas)', 'medallas': 'Medallas',
+               'luca': 'Poses de Luca', 'crecimiento': 'Etapas de crecimiento', 'objetos': 'Objetos', 'escenas': 'Escenas de estado'}
+    t = ['## Biblioteca del paso 2 (lista cerrada)', '',
+         f'{len(P)} piezas. Ruta final relativa a `apps/mobile/assets/`. Referencia: `saluda` = pose base, `objeto` = desprendible, `medallas/01-desprendible` = primera medalla. '
+         'El estilo común (`ESTILO`, `TRAZO`, `FONDO`, `ESCENA`) se define en `biblioteca.py`; aquí va lo que cambia en cada pieza.']
+    actual = None
+    for carpeta, nombre, transparente, ref, prompt in P:
+        if carpeta != actual:
+            actual = carpeta; t += ['', f'### {titulos[carpeta]}', '', '| Archivo | Ref. | Prompt (parte propia) |', '|---|---|---|']
+        propio = prompt
+        for comun in (ESTILO, TRAZO, FONDO, ESCENA, 'Mismo personaje que la referencia.', 'Escena de portada de módulo:'):
+            propio = propio.replace(comun, '')
+        t.append(f'| `{destino(carpeta, nombre)}` | {ref} | {" ".join(propio.split())} |')
+    md = (AQUI / 'prompts.md').read_text().split('## Biblioteca del paso 2')[0].rstrip() + '\n\n' + '\n'.join(t) + '\n'
+    (AQUI / 'prompts.md').write_text(md)
+    print(len(P), 'piezas en prompts.md')
+
+
 if __name__ == '__main__':
-    accion, crudo = sys.argv[1], pathlib.Path(sys.argv[2]).resolve()
-    {'generar': generar, 'procesar': procesar}[accion](crudo)
+    if sys.argv[1] == 'lista': lista()
+    else:
+        accion, crudo = sys.argv[1], pathlib.Path(sys.argv[2]).resolve()
+        {'generar': generar, 'procesar': procesar}[accion](crudo)
