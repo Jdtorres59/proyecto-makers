@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import type { ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -23,11 +23,20 @@ type Props = {
 /** Andamio de toda pantalla: fondo, área segura, scroll para pantallas chicas y letra grande, ancho máximo. */
 export function Pantalla({ children, pie, cabecera, conPestanas }: Props) {
   const tema = useTema();
+  // Con el contenido desplazado, la cabecera gana un borde: el texto se corta en una línea, no contra el botón.
+  const [desplazada, setDesplazada] = useState(false);
   return (
     <SafeAreaView style={[estilos.fondo, { backgroundColor: tema.fondo }]} edges={conPestanas ? ['top'] : ['top', 'bottom']}>
       <KeyboardAvoidingView style={estilos.fondo} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        {cabecera ? <View style={estilos.cabecera}>{cabecera}</View> : null}
-        <ScrollView contentContainerStyle={[estilos.contenido, pie ? { paddingBottom: Espacio.xxxl + Espacio.l } : null]} keyboardShouldPersistTaps="handled">
+        {cabecera ? (
+          <View style={{ borderBottomWidth: 1, borderBottomColor: desplazada ? tema.lineaSuave : 'transparent', backgroundColor: tema.fondo, zIndex: 1 }}>
+            <View style={estilos.cabecera}>{cabecera}</View>
+          </View>
+        ) : null}
+        <ScrollView
+          scrollEventThrottle={32}
+          onScroll={cabecera ? (e) => setDesplazada(e.nativeEvent.contentOffset.y > 4) : undefined}
+          contentContainerStyle={[estilos.contenido, pie ? { paddingBottom: Espacio.xxxl + Espacio.l } : null]} keyboardShouldPersistTaps="handled">
           {children}
         </ScrollView>
         {pie ? <View style={[estilos.pie, { backgroundColor: tema.fondo, borderTopColor: tema.lineaSuave }]}>{pie}</View> : null}

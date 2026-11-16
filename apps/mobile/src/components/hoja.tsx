@@ -106,7 +106,7 @@ const estilos = StyleSheet.create({
     paddingHorizontal: Espacio.xl,
     paddingTop: Espacio.s,
     gap: Espacio.l,
-    maxWidth: 560,
+    maxWidth: 480,
     width: '100%',
     alignSelf: 'center',
   },
