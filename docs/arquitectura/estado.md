@@ -13,7 +13,7 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 | 0 | Rama `v1`, contratos en `packages/core/src/esquemas.ts` | Hecho |
 | 1 | Dirección visual y personaje | Hecho: Semilla · Grabado, ver `DESIGN.md` |
 | 2 | Biblioteca de assets en `apps/mobile/assets` | Parcial: 3 poses, desprendible y 20 íconos. El resto espera a la generación de imágenes |
-| 3 | App con datos de muestra | Primera tanda hecha (login a inicio, rama `claude/app-v1-020a11`). Falta la segunda: Aprender, Documentos, Sobre mí, prima y decisión |
+| 3 | App con datos de muestra | Dos tandas hechas en `claude/app-v1-020a11`: bienvenida, inicio, Aprender con lecciones, prima, documentos, decisión y Sobre mí. Falta conectar la API (paso 5) |
 | 4 | Backend: cuentas, tablas, agentes y rutas | Hecho y fusionado en `v1`. Migración `20261115000000_luca.sql` aplicada en `makers-dev` el 15 de noviembre: avisos de seguridad en cero y prueba de aislamiento entre dos usuarios (revertida) |
 | 5 | Conectar app y API | Pendiente |
 | 6 | Contenido de los 12 módulos | Pendiente |
@@ -46,6 +46,18 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 **Contraste medido** (script WCAG sobre los tokens, también con el píxel más oscuro del grano): todo texto pasa 4,5:1 en ambos modos; el peor es `sobreVerde` sobre verde en claro, 5,17:1 (4,60:1 bajo el grano). El nombre en el login mide 13,56:1 en claro y 15,26:1 en oscuro.
 
 **Falta:** segunda tanda; selector de archivos real y subida al bucket; inicio no se vio a 375 px (solo el login); no se probó con VoiceOver; ícono de app sigue siendo el de Expo.
+
+## App de Luca 1.0 (segunda tanda)
+
+**Ajustes de la primera:** en oscuro, Luca de 160 pt o menos se apoya en un sello redondo de papel claro con borde maíz (el halo no alcanzaba para brazos y piernas); login reequilibrado, sin hueco abajo; el contenido termina con aire sobre el botón fijo; botones de Google (blanco en claro, #131314 en oscuro) y Apple (negro en claro, blanco en oscuro) con su logo; poses nuevas donde dicen algo (`lee`, `piensa`, `atento`, `sorprendido`, `pulgar`, `muestra`, `espera`).
+
+**Pantallas nuevas:** Aprender con los 12 módulos como camino (portada, medalla, candado si `publicado: false`, Luca creciendo con `crecimiento/`), ficha de módulo, reproductor de lección que pinta los ocho tipos de `Paso` con respuesta inmediata, háptica, celebración y medalla al cumplir la acción; lección de la prima (apuesta, cuenta, orden, reparto, plan) con los números de la persona; Documentos (lista, subir otro, documento explicado con renglones que se abren); decisión (chat, dos papeles, lectura, adivinar, comparador con plazos que recalculan con `costoTarjeta`, `costoPagoMinimo` y `costoPrestamo`, elegir y justificar, cierre); Sobre mí editable y "borrar todo" con confirmación.
+
+**Contenido:** el único punto de carga es `fuente.modulos()`, que hoy llama a `modulosPara(perfil, hoy)` de `@makers/contenido`. Todos los módulos vienen con `publicado: false`; **en desarrollo hay un interruptor en Aprender ("abrir los módulos sin publicar") que viene encendido** y deja recorrer el módulo 2. No existe en producción. También en desarrollo, "ver los ocho tipos de paso" abre una lección de prueba con todos los tipos, porque el contenido real aún no usa `comparar`.
+
+**Verificado en el simulador de iOS (iPhone 17 Pro):** recorrido completo en oscuro (login a decisión, lecciones, medalla, borrar todo) y las pantallas principales en claro; 51 capturas en `apps/mobile/capturas/tanda-2/`. Contraste: los colores nuevos salen de los mismos tokens ya medidos (peor texto 5,17:1).
+
+**No verificado:** VoiceOver; Android; pantallas de 375 pt; letra grande en las pantallas nuevas; un botón dentro de una hoja con el campo enfocado a veces pide dos toques en el simulador.
 
 ## Backend de Luca 1.0
 
