@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { AGENTES, crearProveedor, ejecutarAgente } from "@makers/ai";
 
 const pdf = readFileSync(new URL("../../../evals/fixtures/desprendible-ficticio.pdf", import.meta.url));
-const { registro } = await ejecutarAgente({
+const { registro, salida } = await ejecutarAgente({
   agente: AGENTES.leer_documento!,
   mensaje: "Lee este documento.",
   adjunto: { mediaType: "application/pdf", datos: pdf.toString("base64") },
@@ -16,4 +16,5 @@ console.log(`proveedor: ${registro.provider}  modelo: ${registro.model}  estado:
 console.log(`tokens: entrada ${registro.input_tokens}, salida ${registro.output_tokens}, caché ${registro.cache_read_tokens}/${registro.cache_write_tokens}`);
 console.log(`costo: US$${registro.cost_usd.toFixed(4)}  (${registro.latency_ms} ms)`);
 if (registro.error) console.log(`error: ${registro.error}`);
+console.log(`salida: ${JSON.stringify(salida, null, 2)}`); // El PDF es ficticio: se puede imprimir para compararlo.
 process.exitCode = registro.status === "ok" ? 0 : 1;
