@@ -9,7 +9,6 @@ import { Entrada } from '@/components/entrada';
 import { Icono } from '@/components/icono';
 import { LoQueViene } from '@/components/lo-que-viene';
 import { BurbujaLuca, Ilustracion, Luca } from '@/components/luca';
-import { BarraReparto } from '@/components/pasos';
 import { Pantalla } from '@/components/pantalla';
 import { Tarjeta } from '@/components/tarjeta';
 import { Texto } from '@/components/texto';
@@ -108,7 +107,6 @@ export default function Inicio() {
                 ? `Llega el ${fechaLarga(prima.fecha)} y ya sabes a dónde va cada peso.`
                 : `Llega en ${dias} días. Es lo proporcional a los ${diasSemestre} días que llevas este semestre.`}
             </Texto>
-            {planPrima ? <BarraReparto montos={planPrima.map((p) => p.monto)} total={planPrima.reduce((x, p) => x + p.monto, 0)} /> : null}
             <Boton titulo={planPrima ? 'Ver mi plan' : 'Armemos el plan'} variante="tinta" onPress={() => router.push('/prima')} />
           </Tarjeta>
         </Entrada>

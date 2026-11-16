@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Boton } from '@/components/boton';
 import { Icono } from '@/components/icono';
 import { BurbujaLuca, Luca } from '@/components/luca';
-import { Cabecera } from '@/components/pantalla';
+import { Cabecera, Grano } from '@/components/pantalla';
 import { Pdf } from '@/components/pdf';
 import { Texto } from '@/components/texto';
 import { Espacio, Forma, Movimiento, Tipo, useTema } from '@/constants/tema';
@@ -129,6 +129,7 @@ export default function Decidir() {
           </View>
         ) : null}
       </KeyboardAvoidingView>
+      <Grano />
     </SafeAreaView>
   );
 }

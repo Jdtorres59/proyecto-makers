@@ -87,7 +87,7 @@ export function Luca({ pose = 'saluda', tamano, gesto = 'entra', latido = 0, nom
     transform: [{ translateY: y.value }, { scale: escala.value }, { rotate: `${giro.value}deg` }],
   }));
 
-  const sello = tema.oscuro && tamano <= 120;
+  const sello = tema.oscuro && tamano <= 160;
   return (
     <View style={{ width: tamano, height: tamano }} accessible={false} importantForAccessibility="no-hide-descendants">
       {sello ? <View style={[estilos.sello, { borderRadius: tamano / 2 }]} /> : null}
@@ -141,7 +141,9 @@ function TextoHablado({ trozos, completo, grande }: { trozos: { t: string; fuert
 
   useEffect(() => {
     if (reducido) return;
-    const id = setInterval(() => setDichas((n) => (n >= total ? n : n + 1)), Movimiento.palabra);
+    // Textos largos hablan más rápido: nunca más de 1,2 s en total.
+    const intervalo = Math.min(Movimiento.palabra, 1200 / Math.max(1, total));
+    const id = setInterval(() => setDichas((n) => (n >= total ? n : n + 1)), intervalo);
     return () => clearInterval(id);
   }, [total, reducido]);
 

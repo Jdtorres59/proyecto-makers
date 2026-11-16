@@ -181,7 +181,8 @@ export default function Login() {
 function Heroe() {
   const { oscuro } = useTema();
   const { height, width } = useWindowDimensions();
-  const alto = Math.max(200, Math.min(380, height * 0.4));
+  // Cabe todo en un iPhone de 874 pt sin scroll; en pantallas más altas el espacio va antes de los botones.
+  const alto = Math.max(180, Math.min(320, height * 0.31));
   const ancho = Math.min(width, 560) - Espacio.xl * 2;
   return (
     <View style={{ height: alto }}>

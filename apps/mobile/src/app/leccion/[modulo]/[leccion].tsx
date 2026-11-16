@@ -30,7 +30,8 @@ export default function LeccionPantalla() {
   const [accionCumplida, setAccionCumplida] = useState(false);
   const [terminada, setTerminada] = useState(false);
   const alListo = () => setListo(true);
-  const yaTeniaMedalla = !!modulo && progreso.medallas.includes(modulo.id);
+  // Se fija al abrir: al ganarla, progreso cambia y la pantalla de cierre debe seguir viéndola como nueva.
+  const [yaTeniaMedalla] = useState(() => !!modulo && progreso.medallas.includes(modulo.id));
 
   useEffect(() => {
     if (!terminada || !leccion) return;

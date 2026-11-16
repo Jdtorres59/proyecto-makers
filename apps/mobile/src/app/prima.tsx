@@ -255,10 +255,11 @@ export default function Prima() {
                 nombre={d.nombre}
                 detalle={d.detalle}
                 monto={montos[i]}
-                color={[tema.maiz, tema.verde, tema.salvia, tema.tajada][i]}
+                color={[tema.linea, tema.verde, tema.maiz, tema.tajada][i]}
                 puedeSumar={libre > 0 && montos[i] < d.max}
                 alSumar={() => cambiar(i, Math.min(PASO, libre, d.max - montos[i]))}
                 alQuitar={() => cambiar(i, -(montos[i] % PASO || PASO))}
+                alLlenar={() => cambiar(i, Math.min(libre, d.max - montos[i]))}
               />
             ),
           )}
@@ -292,7 +293,7 @@ export default function Prima() {
           <BarraReparto montos={plan.map((p) => p.monto)} total={plan.reduce((a, p) => a + p.monto, 0) || 1} />
           {plan.map((p, i) => (
             <Animated.View key={p.id} entering={FadeInDown.delay(400 + i * 90)} style={estilos.destino}>
-              <View style={[estilos.punto, { backgroundColor: [tema.maiz, tema.verde, tema.salvia, tema.tajada][destinos.findIndex((d) => d.id === p.id)], borderColor: tema.linea }]} />
+              <View style={[estilos.punto, { backgroundColor: [tema.linea, tema.verde, tema.maiz, tema.tajada][destinos.findIndex((d) => d.id === p.id)], borderColor: tema.linea }]} />
               <Texto style={{ flex: 1 }}>{p.nombre}</Texto>
               <Texto tipo="cuerpoFuerte" esCifra>
                 {formatearCOP(p.monto)}

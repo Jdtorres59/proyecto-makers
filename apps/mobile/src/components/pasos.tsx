@@ -289,7 +289,8 @@ function Ordenar({ paso, alListo }: De<'ordenar'>) {
 /** Colores del reparto: tintas del sistema que se distinguen entre sí en claro y oscuro. */
 function useColoresReparto() {
   const tema = useTema();
-  return [tema.maiz, tema.verde, tema.salvia, tema.tajada];
+  // Tinta, verde, maíz y tajada: se distinguen entre sí en claro y oscuro (salvia y verde no).
+  return [tema.linea, tema.verde, tema.maiz, tema.tajada];
 }
 
 /** Barra del reparto: una tajada por destino, del ancho de lo que le tocó. */
@@ -312,6 +313,7 @@ export function FilaReparto({
   color,
   alSumar,
   alQuitar,
+  alLlenar,
   puedeSumar,
 }: {
   nombre: string;
@@ -320,12 +322,16 @@ export function FilaReparto({
   color: string;
   alSumar(): void;
   alQuitar(): void;
+  /** Mantener presionado +: le da todo lo que queda sin destino (o lo que le falta para su tope). */
+  alLlenar?(): void;
   puedeSumar: boolean;
 }) {
   const tema = useTema();
-  const boton = (signo: '−' | '+', accion: () => void, activo: boolean, etiqueta: string) => (
+  const boton = (signo: '−' | '+', accion: () => void, activo: boolean, etiqueta: string, largo?: () => void) => (
     <Pressable
       onPress={() => (haptica.eleccion(), accion())}
+      onLongPress={largo ? () => (haptica.firme(), largo()) : undefined}
+      accessibilityHint={largo ? 'Mantén presionado para darle todo lo que queda' : undefined}
       disabled={!activo}
       accessibilityRole="button"
       accessibilityLabel={etiqueta}
@@ -349,7 +355,7 @@ export function FilaReparto({
         </Texto>
       </View>
       {boton('−', alQuitar, monto > 0, `Quitar a ${nombre}`)}
-      {boton('+', alSumar, puedeSumar, `Sumar a ${nombre}`)}
+      {boton('+', alSumar, puedeSumar, `Sumar a ${nombre}`, alLlenar)}
     </View>
   );
 }
@@ -383,6 +389,7 @@ function Repartir({ paso, alListo }: De<'repartir'>) {
             puedeSumar={libre > 0}
             alSumar={() => cambiar(i, Math.min(paso.paso, libre))}
             alQuitar={() => cambiar(i, -Math.min(paso.paso, montos[i]))}
+            alLlenar={() => cambiar(i, libre)}
           />
         ))}
       </Entrada>

@@ -8,7 +8,6 @@ import { Entrada } from '@/components/entrada';
 import { Icono } from '@/components/icono';
 import { Ilustracion, Luca } from '@/components/luca';
 import { Pantalla } from '@/components/pantalla';
-import { Tajadas } from '@/components/tajadas';
 import { Tarjeta } from '@/components/tarjeta';
 import { Texto } from '@/components/texto';
 import { Espacio, Forma, Fuente, Movimiento, useTema } from '@/constants/tema';
@@ -39,7 +38,14 @@ export default function Aprender() {
             <Texto tipo="pequeno" suave>
               {terminados} de {modulos.length} módulos. Cada módulo que termines le suma hojas.
             </Texto>
-            <Tajadas total={modulos.length || 12} actual={terminados} etiqueta={`${terminados} de ${modulos.length} módulos terminados`} />
+            <View
+              style={[estilos.barra, { borderColor: tema.linea, backgroundColor: tema.fondo }]}
+              accessible
+              accessibilityRole="progressbar"
+              accessibilityLabel={`${terminados} de ${modulos.length} módulos terminados`}
+              accessibilityValue={{ min: 0, max: modulos.length, now: terminados }}>
+              <View style={{ width: `${(terminados / (modulos.length || 12)) * 100}%`, height: '100%', backgroundColor: tema.verde }} />
+            </View>
           </View>
         </Tarjeta>
       </Entrada>
@@ -174,6 +180,7 @@ function TarjetaDecision({ decidido }: { decidido: string | null }) {
 }
 
 const estilos = StyleSheet.create({
+  barra: { height: 12, borderRadius: 6, borderWidth: 2, overflow: 'hidden' },
   crecer: { flexDirection: 'row', alignItems: 'center', gap: Espacio.l },
   dev: { flexDirection: 'row', alignItems: 'center', gap: Espacio.m, borderWidth: 1.5, borderStyle: 'dashed', borderRadius: Forma.radio, paddingHorizontal: Espacio.m, minHeight: 52 },
   nodoFila: { flexDirection: 'row', gap: Espacio.m },

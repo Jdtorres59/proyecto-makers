@@ -39,8 +39,10 @@ export function Boton({ titulo, variante = 'principal', cargando, icono, disable
     apple: tema.oscuro
       ? { fondo: '#FFFFFF', texto: '#000000', borde: '#FFFFFF', sombra: 'rgba(255, 255, 255, 0.35)' }
       : { fondo: '#000000', texto: '#FFFFFF', borde: '#000000', sombra: tema.linea },
-    // Pautas de Google: fondo blanco, texto #1F1F1F y el logo a color.
-    google: { fondo: '#FFFFFF', texto: '#1F1F1F', borde: tema.linea, sombra: tema.linea },
+    // Pautas de Google: claro con fondo blanco y texto #1F1F1F; oscuro con #131314, borde #8E918F y texto #E3E3E3. Logo a color.
+    google: tema.oscuro
+      ? { fondo: '#131314', texto: '#E3E3E3', borde: '#8E918F', sombra: '#8E918F' }
+      : { fondo: '#FFFFFF', texto: '#1F1F1F', borde: tema.linea, sombra: tema.linea },
   }[variante];
   const conCaja = variante !== 'texto';
 
