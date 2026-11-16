@@ -1,0 +1,20 @@
+{
+  "name": "@makers/contenido",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@makers/conocimiento": "workspace:*",
+    "@makers/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@types/node": "catalog:"
+  }
+}
