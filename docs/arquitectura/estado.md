@@ -2,7 +2,22 @@
 
 Documento de relevo. Quien termina una tarea lo actualiza para que la siguiente persona o agente sepa dónde va el trabajo.
 
-Última actualización: 15 de noviembre de 2026 (rama `v1`; backend en `claude/backend-v1-0eae5c`).
+Última actualización: 16 de noviembre de 2026 (rama `v1`; backend en `claude/backend-v1-0eae5c`).
+
+## Pendiente al 16 de noviembre de 2026
+
+Demo web publicada (solo modo "Probar sin cuenta", datos ficticios): https://luca-demo-delta.vercel.app
+
+Lo que falta para cerrar la app 1.0, en orden:
+
+1. Terminar de verificar la conexión de la app con la API (el código está en `v1`; el recorrido completo con datos reales no terminó).
+2. Desplegar la API en Vercel y volver a publicar la web conectada a ella.
+3. Primera llamada real al modelo (hay llave con tope; ninguna llamada real se ha hecho).
+4. Probar un ingreso real con Google y con código al correo. Apple está sin configurar.
+5. Pasada final: ícono de la app, lector de pantalla, pantallas chicas.
+6. Build de iPhone, después de la web.
+
+Contenido: 1 de 12 módulos escrito (prima y cesantías). Los otros 11 se escriben en `packages/contenido`, cada persona en su rama desde `v1` y con PR hacia `v1`, tocando solo `packages/contenido` y `packages/conocimiento`. No se edita `packages/core/src/esquemas.ts` desde esas ramas.
 
 ## Luca 1.0: en qué paso va
 
