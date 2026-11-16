@@ -9,9 +9,9 @@ import sys, shutil, pathlib, html
 AQUI = pathlib.Path(__file__).resolve().parent
 ASSETS = AQUI.parents[3] / 'apps/mobile/assets'
 SECCIONES = [
-    ('icono', 'Ícono de app', 'icono'), ('luca', 'Luca', 'pose'), ('crecimiento', 'Crecimiento', 'pose'),
+    ('icono', 'Ícono de app', 'icono'), ('marca', 'Wordmark', 'marca'), ('luca', 'Luca', 'pose'), ('crecimiento', 'Crecimiento', 'pose'),
     ('portadas', 'Portadas de módulo', 'portada'), ('medallas', 'Medallas', 'pose'), ('objetos', 'Objetos', 'pose'),
-    ('escenas', 'Escenas de estado', 'pose'), ('iconos', 'Íconos de interfaz', 'ui'),
+    ('escenas', 'Escenas de estado', 'pose'), ('grabado', 'Sistema de grabado', 'pose'), ('iconos', 'Íconos de interfaz', 'ui'),
 ]
 ORDEN_LUCA = ['saluda', 'explica', 'celebra', 'piensa', 'lee', 'atento', 'sorprendido', 'muestra', 'pulgar', 'guarda', 'espera', 'despide']
 
@@ -45,6 +45,9 @@ figure img{max-width:100%;max-height:100%;object-fit:contain}
 .ui img{width:32px;height:32px}
 :root[data-theme=dark] .ui img{filter:invert(1) sepia(.2)}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]) .ui img{filter:invert(1) sepia(.2)}}
+.marca figure>div{aspect-ratio:auto;padding:28px 18px}.marca img{height:56px}
+.marca figure:nth-child(1)>div{background:#F6EEDC}.marca figure:nth-child(2)>div{background:#D99A2B}.marca figure:nth-child(3)>div{background:#1D1812}
+.grilla.marca{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
 .icono figure>div{padding:18px}
 .icono img{border-radius:22%}
 figcaption{font-size:12.5px;font-weight:600;padding:7px 10px 8px;border-top:2px solid var(--ln2);color:var(--sx);word-break:break-word}
@@ -62,6 +65,8 @@ b.forEach(x=>x.addEventListener('click',()=>pon(x.dataset.t)));try{const t=local
 def archivos(carpeta):
     d = ASSETS / carpeta
     fs = sorted([*d.glob('*.webp'), *d.glob('*.svg'), *d.glob('*.png')]) if d.exists() else []
+    if carpeta != 'marca': fs = [f for f in fs if '-oscuro' not in f.stem]
+    if carpeta == 'marca': fs = [f for f in fs if f.suffix == '.svg']
     if carpeta == 'luca':
         clave = lambda f: ORDEN_LUCA.index(f.stem[5:]) if f.stem[5:] in ORDEN_LUCA else 99
         fs.sort(key=clave)
