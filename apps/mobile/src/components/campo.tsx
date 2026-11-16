@@ -29,7 +29,7 @@ export function Campo({ etiqueta, esCifra, style, onFocus, onBlur, ...resto }: P
             Tipo.cuerpoFuerte,
             esCifra && { fontVariant: ['tabular-nums'] },
             estilos.campo,
-            { color: tema.texto, backgroundColor: tema.papel, borderColor: tema.linea, borderWidth: enfocado ? 3 : Forma.contorno },
+            { color: tema.texto, backgroundColor: tema.papel, borderColor: enfocado ? tema.maiz : tema.linea, borderWidth: Forma.contorno },
             style,
           ]}
           {...resto}
