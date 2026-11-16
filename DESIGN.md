@@ -47,19 +47,45 @@ Se ve impreso a mano: contornos de tinta de 2,5 px, radios cortos (8 a 10 px), b
 
 ## Wordmark
 
-`luca` con la moneda de la tajada en la `c`. El nombre va siempre sobre fondo liso.
+`luca` con la moneda de la tajada en la `c`, en SVG con los contornos de Bricolage Grotesque Bold. El nombre va siempre sobre fondo liso, nunca sobre ilustración o textura.
 
-| Fondo | Letras y moneda | Tajada |
-|---|---|---|
-| Claro | `#2A2219` | `#A8740A` (3,5:1) |
-| Oscuro | `#F6EEDC` | `#F2BE22` (10:1) |
-| Maíz | `#1F1A14` | `#1F1A14`, separada por el corte |
+| Archivo | Fondo | Letras y moneda | Tajada |
+|---|---|---|---|
+| `marca/wordmark-claro.svg` | `fondo` o `papel` claro | `#2A2219` (13,6:1) | `#A8740A` (3,5:1 sobre fondo, 3,9:1 sobre papel) |
+| `marca/wordmark-oscuro.svg` | `fondo` o `papel` oscuro | `#F6EEDC` (15,3:1) | `#F2BE22` (10,2:1 sobre fondo, 9,1:1 sobre papel) |
+| `marca/wordmark-maiz.svg` | `maiz` `#D99A2B` | `#1F1A14` (7,1:1) | `#1F1A14`, separada por el corte |
+
+La tajada es símbolo, no texto: su mínimo es 3:1.
 
 ## Assets
 
-Viven en `apps/mobile/assets/` y se usan por nombre:
+Viven en `apps/mobile/assets/` y la app los usa por estos nombres. Las ilustraciones son WebP con fondo transparente, salvo portadas e ícono. Las piezas de tinta tienen variante `-oscuro` para el modo oscuro.
 
-- `luca/luca-saluda.webp`, `luca/luca-explica.webp`, `luca/luca-celebra.webp`
-- `objetos/desprendible.webp`
+**Marca**
+- `marca/wordmark-claro.svg`, `marca/wordmark-oscuro.svg`, `marca/wordmark-maiz.svg`
+- `marca/splash-claro.png`, `marca/splash-oscuro.png`: wordmark de 600 px para la pantalla de arranque, sobre `fondo` (`#F6EEDC` claro, `#1D1812` oscuro)
+- `images/icon.png`, `images/android-icon-foreground.png`, `images/android-icon-background.png`, `images/android-icon-monochrome.png`, `images/favicon.png`: ícono de app (pendiente de Codex; hoy siguen los de Expo)
 
-El paso 2 suma poses, etapas de crecimiento, portadas de los 12 módulos, medallas, escenas, íconos e ícono de app con estos mismos nombres en español y en minúscula.
+**Luca** (`luca/`): `luca-saluda`, `luca-explica`, `luca-celebra` (listas), `luca-piensa`, `luca-lee`, `luca-atento`, `luca-sorprendido`, `luca-muestra`, `luca-pulgar`, `luca-guarda`, `luca-espera`, `luca-despide`
+
+**Crecimiento** (`crecimiento/`): `0-semilla`, `1-brote`, `2-plantula`, `3-arbolito`, `4-arbol`. Etapa según módulos terminados: 0, 1 a 3, 4 a 7, 8 a 11, 12.
+
+**Portadas** (`portadas/`, 3:2): `01-desprendible`, `02-prima-cesantias`, `03-plan-del-mes`, `04-colchon`, `05-costo-deuda`, `06-tarjeta`, `07-historial`, `08-si-no-puedo-pagar`, `09-fraudes`, `10-invertir-simple`, `11-primera-inversion`, `12-cripto`
+
+**Medallas** (`medallas/`): los mismos doce nombres que las portadas. Mientras no existan, o si el módulo no está ganado, se usa `grabado/medalla-bloqueada.svg`.
+
+**Objetos** (`objetos/`): `desprendible` (listo), `extracto`, `sobre-prima`, `tarjeta`, `calendario`, `tarro`, `lupa`
+
+**Escenas** (`escenas/`): `subir-documento`, `leyendo`, `vacio`, `sin-conexion`
+
+**Sistema de grabado** (`grabado/`, SVG salvo el grano)
+- `grano.png`, `grano-oscuro.png`: textura de 256 px que se repite sobre la pantalla
+- `forma-panel`, `forma-sol`, `forma-mancha`: fondos de borde irregular detrás de ilustraciones
+- `marco-portada`: borde de tinta 3:2 para enmarcar una portada
+- `marco-medalla`, `medalla-bloqueada`: sello de estampilla
+- `confeti`, `confeti-hoja`, `confeti-grano`, `confeti-tira`, `confeti-punto`: composición y piezas sueltas para animar la celebración
+- `halo.svg`: halo maíz detrás de un personaje pequeño sobre oscuro
+
+**Íconos de interfaz** (`iconos/`, SVG 24 px de trazo 2,25 en tinta; se recolorean con `tintColor`): `inicio`, `aprender`, `documentos`, `yo`, `subir`, `camara`, `lupa`, `calendario`, `atras`, `cerrar`, `check`, `mas`, `info`, `candado`, `campana`, `editar`, `eliminar`, `enviar`, `flecha`, `chispa`
+
+Los prompts de cada ilustración están en `docs/marca/direccion-1.0/fuente/prompts.md` y se generan con `biblioteca.py`. Las piezas vectoriales salen de `vectores.py`.

@@ -1161,7 +1161,7 @@ const viene = () => {
   if (E.deudas.has('celular')) l.push({ d: 5, m: 'dic', t: 'Cuota del celular', s: `Te quedan ${E.quedan}`, v: -E.cuota });
   l.push({ d: 20, m: 'dic', t: 'Tu prima', s: E.plan ? 'Ya tiene plan' : 'Todavía sin plan', v: D.prima, prox: true });
   l.push({ d: 31, m: 'ene', t: 'Intereses de cesantías', s: 'Llegan a tu cuenta', v: D.intereses });
-  l.push({ d: 15, m: 'feb', t: 'Tus cesantías', s: 'Van a tu fondo, no a tu cuenta', v: D.ces, fondo: true });
+  l.push({ d: 14, m: 'feb', t: 'Tus cesantías', s: 'Van a tu fondo, no a tu cuenta', v: D.ces, fondo: true });
   const d = E.decision;
   if (d) l.push(d.id === 'prima' ? { d: 20, m: 'dic', t: 'Abono a la tarjeta', s: 'Lo decidiste tú', v: -abono() } : { d: 15, m: 'ene', t: d.id === 'prestamo' ? 'Primera cuota del préstamo' : 'Cuota de la tarjeta', s: `Lo decidiste tú · ${d.meses} meses`, v: -d.c1 });
   const ord = (x) => ['nov', 'dic', 'ene', 'feb'].indexOf(x.m) * 100 + x.d;
@@ -1170,7 +1170,7 @@ const viene = () => {
 ENTRAR.inicio = () => {
   const plan = E.plan;
   $('#dice-inicio').dataset.orig = plan
-    ? `Tu prima ya tiene plan. Lo que sigue: el <b>15 de febrero</b> llegan tus cesantías a tu fondo.`
+    ? `Tu prima ya tiene plan. Lo que sigue: antes del <b>15 de febrero</b> llegan tus cesantías a tu fondo.`
     : `En ${DIAS_PRIMA} días te llega tu primera prima. Vale la pena decidir qué hacer con ella antes de que llegue.`;
   $('#dice-inicio').innerHTML = $('#dice-inicio').dataset.orig;
   const dias = Array.from({ length: 12 }, (_, i) => `<i class="${i < 3 ? 'si' : ''}"></i>`).join('');
@@ -1348,8 +1348,8 @@ let lec = { id: 'E5', i: 0 }, lecPaso = 0;
 const ESPECIAL = {
   'E5.0': {
     tuyo: () => `Las tuyas de este año: <b class="cifra">${cop(D.ces)}</b>. Tu empresa las consigna en tu fondo, no en tu cuenta.`,
-    preg: '¿Hasta cuándo tiene tu empresa para consignarlas?', ops: [['20 de diciembre', 0], ['31 de enero', 0], ['15 de febrero', 1]],
-    bien: 'Eso. Antes del 15 de febrero llegan a tu fondo. Los intereses llegan antes, el 31 de enero, directo a tu cuenta.',
+    preg: '¿Hasta cuándo tiene tu empresa para consignarlas?', ops: [['20 de diciembre', 0], ['31 de enero', 0], ['14 de febrero', 1]],
+    bien: 'Eso. A más tardar el 14 de febrero, es decir, antes del 15, llegan a tu fondo. Los intereses llegan antes, el 31 de enero, directo a tu cuenta.',
     mal: 'No, esa es otra fecha. Piensa que es lo último que llega en el año.',
   },
 };
