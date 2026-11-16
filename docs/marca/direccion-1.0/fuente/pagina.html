@@ -115,6 +115,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .i-num .cifra{display:block;font:800 52px/1 var(--f);letter-spacing:-.045em;margin:8px 0 6px;font-variation-settings:'opsz' 96}
 .i-num .sub{font-size:13.5px;line-height:1.35;display:block}
 .i-num .b{min-height:46px;margin-top:14px;font-size:15px}
+.i-num>*{position:relative;z-index:1}
 .i-h{font:800 18px var(--f);letter-spacing:-.02em;margin:20px 0 8px}
 .viene{list-style:none;display:flex;flex-direction:column}
 .viene li{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;padding:9px 0;font-size:15px}
@@ -150,16 +151,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .lc-fb p{font-size:14px;line-height:1.35}
 .lc-pie{margin-top:auto;padding:12px 0 30px}
 
-/* =================== A · Colibrí · Risografía =================== */
+/* =================== A · Rana de cristal · Risografía translúcida =================== */
 [data-p=a]{
   --bg:#FBF4E6;--papel:#FFFDF8;--sup:#F6E7C8;--tx:#1F1A14;--sx:#5A5040;--ln:#E7D6B4;
-  --maiz:#F2B33D;--aji:#C2410C;--aji-v:#E0643A;--hoja:#3F6E40;--hoja-v:#7FB07C;--sombra:#E0643A;
+  --maiz:#F2B33D;--aji:#C2410C;--aji-v:#F29A77;--hoja:#3F6E40;--hoja-v:#8DC26F;--sombra:#8DC26F;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]) [data-p=a]{--bg:#1C1712;--papel:#28211A;--sup:#2F271D;--tx:#F7EEDB;--sx:#C2B59B;--ln:#3C3226;--aji:#FF8B6B;--hoja:#8CC08C;--sombra:#8E3416}}
 :root[data-theme=dark] [data-p=a]{--bg:#1C1712;--papel:#28211A;--sup:#2F271D;--tx:#F7EEDB;--sx:#C2B59B;--ln:#3C3226;--aji:#FF8B6B;--hoja:#8CC08C;--sombra:#8E3416}
-[data-p=a] .prop-cab .letra{color:#E0643A}
+[data-p=a] .prop-cab .letra{color:#6FA84E}
 [data-p=a] .pant::after{content:"";position:absolute;inset:0;background:var(--grano);opacity:.16;mix-blend-mode:multiply;pointer-events:none;z-index:5}
-[data-p=a] .l-escena{background:var(--maiz)}
+[data-p=a] .l-escena{background:#F7D58A}
 [data-p=a] .l-escena::before,[data-p=a] .l-escena::after{content:"";position:absolute;border-radius:50%}
 [data-p=a] .l-escena::before{width:300px;height:300px;left:-70px;top:40px;background:var(--aji-v);mix-blend-mode:multiply;opacity:.9}
 [data-p=a] .l-escena::after{width:220px;height:220px;right:-40px;bottom:-60px;background:var(--hoja-v);mix-blend-mode:multiply;opacity:.85}
@@ -188,101 +189,92 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 [data-p=a] .lc-doc .marca{background:var(--tx);color:var(--bg);border-radius:8px;box-shadow:3px 3px 0 var(--sombra)}
 [data-p=a] .lc-q{font-variation-settings:'opsz' 96,'wdth' 75;font-size:30px;line-height:1}
 [data-p=a] .opt{background:var(--papel);border-radius:12px;box-shadow:inset 0 0 0 2px var(--ln)}
-[data-p=a] .opt.bien{background:var(--hoja);color:var(--bg);box-shadow:4px 4px 0 var(--sombra)}
+[data-p=a] .opt.bien{background:#B9DE9A;color:#1F1A14;box-shadow:4px 4px 0 var(--maiz)}
 [data-p=a] .lc-fb{background:var(--sup);border-radius:14px}
 [data-p=a] .lc-fb b{color:var(--hoja)}
 
-/* =================== B · Grano · Plastilina =================== */
+/* =================== B · Semilla · Grabado =================== */
 [data-p=b]{
-  --bg:#FFF3DC;--bg2:#FCE3B6;--papel:#FFFBF2;--sup:#FBE9C6;--tx:#2A2219;--sx:#6B5A45;--ln:#F0DDB8;
-  --maiz:#F2B33D;--maiz2:#E59A1C;--durazno:#F6B48F;--salvia:#A7C4A0;--acento:#9A4A1C;--hoja:#3F6E40;
-  --alto:inset 0 2px 0 rgba(255,255,255,.75),inset 0 -5px 0 rgba(120,70,0,.10);
-  --hondo:0 14px 26px -10px rgba(140,80,0,.38),0 3px 6px -2px rgba(140,80,0,.2);
+  --bg:#F6EEDC;--papel:#FFFBF0;--sup:#EEDFC0;--tx:#2A2219;--sx:#5E4E3A;--ln:#2A2219;--ln2:#D9C8A6;
+  --maiz:#D99A2B;--verde:#3F6E40;--verde-tx:#F6EEDC;--verde-v:#9DBB8F;--hoja:#3F6E40;--tinta-b:#2A2219;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]) [data-p=b]{--bg:#211A13;--bg2:#2B2117;--papel:#30281D;--sup:#3A2F21;--tx:#FAEFD9;--sx:#C9BBA0;--ln:#43382A;--acento:#F6B48F;--hoja:#9CCB98;--alto:inset 0 1.5px 0 rgba(255,240,210,.10),inset 0 -5px 0 rgba(0,0,0,.25);--hondo:0 14px 26px -10px rgba(0,0,0,.7)}}
-:root[data-theme=dark] [data-p=b]{--bg:#211A13;--bg2:#2B2117;--papel:#30281D;--sup:#3A2F21;--tx:#FAEFD9;--sx:#C9BBA0;--ln:#43382A;--acento:#F6B48F;--hoja:#9CCB98;--alto:inset 0 1.5px 0 rgba(255,240,210,.10),inset 0 -5px 0 rgba(0,0,0,.25);--hondo:0 14px 26px -10px rgba(0,0,0,.7)}
-[data-p=b] .prop-cab .letra{color:#E59A1C}
-[data-p=b] .pant{background:linear-gradient(180deg,var(--bg),var(--bg2))}
-[data-p=b] .l-escena{margin-top:-10px;height:360px}
-[data-p=b] .l-escena::before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;bottom:14px;left:50%;translate:-50% 0;background:radial-gradient(circle at 35% 30%,#FFE2A3,var(--maiz) 55%,var(--maiz2));box-shadow:var(--hondo),inset 0 -14px 0 rgba(120,70,0,.14),inset 0 8px 0 rgba(255,255,255,.4)}
-[data-p=b] .l-escena::after{content:"";position:absolute;width:200px;height:26px;border-radius:50%;bottom:22px;left:50%;translate:-50% 0;background:rgba(90,50,0,.25);filter:blur(8px);z-index:1}
-[data-p=b] .l-escena img{height:290px;margin-bottom:30px;filter:drop-shadow(0 10px 10px rgba(90,50,0,.25))}
-[data-p=b] .l-txt{text-align:center}
-[data-p=b] .l-txt .l-h{font-size:32px}
-[data-p=b] .b{border-radius:22px;background:var(--papel);color:var(--tx);box-shadow:var(--alto),var(--hondo)}
-[data-p=b] .b.b-apple{background:var(--tx);color:var(--bg)}
-[data-p=b] .b.b-pri{background:linear-gradient(180deg,#FFCB5C,var(--maiz));color:#2A2219}
-[data-p=b] .av{background:linear-gradient(180deg,#FFD0B4,var(--durazno));color:#2A2219;box-shadow:var(--alto),var(--hondo)}
-[data-p=b] .burbuja{background:var(--papel);border-radius:24px 24px 24px 8px;box-shadow:var(--alto),var(--hondo)}
-[data-p=b] .i-num{border-radius:30px;background:radial-gradient(120% 120% at 20% 0%,#FFD978,var(--maiz) 55%,var(--maiz2));color:#2A2219;box-shadow:var(--hondo),inset 0 -8px 0 rgba(120,70,0,.14),inset 0 3px 0 rgba(255,255,255,.5)}
-[data-p=b] .i-num .k,[data-p=b] .i-num .sub{color:#4A3A22}
-[data-p=b] .i-num .b{background:var(--papel);color:#2A2219;width:auto;display:inline-flex;min-height:44px;border-radius:999px}
-:root[data-theme=dark] [data-p=b] .i-num .b{background:#FFFBF2}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]) [data-p=b] .i-num .b{background:#FFFBF2}}
-[data-p=b] .viene{background:var(--papel);border-radius:26px;padding:4px 16px;box-shadow:var(--alto),var(--hondo)}
-[data-p=b] .viene li+li{border-top:1.5px solid var(--ln)}
-[data-p=b] .viene .f{background:var(--sup);border-radius:14px;padding:7px 0 6px}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) [data-p=b]{--bg:#1D1812;--papel:#2A2219;--sup:#33291E;--tx:#F6EEDC;--sx:#C8B99C;--ln:#F6EEDC;--ln2:#45392A;--verde:#8CC08C;--verde-tx:#1D1812;--hoja:#8CC08C}}
+:root[data-theme=dark] [data-p=b]{--bg:#1D1812;--papel:#2A2219;--sup:#33291E;--tx:#F6EEDC;--sx:#C8B99C;--ln:#F6EEDC;--ln2:#45392A;--verde:#8CC08C;--verde-tx:#1D1812;--hoja:#8CC08C}
+[data-p=b] .prop-cab .letra{color:#D99A2B}
+[data-p=b] .pant::after{content:"";position:absolute;inset:0;background:var(--grano);opacity:.14;mix-blend-mode:multiply;pointer-events:none;z-index:5}
+[data-p=b] .l-escena{height:390px}
+[data-p=b] .l-escena::before{content:"";position:absolute;left:26px;right:26px;top:70px;bottom:16px;background:var(--verde-v);border:3px solid var(--tinta-b);border-radius:8px 14px 6px 12px;filter:url(#borde-pintado)}
+[data-p=b] .l-escena::after{content:"";position:absolute;left:-30px;top:40px;width:150px;height:150px;border-radius:50%;background:var(--maiz);border:3px solid var(--tinta-b);filter:url(#borde-pintado)}
+[data-p=b] .l-escena img{height:300px;margin-bottom:26px}
+[data-p=b] .l-txt .l-h{font-size:34px;letter-spacing:-.04em}
+[data-p=b] .b{border-radius:8px;background:var(--papel);color:var(--tx);border:2.5px solid var(--ln);box-shadow:0 3px 0 var(--ln)}
+[data-p=b] .b.b-apple,[data-p=b] .b.b-pri{background:var(--verde);color:var(--verde-tx)}
+[data-p=b] .b.b-pri{background:var(--maiz);color:#2A2219}
+[data-p=b] .av{background:var(--maiz);color:#2A2219;border:2.5px solid var(--ln)}
+[data-p=b] .burbuja{background:var(--papel);border:2.5px solid var(--ln);border-radius:10px 10px 10px 2px}
+[data-p=b] .i-num{background:var(--maiz);color:#2A2219;border:2.5px solid var(--ln);border-radius:10px;box-shadow:0 5px 0 var(--ln)}
+[data-p=b] .i-num .k,[data-p=b] .i-num .sub{color:#3A2E1F}
+[data-p=b] .i-num::after{content:"";position:absolute;right:-46px;top:-46px;width:120px;height:120px;border-radius:50%;border:2.5px solid #2A2219;background:repeating-linear-gradient(-35deg,transparent 0 7px,rgba(42,34,25,.35) 7px 9px)}
+[data-p=b] .i-num .b{background:#2A2219;color:#F6EEDC;border-color:#2A2219;box-shadow:none;width:auto;display:inline-flex;min-height:44px;position:relative;z-index:1}
+[data-p=b] .viene li{border-top:2px solid var(--ln2)}
+[data-p=b] .viene .f{border:2px solid var(--ln);border-radius:6px;padding:6px 0 5px}
 [data-p=b] .viene .mas{color:var(--hoja)}
-[data-p=b] .i-mod{background:var(--papel);border-radius:26px;box-shadow:var(--alto),var(--hondo)}
-[data-p=b] .i-mod img{border-radius:20px}
-[data-p=b] .tabs{margin:0 14px 18px;padding:10px 6px 10px;border-radius:30px;background:var(--papel);box-shadow:var(--alto),var(--hondo)}
-[data-p=b] .tabs a.on{color:var(--tx)}
-[data-p=b] .tabs a.on svg{fill:var(--maiz);stroke:var(--tx)}
-[data-p=b] .prog i{border-radius:999px;height:12px;box-shadow:inset 0 2px 3px rgba(0,0,0,.12)}
-[data-p=b] .prog i.si{background:linear-gradient(180deg,#FFCB5C,var(--maiz2));box-shadow:inset 0 -2px 0 rgba(0,0,0,.12)}
-[data-p=b] .lc-doc::before{content:"";position:absolute;width:250px;height:170px;border-radius:40px;background:var(--sup);box-shadow:inset 0 4px 10px rgba(120,70,0,.12)}
-[data-p=b] .lc-doc img{filter:drop-shadow(0 12px 12px rgba(90,50,0,.22))}
-[data-p=b] .lc-doc .marca{background:var(--tx);color:var(--bg);border-radius:999px;box-shadow:var(--hondo)}
-[data-p=b] .opt{background:var(--papel);border-radius:22px;box-shadow:var(--alto),var(--hondo)}
-[data-p=b] .opt.bien{background:linear-gradient(180deg,#C7E0C0,var(--salvia));color:#1E2A1D}
-[data-p=b] .lc-fb{background:var(--papel);border-radius:26px;box-shadow:var(--alto),var(--hondo)}
+[data-p=b] .i-mod{background:var(--papel);border:2.5px solid var(--ln);border-radius:10px}
+[data-p=b] .i-mod img{border-radius:4px;border:2px solid var(--ln)}
+[data-p=b] .tabs{background:var(--bg);border-top:2.5px solid var(--ln)}
+[data-p=b] .tabs a.on svg{fill:var(--maiz)}
+[data-p=b] .prog i{border-radius:3px;border:2px solid var(--ln);background:transparent;height:12px}
+[data-p=b] .prog i.si{background:var(--maiz)}
+[data-p=b] .lc-doc::before{content:"";position:absolute;width:230px;height:170px;background:var(--verde-v);border:2.5px solid var(--tinta-b);border-radius:8px 12px 6px 10px;filter:url(#borde-pintado)}
+[data-p=b] .lc-doc .marca{background:var(--papel);color:var(--tx);border:2.5px solid var(--ln);border-radius:6px}
+[data-p=b] .opt{background:var(--papel);border:2.5px solid var(--ln);border-radius:8px}
+[data-p=b] .opt.bien{background:var(--verde);color:var(--verde-tx);box-shadow:0 3px 0 var(--ln)}
+[data-p=b] .lc-fb{background:var(--sup);border:2.5px dashed var(--ln);border-radius:10px}
 [data-p=b] .lc-fb b{color:var(--hoja)}
 
-/* =================== C · Oso · Gouache =================== */
+/* =================== C · Una luca · Papel doblado =================== */
 [data-p=c]{
-  --bg:#F4ECDD;--papel:#FBF6EC;--sup:#EADFC9;--tx:#2B231C;--sx:#645646;--ln:#DCCDB1;
-  --maiz:#E9A92C;--terra:#A2461F;--terra-v:#C96A3F;--bosque:#2F4A3A;--bosque-tx:#F4ECDD;--hoja:#3F6E40;
-  --borde-a:28px 34px 24px 30px / 30px 24px 34px 26px;--borde-b:20px 26px 18px 24px / 24px 18px 26px 20px;
+  --bg:#EFE6D3;--papel:#FFFBF2;--sup:#E5D7BA;--tx:#1F1A14;--sx:#5C4F3D;--ln:#D8C7A4;
+  --maiz:#F2B33D;--verde:#3F6E40;--verde-tx:#FFFBF2;--kraft:#D8C29A;--hoja:#3F6E40;
+  --capa:0 1px 0 rgba(60,40,10,.08),0 8px 14px -8px rgba(60,40,10,.4);
+  --dobles:linear-gradient(225deg,var(--bg) 0 14px,rgba(0,0,0,.14) 14px 15px,#E9DcC2 15px 22px,transparent 22px);
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]) [data-p=c]{--bg:#171C18;--papel:#222A23;--sup:#2A332B;--tx:#F2EADA;--sx:#BDB4A0;--ln:#344036;--terra:#F09A74;--hoja:#9CCB98}}
-:root[data-theme=dark] [data-p=c]{--bg:#171C18;--papel:#222A23;--sup:#2A332B;--tx:#F2EADA;--sx:#BDB4A0;--ln:#344036;--terra:#F09A74;--hoja:#9CCB98}
-[data-p=c] .prop-cab .letra{color:#2F4A3A}
-:root[data-theme=dark] [data-p=c] .prop-cab .letra{color:#7FA88C}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]) [data-p=c] .prop-cab .letra{color:#7FA88C}}
-[data-p=c] .pant::after{content:"";position:absolute;inset:0;background:var(--grano);opacity:.10;mix-blend-mode:multiply;pointer-events:none;z-index:5}
-[data-p=c] .pant{font-size:16.5px}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) [data-p=c]{--bg:#1A1611;--papel:#27211A;--sup:#2F281F;--tx:#F7EEDB;--sx:#C2B59B;--ln:#3C3327;--verde:#8CC08C;--verde-tx:#1A1611;--hoja:#8CC08C;--capa:0 1px 0 rgba(255,240,210,.05),0 8px 14px -8px rgba(0,0,0,.8)}}
+:root[data-theme=dark] [data-p=c]{--bg:#1A1611;--papel:#27211A;--sup:#2F281F;--tx:#F7EEDB;--sx:#C2B59B;--ln:#3C3327;--verde:#8CC08C;--verde-tx:#1A1611;--hoja:#8CC08C;--capa:0 1px 0 rgba(255,240,210,.05),0 8px 14px -8px rgba(0,0,0,.8)}
+[data-p=c] .prop-cab .letra{color:#3F6E40}
+:root[data-theme=dark] [data-p=c] .prop-cab .letra{color:#8CC08C}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) [data-p=c] .prop-cab .letra{color:#8CC08C}}
+[data-p=c] .pant::after{content:"";position:absolute;inset:0;background:var(--grano);opacity:.12;mix-blend-mode:multiply;pointer-events:none;z-index:5}
 [data-p=c] .l-escena{height:400px}
-[data-p=c] .l-escena::before{content:"";position:absolute;width:330px;height:300px;bottom:6px;left:24px;background:var(--maiz);border-radius:58% 42% 50% 50% / 52% 46% 54% 48%;opacity:.95;filter:url(#borde-pintado)}
-[data-p=c] .l-escena::after{content:"";position:absolute;width:110px;height:100px;top:70px;right:20px;background:var(--terra-v);border-radius:50% 46% 54% 48%;opacity:.8;filter:url(#borde-pintado)}
-[data-p=c] .l-escena img{height:300px;margin-bottom:22px}
-[data-p=c] .l-txt .l-h{font-weight:600;font-size:34px;line-height:1.02;letter-spacing:-.03em;font-variation-settings:'opsz' 96,'wdth' 92}
-[data-p=c] .l-txt .l-h em{font-style:normal;color:var(--terra)}
-[data-p=c] .b{border-radius:var(--borde-b);background:var(--papel);color:var(--tx);box-shadow:inset 0 0 0 1.5px var(--ln)}
-[data-p=c] .b.b-apple{background:var(--bosque);color:var(--bosque-tx);box-shadow:none}
-[data-p=c] .b.b-pri{background:var(--bosque);color:var(--bosque-tx);box-shadow:none}
-[data-p=c] .av{background:var(--terra-v);color:#2B231C;border-radius:52% 48% 46% 54%}
-[data-p=c] .burbuja{background:var(--papel);border-radius:var(--borde-a);border-bottom-left-radius:6px;box-shadow:inset 0 0 0 1.5px var(--ln)}
-[data-p=c] .i-num{background:var(--bosque);color:var(--bosque-tx);border-radius:var(--borde-a)}
-[data-p=c] .i-num .k,[data-p=c] .i-num .sub{color:#D9CFBC}
-[data-p=c] .i-num .cifra{font-weight:600;color:#F2C25B}
-[data-p=c] .i-num::after{content:"";position:absolute;width:140px;height:120px;right:-40px;top:-40px;background:var(--maiz);opacity:.22;border-radius:50% 46% 54% 48%;filter:url(#borde-pintado)}
-[data-p=c] .i-num .b{background:#F4ECDD;color:#2B231C;width:auto;display:inline-flex;min-height:44px;position:relative;z-index:1}
-[data-p=c] .i-h{font-weight:600;font-size:20px}
-[data-p=c] .viene li{border-top:1.5px solid var(--ln)}
+[data-p=c] .l-escena::before{content:"";position:absolute;width:300px;height:290px;left:40px;bottom:20px;background:var(--maiz);clip-path:polygon(4% 8%,96% 0,100% 88%,10% 100%);box-shadow:var(--capa);rotate:-3deg}
+[data-p=c] .l-escena::after{content:"";position:absolute;width:150px;height:120px;right:22px;top:66px;background:#A9C79B;clip-path:polygon(0 10%,100% 0,92% 100%,6% 90%);rotate:6deg}
+[data-p=c] .l-escena img{height:300px;margin-bottom:24px;filter:drop-shadow(0 8px 8px rgba(60,40,10,.25))}
+[data-p=c] .b{border-radius:4px;background:var(--papel);color:var(--tx);box-shadow:var(--capa)}
+[data-p=c] .b.b-apple{background:var(--tx);color:var(--bg)}
+[data-p=c] .b.b-pri{background:var(--maiz);color:#1F1A14}
+[data-p=c] .av{background:var(--maiz);color:#1F1A14;border-radius:4px;rotate:-4deg;box-shadow:var(--capa)}
+[data-p=c] .burbuja{background:var(--papel);border-radius:4px;box-shadow:var(--capa);rotate:-1deg}
+[data-p=c] .i-num{background:var(--maiz);color:#1F1A14;border-radius:4px;box-shadow:var(--capa);clip-path:polygon(0 0,calc(100% - 34px) 0,100% 34px,100% 100%,0 100%)}
+[data-p=c] .i-num::before{content:"";position:absolute;right:0;top:0;width:34px;height:34px;background:linear-gradient(225deg,transparent 50%,#D9982A 50%);box-shadow:-2px 2px 4px rgba(60,40,10,.25)}
+[data-p=c] .i-num::after{content:"";position:absolute;left:0;top:0;bottom:0;width:12px;background:var(--verde)}
+[data-p=c] .i-num{padding-left:28px}
+[data-p=c] .i-num .k,[data-p=c] .i-num .sub{color:#3A2E1F}
+[data-p=c] .i-num .b{background:#1F1A14;color:#F2B33D;width:auto;display:inline-flex;min-height:44px;box-shadow:none;position:relative;z-index:1}
+[data-p=c] .viene{background:var(--papel);box-shadow:var(--capa);padding:2px 14px;border-radius:3px}
+[data-p=c] .viene li+li{border-top:1.5px dashed var(--ln)}
 [data-p=c] .viene .mas{color:var(--hoja)}
-[data-p=c] .i-mod{background:var(--sup);border-radius:var(--borde-a)}
-[data-p=c] .i-mod img{border-radius:var(--borde-b)}
-[data-p=c] .tabs{background:var(--papel);border-top:1.5px solid var(--ln)}
-[data-p=c] .tabs a.on svg{stroke:var(--terra)}
-[data-p=c] .prog i{border-radius:6px 9px 5px 8px}
-[data-p=c] .prog i.si{background:var(--terra)}
-[data-p=c] .lc-doc::before{content:"";position:absolute;width:270px;height:180px;background:var(--sup);border-radius:46% 54% 50% 50% / 50% 46% 54% 50%;filter:url(#borde-pintado)}
-[data-p=c] .lc-doc .marca{background:var(--bosque);color:var(--bosque-tx);border-radius:var(--borde-b)}
-[data-p=c] .lc-q{font-weight:600;font-size:26px}
-[data-p=c] .opt{background:var(--papel);border-radius:var(--borde-b);box-shadow:inset 0 0 0 1.5px var(--ln);font-weight:600}
-[data-p=c] .opt.bien{background:var(--bosque);color:var(--bosque-tx);box-shadow:none}
-[data-p=c] .lc-fb{background:var(--sup);border-radius:var(--borde-a)}
-[data-p=c] .lc-fb b{color:var(--hoja);font-weight:700}
+[data-p=c] .i-mod{background:var(--papel);border-radius:3px;box-shadow:var(--capa);rotate:.6deg}
+[data-p=c] .i-mod img{border-radius:2px}
+[data-p=c] .tabs{background:var(--papel);box-shadow:0 -6px 14px -10px rgba(60,40,10,.4)}
+[data-p=c] .tabs a.on svg{stroke:var(--verde)}
+[data-p=c] .prog i{border-radius:2px}
+[data-p=c] .prog i.si{background:var(--verde)}
+[data-p=c] .lc-doc::before{content:"";position:absolute;width:250px;height:170px;background:var(--kraft);clip-path:polygon(3% 6%,97% 0,100% 94%,0 100%);rotate:3deg;opacity:.75}
+[data-p=c] .lc-doc .marca{background:var(--tx);color:var(--bg);border-radius:3px;box-shadow:var(--capa);rotate:-2deg}
+[data-p=c] .opt{background:var(--papel);border-radius:4px;box-shadow:var(--capa)}
+[data-p=c] .opt.bien{background:var(--verde);color:var(--verde-tx)}
+[data-p=c] .lc-fb{background:var(--sup);border-radius:4px}
+[data-p=c] .lc-fb b{color:var(--hoja)}
 
 :root[data-theme=dark] .i-luca img,:root[data-theme=dark] .lc-fb img{background:radial-gradient(closest-side,rgba(242,179,61,.38),rgba(242,179,61,0));border-radius:50%}
 :root[data-theme=dark] [data-p=a] .lc-doc::before{mix-blend-mode:normal;opacity:.3}
@@ -297,7 +289,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 <header class="cab-pg">
   <span class="wm" data-wm></span>
-  <h1>Luca 1.0 · Tres direcciones de personaje e ilustración</h1>
+  <h1>Luca 1.0 · Tres personajes con significado</h1>
   <div class="tema" role="group" aria-label="Tema">
     <button type="button" data-t="auto" aria-pressed="true">Auto</button>
     <button type="button" data-t="light" aria-pressed="false">Claro</button>
@@ -340,9 +332,9 @@ const tabs = `<nav class="tabs" aria-label="Secciones">
 const check = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>`;
 
 const PROPS = [
-  { p: 'a', nombre: 'Colibrí · Risografía', desc: 'Luca es un colibrí: rápido, curioso y de aquí. Se dibuja como gráfica editorial impresa en risografía, con planos de color que se montan unos sobre otros y grano de tinta. La interfaz copia la imprenta: bloques planos, sombras corridas en ají y titulares condensados.', paleta: [['Maíz', '#F2B33D'], ['Ají', '#E0643A'], ['Hoja', '#7FB07C'], ['Tinta', '#1F1A14'], ['Crema', '#FBF4E6']], h1: 'Tu plata, explicada con tus números.' },
-  { p: 'b', nombre: 'Grano · Plastilina', desc: 'Luca es un grano de maíz con pelo de mazorca. Se modela en plastilina con luz de estudio, como animación hecha a mano. La interfaz se vuelve blanda y táctil: botones con volumen, tarjetas que flotan y degradados cálidos.', paleta: [['Maíz', '#F2B33D'], ['Maíz hondo', '#E59A1C'], ['Durazno', '#F6B48F'], ['Salvia', '#A7C4A0'], ['Tinta café', '#2A2219']], h1: 'Tu plata, explicada con tus números.' },
-  { p: 'c', nombre: 'Oso de anteojos · Gouache', desc: 'Luca es un oso de anteojos, el oso andino, que ya trae las gafas puestas para leer tus papeles. Se pinta en gouache sobre papel de algodón, como libro ilustrado. La interfaz es serena: verde bosque profundo, formas cortadas a mano y titulares más ligeros.', paleta: [['Bosque', '#2F4A3A'], ['Maíz', '#E9A92C'], ['Terracota', '#C96A3F'], ['Tinta', '#2B231C'], ['Papel', '#F4ECDD']], h1: 'Tu plata, <em>explicada</em> con tus números.' },
+  { p: 'a', nombre: 'Rana de cristal · Risografía translúcida', desc: 'Luca es una rana de cristal, la de la moneda de $500. Tiene la piel transparente y se le ve todo por dentro: eso hace Luca con tu desprendible, tu extracto o una oferta de préstamo. Se imprime en risografía con tintas translúcidas que se cruzan, igual que su piel.', paleta: [['Lima', '#8DC26F'], ['Maíz', '#F2B33D'], ['Durazno', '#F29A77'], ['Tinta', '#1F1A14'], ['Crema', '#FBF4E6']], h1: 'Tu plata, transparente.' },
+  { p: 'b', nombre: 'Semilla · Grabado', desc: 'Luca es una semilla que brota. La plata que entiendes se siembra y crece despacio, como el interés compuesto, y cada módulo terminado le suma una hoja hasta volverlo árbol. Se estampa en linóleo a tres tintas; la interfaz se ve impresa a mano, con contornos de tinta, bloques planos y sellos.', paleta: [['Maíz tostado', '#D99A2B'], ['Verde', '#3F6E40'], ['Salvia', '#9DBB8F'], ['Tinta café', '#2A2219'], ['Papel', '#F6EEDC']], h1: 'Lo que entiendes de tu plata, crece.' },
+  { p: 'c', nombre: 'Una luca · Papel doblado', desc: 'En Colombia una luca son mil pesos. Luca es un billete que se dobló hasta tomar forma: la plata deja de ser un papel que no entiendes y se vuelve algo con cara y con nombre. Se arma en collage de papel; la interfaz trabaja con capas, esquinas dobladas y sombras cortas.', paleta: [['Maíz', '#F2B33D'], ['Verde billete', '#3F6E40'], ['Kraft', '#D8C29A'], ['Tinta', '#1F1A14'], ['Crema', '#FFFBF2']], h1: 'Tu plata, con cara y con nombre.' },
 ];
 
 const pantallas = ({ p, h1 }) => `

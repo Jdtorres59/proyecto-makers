@@ -1,19 +1,23 @@
 # Prompts de imagen (Codex, generación de imágenes)
 
-Cada propuesta parte de la pose Saluda; las demás piezas se generaron con esa imagen como referencia (`--image`) para mantener el personaje. El fondo blanco se quita con `recortar.py`.
+Ronda 2. Cada propuesta parte de la pose Saluda; las demás piezas se generaron con esa imagen como referencia (`--image`). El fondo blanco se quita con `recortar.py`. Las portadas de esta ronda son provisionales (pose sobre composición): Codex llegó a su límite antes de generarlas.
+
+Archivos: a = rana de cristal, b = semilla, c = una luca.
 
 ## Propuesta A
 
-Personaje original llamado Luca, mascota de una app colombiana de finanzas personales: un colibrí estilizado y elegante, con pico largo y fino, cuerpo compacto en forma de gota color maíz #F2B33D, garganta y vientre crema #FFF6E5, una franja de plumas verde hoja #4F7D50 en la cabeza y la cola, ojos negros grandes con un brillo, expresión curiosa e inteligente, sin mejillas rosadas. Estilo de ilustración: gráfica editorial de mediados de siglo con formas geométricas simples, impresión en risografía con leve desregistro de color y textura de grano, sin contorno negro: las formas se definen por planos de color plano y algunas líneas finas de tinta #1F1A14. Paleta limitada: maíz, tinta, crema, ají #D9532B, verde hoja.
+Personaje original llamado Luca, mascota de una app colombiana que te explica tu plata: una ranita de cristal pequeña y redonda, sentada erguida como un personaje, con la piel verde lima translúcida a través de la cual se ven por dentro formas simples y alegres (un pequeño corazón color maíz y una moneda redonda), ojos grandes color maíz dorado con pupila negra, dedos con puntas redondas, expresión lista y simpática. Estilo de ilustración: risografía con tintas translúcidas que se superponen y crean colores nuevos donde se cruzan (verde lima #8DC26F, maíz #F2B33D, ají #E0643A, tinta #1F1A14), sin contorno negro, leve desregistro de color, textura de grano de impresión, formas simples y geométricas.
 
 ## Propuesta B
 
-Personaje original llamado Luca, mascota de una app colombiana de finanzas personales: un grano de maíz con vida. Forma de grano de maíz real visto de frente: parte superior ancha, plana y redondeada como un escudo, que se estrecha hacia abajo hasta una base corta color crema claro; cuerpo color maíz dorado #F2B33D con un brillo suave; en la cabeza un mechón despeinado de cabellos de mazorca finos color café claro a modo de pelo (no lleva hoja). Brazos y piernas cortos y redondos color tinta café oscuro #2A2219, ojos ovalados negros con brillo, cejas expresivas, boca simple. Estilo: render 3D tipo plastilina o arcilla suave, superficies mate con huellas sutiles de modelado a mano, iluminación de estudio cálida y suave desde arriba a la izquierda, look de animación stop motion artesanal.
+Personaje original llamado Luca, mascota de una app colombiana que te explica tu plata: una criatura inventada que es una semilla con vida. Cuerpo en forma de semilla o frijol grande color maíz tostado #D99A2B, con una grieta arriba de la que sale un brote de dos hojas verdes #4F7D50 a modo de copete, brazos y piernas delgados color tinta café #2A2219, ojos pequeños y brillantes, sonrisa tranquila. Estilo de ilustración: grabado en relieve tipo linóleo o xilografía, estampado a tres tintas planas y sólidas (café tinta #2A2219, maíz tostado y verde), con marcas de gubia talladas en blanco dentro de las formas, contornos gruesos de tinta sólida con bordes de corte nítido, pequeñas imperfecciones de estampado y textura de papel, nada de crayón ni lápiz.
 
 ## Propuesta C
 
-Personaje original llamado Luca, mascota de una app colombiana de finanzas personales: un oso de anteojos joven (oso andino), pelaje café tinta #3A2E24, con las marcas claras color crema maíz alrededor de los ojos que parecen unas gafas naturales, hocico crema, cuerpo rechoncho y amable, una pañoleta pequeña color maíz #F2B33D al cuello, expresión tranquila y cálida de buen profesor. Estilo: ilustración de libro infantil pintada en gouache con pinceladas visibles, bordes ligeramente irregulares, textura de papel de algodón, paleta cálida terrosa: tinta, maíz, crema, ají #D9532B, verde hoja #5B8A5C, sin contornos negros.
+Personaje original llamado Luca, mascota de una app colombiana que te explica tu plata (en Colombia una luca son mil pesos): una criatura inventada hecha de papel doblado como origami, formada a partir de un billete genérico color maíz con una franja verde, sin números ni textos ni retratos, cuerpo facetado de pliegues geométricos, ojos redondos de papel negro pegados como recortes con un brillo blanco, brazos y piernas de tiras de papel doblado. Estilo de ilustración: collage de papel recortado y doblado fotografiado plano, sombras suaves y cortas entre capas de papel, textura de fibra de papel, colores maíz #F2B33D, verde #4F7D50, crema #FFF6E5 y tinta #1F1A14.
 
 ## Fondo de poses y objetos
 
 Fondo blanco puro #FFFFFF liso y uniforme, sin sombra en el piso, sin elementos de fondo, personaje de cuerpo entero centrado ocupando el 75% del cuadro, formato cuadrado.
+
+La ronda 1 (colibrí, grano de maíz, oso de anteojos) está en el historial de git, commit 10ffd4c.
