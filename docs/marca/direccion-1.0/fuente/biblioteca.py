@@ -54,7 +54,7 @@ MEDALLAS = [
     ('03-plan-del-mes', 'tres tarros pequeños'), ('04-colchon', 'un paraguas sobre una pila de monedas'),
     ('05-costo-deuda', 'una balanza'), ('06-tarjeta', 'una tarjeta con un visto'), ('07-historial', 'una libreta con un visto'),
     ('08-si-no-puedo-pagar', 'un nudo que se desata'), ('09-fraudes', 'un escudo'), ('10-invertir-simple', 'una maceta con monedas como hojas'),
-    ('11-primera-inversion', 'una moneda plantada que brota'), ('12-cripto', 'una moneda facetada'),
+    ('11-primera-inversion', 'una moneda plantada que brota'), ('12-cripto', 'una moneda vista de lado e inclinada, con el canto estriado, un rombo geométrico tallado en su cara y dos chispas a un lado; que no parezca un balón'),
 ]
 for i, (n, d) in enumerate(MEDALLAS):
     base = (f'{TRAZO} Medalla circular de logro con forma de sello de grabado, borde dentado como una estampilla, anillo exterior maíz tostado, '
