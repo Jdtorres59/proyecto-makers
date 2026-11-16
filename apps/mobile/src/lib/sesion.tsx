@@ -11,6 +11,9 @@ type Estado = {
   sesion: Session | null | undefined;
   consentido: boolean | undefined;
   aceptarConsentimiento(): Promise<void>;
+  salir(): Promise<void>;
+  /** Solo en desarrollo: entra sin cuenta, con los datos de muestra, para recorrer la app. */
+  entrarDeMuestra?: () => void;
 };
 
 const Contexto = createContext<Estado | null>(null);
@@ -23,31 +26,54 @@ export function useSesion() {
 
 export function ProveedorSesion({ children }: { children: ReactNode }) {
   const [sesion, setSesion] = useState<Session | null | undefined>(undefined);
-  const [consentido, setConsentido] = useState<boolean | undefined>(undefined);
-  const usuarioId = sesion?.user.id;
+  // Respuesta de la base por usuario: así un cambio de cuenta no hereda la del anterior.
+  const [consentimiento, setConsentimiento] = useState<{ usuario: string; valor: boolean }>();
+  const [consentidoDeMuestra, setConsentidoDeMuestra] = useState(false);
+  const [deMuestra, setDeMuestra] = useState(false);
+  const usuarioId = deMuestra ? undefined : sesion?.user.id;
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((_evento, nueva) => setSesion(nueva));
     return () => data.subscription.unsubscribe();
   }, []);
 
+  const consentido = deMuestra ? consentidoDeMuestra : consentimiento && consentimiento.usuario === usuarioId ? consentimiento.valor : undefined;
+
   useEffect(() => {
-    setConsentido(undefined);
     if (!usuarioId) return;
     supabase
       .from('consents')
       .select('id', { count: 'exact', head: true })
       .eq('text_version', VERSION_CONSENTIMIENTO)
-      .then(({ count }) => setConsentido((count ?? 0) > 0));
+      .then(({ count }) => setConsentimiento({ usuario: usuarioId, valor: (count ?? 0) > 0 }));
   }, [usuarioId]);
 
   async function aceptarConsentimiento() {
+    if (deMuestra) return setConsentidoDeMuestra(true);
     const { error } = await supabase
       .from('consents')
       .insert({ kind: 'tratamiento_datos', text_version: VERSION_CONSENTIMIENTO });
     if (error) throw error;
-    setConsentido(true);
+    if (usuarioId) setConsentimiento({ usuario: usuarioId, valor: true });
   }
 
-  return <Contexto value={{ sesion, consentido, aceptarConsentimiento }}>{children}</Contexto>;
+  async function salir() {
+    if (deMuestra) {
+      setDeMuestra(false);
+      setSesion(null);
+      return;
+    }
+    await supabase.auth.signOut();
+  }
+
+  // Sesión falsa y local: nunca toca Supabase ni existe en un build de producción.
+  const entrarDeMuestra = __DEV__
+    ? () => {
+        setDeMuestra(true);
+        setConsentidoDeMuestra(false);
+        setSesion({ user: { id: 'muestra' } } as Session);
+      }
+    : undefined;
+
+  return <Contexto value={{ sesion, consentido, aceptarConsentimiento, salir, entrarDeMuestra }}>{children}</Contexto>;
 }

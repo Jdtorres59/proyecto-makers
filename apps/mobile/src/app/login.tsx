@@ -2,20 +2,26 @@ import type { Provider } from '@supabase/supabase-js';
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Platform, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import Svg, { G, Path } from 'react-native-svg';
 
 import { Boton } from '@/components/boton';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { Campo } from '@/components/campo';
+import { Entrada } from '@/components/entrada';
+import { Hoja } from '@/components/hoja';
+import { Luca } from '@/components/luca';
+import { moneda } from '@/components/moneda';
+import { Pantalla } from '@/components/pantalla';
+import { Texto } from '@/components/texto';
+import { Wordmark } from '@/components/wordmark';
+import { Espacio, Forma, useTema } from '@/constants/tema';
+import { useSesion } from '@/lib/sesion';
 import { supabase } from '@/lib/supabase';
 
 // Para sumar otro proveedor: actívalo en Supabase (Authentication > Sign In / Providers) y agrégalo aquí.
-const PROVEEDORES: { id: Provider; titulo: string }[] = [
-  { id: 'google', titulo: 'Continuar con Google' },
-  { id: 'apple', titulo: 'Continuar con Apple' },
+const PROVEEDORES: { id: Provider; titulo: string; variante: 'principal' | 'secundario' }[] = [
+  { id: 'google', titulo: 'Seguir con Google', variante: 'principal' },
+  { id: 'apple', titulo: 'Seguir con Apple', variante: 'secundario' },
 ];
 
 // A dónde vuelve la persona después de autenticarse con Google o Apple. Debe estar en la lista
@@ -24,10 +30,11 @@ const REGRESO = Linking.createURL('/');
 
 /** Tres formas de entrar: Google, Apple o un código que llega al correo. Ninguna usa contraseña. */
 export default function Login() {
-  const tema = useTheme();
+  const { entrarDeMuestra } = useSesion();
   const [correo, setCorreo] = useState('');
   const [codigo, setCodigo] = useState('');
   const [enviado, setEnviado] = useState(false);
+  const [hojaCorreo, setHojaCorreo] = useState(false);
   const [cargando, setCargando] = useState<Provider | 'correo' | null>(null);
   const [error, setError] = useState('');
 
@@ -80,87 +87,118 @@ export default function Login() {
       if (error) throw error;
     });
 
-  const campo = [estilos.campo, { color: tema.text, backgroundColor: tema.backgroundElement }];
   const ocupado = cargando !== null;
+  const mensajeError = error ? (
+    <Texto tipo="pequeno" accessibilityRole="alert" style={estilos.error}>
+      {error}
+    </Texto>
+  ) : null;
 
   return (
-    <ThemedView style={estilos.fondo}>
-      <SafeAreaView style={estilos.fondo}>
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={estilos.contenido}>
-          <ThemedText type="subtitle">Entra a Makers</ThemedText>
+    <Pantalla>
+      <Entrada indice={0}>
+        <Heroe />
+      </Entrada>
 
-          {enviado ? (
-            <>
-              <ThemedText themeColor="textSecondary">Escribe el código que llegó a {correo.trim()}.</ThemedText>
-              <TextInput
-                accessibilityLabel="Código de verificación"
-                autoFocus
-                keyboardType="number-pad"
-                textContentType="oneTimeCode"
-                autoComplete="one-time-code"
-                placeholder="Código"
-                placeholderTextColor={tema.textSecondary}
-                value={codigo}
-                onChangeText={setCodigo}
-                onSubmitEditing={verificarCodigo}
-                style={campo}
-              />
-              <Boton titulo="Entrar" cargando={cargando === 'correo'} disabled={!codigo.trim()} onPress={verificarCodigo} />
-              <Boton
-                titulo="Volver"
-                secundario
-                disabled={ocupado}
-                onPress={() => (setEnviado(false), setCodigo(''), setError(''))}
-              />
-            </>
-          ) : (
-            <>
-              <ThemedText themeColor="textSecondary">Usa una cuenta que ya tienes. Sin contraseñas nuevas.</ThemedText>
-              {PROVEEDORES.map(({ id, titulo }) => (
-                <Boton key={id} titulo={titulo} cargando={cargando === id} disabled={ocupado} onPress={() => conProveedor(id)} />
-              ))}
+      <Entrada indice={1} style={estilos.marca}>
+        {/* En desarrollo, mantener presionado el nombre entra con los datos de muestra (sin cuenta). */}
+        <Pressable onLongPress={entrarDeMuestra} disabled={!entrarDeMuestra} accessible={false}>
+          <Wordmark tamano={56} />
+        </Pressable>
+      </Entrada>
 
-              <ThemedText type="small" themeColor="textSecondary" style={estilos.separador}>
-                o con tu correo
-              </ThemedText>
-              <TextInput
-                accessibilityLabel="Correo"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="email-address"
-                textContentType="emailAddress"
-                autoComplete="email"
-                placeholder="tu@correo.com"
-                placeholderTextColor={tema.textSecondary}
-                value={correo}
-                onChangeText={setCorreo}
-                onSubmitEditing={pedirCodigo}
-                style={campo}
-              />
-              <Boton
-                titulo="Enviarme un código"
-                secundario
-                cargando={cargando === 'correo'}
-                disabled={ocupado || !correo.includes('@')}
-                onPress={pedirCodigo}
-              />
-            </>
-          )}
+      <Entrada indice={2} style={estilos.textos}>
+        <Texto tipo="titulo">Tu plata, explicada con tus números.</Texto>
+        <Texto suave>Luca lee tu desprendible, sabe qué viene en tu plata y te ayuda a entender qué hacer con ella.</Texto>
+      </Entrada>
 
-          {error ? (
-            <ThemedText accessibilityRole="alert" type="small">
-              {error}
-            </ThemedText>
-          ) : null}
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </ThemedView>
+      <Entrada indice={3} style={estilos.acciones}>
+        {PROVEEDORES.map(({ id, titulo, variante }) => (
+          <Boton key={id} titulo={titulo} variante={variante} cargando={cargando === id} disabled={ocupado} onPress={() => conProveedor(id)} />
+        ))}
+        <Boton titulo="Seguir con correo" variante="texto" disabled={ocupado} onPress={() => (setError(''), setHojaCorreo(true))} />
+        {!hojaCorreo ? mensajeError : null}
+      </Entrada>
+
+      <Hoja visible={hojaCorreo} alCerrar={() => setHojaCorreo(false)} titulo="Seguir con correo">
+        {enviado ? (
+          <>
+            <Texto suave>Escribe el código que llegó a {correo.trim()}.</Texto>
+            <Campo
+              etiqueta="Código de verificación"
+              autoFocus
+              keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              autoComplete="one-time-code"
+              placeholder="123456"
+              value={codigo}
+              onChangeText={setCodigo}
+              onSubmitEditing={verificarCodigo}
+              esCifra
+            />
+            {mensajeError}
+            <Boton titulo="Entrar" cargando={cargando === 'correo'} disabled={!codigo.trim()} onPress={verificarCodigo} />
+            <Boton titulo="Usar otro correo" variante="texto" disabled={ocupado} onPress={() => (setEnviado(false), setCodigo(''), setError(''))} />
+          </>
+        ) : (
+          <>
+            <Texto suave>Te mandamos un código para entrar, sin contraseña.</Texto>
+            <Campo
+              etiqueta="Tu correo"
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              textContentType="emailAddress"
+              autoComplete="email"
+              placeholder="tu@correo.com"
+              value={correo}
+              onChangeText={setCorreo}
+              onSubmitEditing={pedirCodigo}
+            />
+            {mensajeError}
+            <Boton titulo="Mandarme el código" cargando={cargando === 'correo'} disabled={ocupado || !correo.includes('@')} onPress={pedirCodigo} />
+          </>
+        )}
+      </Hoja>
+    </Pantalla>
+  );
+}
+
+/** Panel maíz con Luca saludando y monedas estampadas en las esquinas. El nombre va afuera, sobre fondo liso. */
+function Heroe() {
+  const tema = useTema();
+  const { height } = useWindowDimensions();
+  const alto = Math.max(190, Math.min(300, height * 0.3));
+  const M = moneda({ r: 40, abertura: 70, separacion: 8 });
+  const monedas = [
+    { x: '6%', y: 14, s: 34, r: 0 },
+    { x: '78%', y: 22, s: 26, r: 50 },
+    { x: '84%', y: alto - 64, s: 40, r: -30 },
+    { x: '10%', y: alto - 54, s: 22, r: 90 },
+  ] as const;
+  return (
+    <View style={{ paddingBottom: Forma.sombra }}>
+      <View style={[estilos.sombra, { backgroundColor: tema.linea }]} />
+      <View style={[estilos.heroe, { height: alto, backgroundColor: tema.maiz, borderColor: tema.linea }]}>
+        {monedas.map((m, i) => (
+          <Svg key={i} width={m.s} height={m.s} viewBox="0 0 100 100" style={{ position: 'absolute', left: m.x, top: m.y, transform: [{ rotate: `${m.r}deg` }] }}>
+            <Path d={M.cuerpo} fill="#FFFBF0" />
+            <G transform={`translate(${M.dx} ${M.dy})`}>
+              <Path d={M.tajada} fill="#2A2219" />
+            </G>
+          </Svg>
+        ))}
+        <Luca pose="saluda" tamano={alto * 0.86} gesto="saluda" />
+      </View>
+    </View>
   );
 }
 
 const estilos = StyleSheet.create({
-  fondo: { flex: 1 },
-  contenido: { flex: 1, justifyContent: 'center', gap: Spacing.three, padding: Spacing.four, maxWidth: 480, width: '100%', alignSelf: 'center' },
-  campo: { minHeight: 48, borderRadius: 12, paddingHorizontal: Spacing.three, fontSize: 16 },
-  separador: { textAlign: 'center', marginTop: Spacing.two },
+  heroe: { borderWidth: Forma.contorno, borderRadius: Forma.radio, alignItems: 'center', justifyContent: 'flex-end', overflow: 'hidden' },
+  sombra: { position: 'absolute', left: 0, right: 0, top: Forma.sombra, bottom: 0, borderRadius: Forma.radio },
+  marca: { alignItems: 'flex-start', marginTop: -Espacio.s },
+  textos: { gap: Espacio.s, marginTop: -Espacio.m },
+  acciones: { gap: Espacio.s },
+  error: { textAlign: 'center' },
 });
