@@ -25,7 +25,7 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 |---|---|---|
 | Monorepo, tipos | Listo | `pnpm typecheck` limpio en los cinco paquetes |
 | `packages/core`, `conocimiento`, `ai` | Listo | `pnpm test`: 47 pruebas en todo el repo. Las cuentas cuadran con el prototipo (neto 3.312.000, prima y cesantías 900.000, intereses 27.000) |
-| API | Rutas de Luca 1.0 con dobles | Pruebas de cada ruta con datos en memoria y el proveedor simulado. `index.ts` (Supabase) compila pero no se ha corrido contra la base |
+| API | Rutas de Luca 1.0 probadas contra `makers-dev` | Pruebas de cada ruta con dobles en memoria, y el 15 de noviembre un recorrido por HTTP con `index.ts` real y el proveedor simulado: perfil, eventos, subir y leer un PDF, explicarlo, progreso, decisión completa, aislamiento entre dos usuarios y `DELETE /yo`. Todo pasó sin cambios de código; los usuarios de prueba se borraron |
 | Evals | Arnés listo | `pnpm eval`: 7 casos contra el proveedor simulado, uno o más por agente |
 | App | Compila y muestra el login | `expo-doctor` 20/20, Metro empaqueta para iOS y el login se vio en la versión web. No se abrió en un celular ni en el simulador. Ver "Qué falta" |
 | Base de datos | Aplicada en `makers-dev` | Migración aplicada, avisos de seguridad de Supabase en cero, y prueba con dos usuarios: ninguno lee ni escribe filas del otro, y la app no puede insertar en `ai_runs` |
@@ -56,7 +56,6 @@ Las rutas con IA respetan el tope diario.
 
 **Falta para el backend:**
 
-2. Correr `index.ts` contra Supabase de verdad: subir un PDF, leerlo, explicarlo, borrar todo.
 3. Correr los evals contra el modelo real cuando haya llave (`AI_PROVIDER=anthropic pnpm eval`).
 4. Auxilio de transporte: con salario hasta 2 SMMLV, `eventosDePlata` devuelve los montos en null porque la norma de 2026 no se confirmó. Es justo el rango de mucha gente de la persona foco.
 5. Que una persona verifique las normas y cambie `verificadoPor`.
@@ -70,7 +69,7 @@ Las rutas con IA respetan el tope diario.
 1. **Activar Google y Apple en Supabase** (Authentication > Sign In / Providers). Google pide un cliente OAuth creado en Google Cloud; Apple pide un Services ID y una llave de la cuenta de Apple Developer. En ambos, la URL de retorno es `https://wktftxvnflgelkgrdkfy.supabase.co/auth/v1/callback`.
 2. **Agregar las URL de regreso** en Authentication > URL Configuration: `makers://**`, `http://localhost:8081/**` y, mientras se use Expo Go, `exp://**`.
 3. **Correo de login.** La plantilla "Magic Link" de Supabase (Authentication > Emails) debe incluir el código `{{ .Token }}`; por defecto solo manda un enlace. Además, el correo por defecto de Supabase solo entrega a miembros del proyecto y tiene límite por hora: para personas externas hay que configurar un proveedor de correo (SMTP).
-4. **Llave secreta de Supabase** en `apps/api/.env` (Project Settings > API Keys). Sin ella la API no arranca.
+4. **Llave secreta de Supabase** en `apps/api/.env` (Project Settings > API Keys). Ya está puesta en la copia principal y la API arrancó con ella.
 5. **Probar el flujo completo en un celular.** Login, autorización, streaming en el teléfono y valoración nunca se han ejecutado con una sesión real.
 6. **Llave del modelo.** Sin definir (Anthropic directo o Amazon Bedrock). Ninguna llamada real al modelo se ha hecho: los evals solo han corrido contra el proveedor simulado, que sigue un guion y no dice nada sobre la calidad de las respuestas. La rama de Bedrock en `proveedor.ts` está escrita según la documentación y sin probar.
 7. **Despliegue.** API en Vercel y builds de la app con EAS, sin hacer.
