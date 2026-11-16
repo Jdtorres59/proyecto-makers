@@ -64,17 +64,17 @@ Viven en `apps/mobile/assets/` y la app los usa por estos nombres. Las ilustraci
 **Marca**
 - `marca/wordmark-claro.svg`, `marca/wordmark-oscuro.svg`, `marca/wordmark-maiz.svg`
 - `marca/splash-claro.png`, `marca/splash-oscuro.png`: wordmark de 600 px para la pantalla de arranque, sobre `fondo` (`#F6EEDC` claro, `#1D1812` oscuro)
-- `images/icon.png`, `images/android-icon-foreground.png`, `images/android-icon-background.png`, `images/android-icon-monochrome.png`, `images/favicon.png`: ícono de app (pendiente de Codex; hoy siguen los de Expo)
+- `images/icon.png`, `images/android-icon-foreground.png`, `images/android-icon-background.png`, `images/android-icon-monochrome.png`, `images/favicon.png`: ícono de app (la cara de Luca sobre maíz tostado; `icono/icono.png` es la copia que muestra la biblioteca)
 
-**Luca** (`luca/`): `luca-saluda`, `luca-explica`, `luca-celebra` (listas), `luca-piensa`, `luca-lee`, `luca-atento`, `luca-sorprendido`, `luca-muestra`, `luca-pulgar`, `luca-guarda`, `luca-espera`, `luca-despide`
+**Luca** (`luca/`): `luca-saluda`, `luca-explica`, `luca-celebra`, `luca-piensa`, `luca-lee`, `luca-atento`, `luca-sorprendido`, `luca-muestra`, `luca-pulgar`, `luca-guarda`, `luca-espera`, `luca-despide`
 
 **Crecimiento** (`crecimiento/`): `0-semilla`, `1-brote`, `2-plantula`, `3-arbolito`, `4-arbol`. Etapa según módulos terminados: 0, 1 a 3, 4 a 7, 8 a 11, 12.
 
 **Portadas** (`portadas/`, 3:2): `01-desprendible`, `02-prima-cesantias`, `03-plan-del-mes`, `04-colchon`, `05-costo-deuda`, `06-tarjeta`, `07-historial`, `08-si-no-puedo-pagar`, `09-fraudes`, `10-invertir-simple`, `11-primera-inversion`, `12-cripto`
 
-**Medallas** (`medallas/`): los mismos doce nombres que las portadas. Mientras no existan, o si el módulo no está ganado, se usa `grabado/medalla-bloqueada.svg`.
+**Medallas** (`medallas/`): los mismos doce nombres que las portadas. Si el módulo no está ganado, se usa `grabado/medalla-bloqueada.svg`.
 
-**Objetos** (`objetos/`): `desprendible` (listo), `extracto`, `sobre-prima`, `tarjeta`, `calendario`, `tarro`, `lupa`
+**Objetos** (`objetos/`): `desprendible`, `extracto`, `sobre-prima`, `tarjeta`, `calendario`, `tarro`, `lupa`
 
 **Escenas** (`escenas/`): `subir-documento`, `leyendo`, `vacio`, `sin-conexion`
 
