@@ -11,10 +11,10 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 | Paso | Qué | Estado |
 |---|---|---|
 | 0 | Rama `v1`, contratos en `packages/core/src/esquemas.ts` | Hecho |
-| 1 | Dirección visual y personaje (tres propuestas, Juan David elige) | En curso |
-| 2 | Biblioteca de assets en `apps/mobile/assets` | Pendiente |
-| 3 | App con datos de muestra | Pendiente |
-| 4 | Backend: cuentas, tablas, agentes y rutas | Hecho en `claude/backend-v1-0eae5c`, migración sin aplicar |
+| 1 | Dirección visual y personaje | Hecho: Semilla · Grabado, ver `DESIGN.md` |
+| 2 | Biblioteca de assets en `apps/mobile/assets` | Parcial: 3 poses, desprendible y 20 íconos. El resto espera a la generación de imágenes |
+| 3 | App con datos de muestra | En curso, en dos tandas |
+| 4 | Backend: cuentas, tablas, agentes y rutas | Hecho y fusionado en `v1`. Migración `20261115000000_luca.sql` aplicada en `makers-dev` el 15 de noviembre: avisos de seguridad en cero y prueba de aislamiento entre dos usuarios (revertida) |
 | 5 | Conectar app y API | Pendiente |
 | 6 | Contenido de los 12 módulos | Pendiente |
 | 7 | Pulido y verificación | Pendiente |
@@ -56,7 +56,6 @@ Las rutas con IA respetan el tope diario.
 
 **Falta para el backend:**
 
-1. Aplicar `supabase/migrations/20261115000000_luca.sql` en `makers-dev` y revisar los avisos de seguridad. No se ha ejecutado contra ningún Postgres.
 2. Correr `index.ts` contra Supabase de verdad: subir un PDF, leerlo, explicarlo, borrar todo.
 3. Correr los evals contra el modelo real cuando haya llave (`AI_PROVIDER=anthropic pnpm eval`).
 4. Auxilio de transporte: con salario hasta 2 SMMLV, `eventosDePlata` devuelve los montos en null porque la norma de 2026 no se confirmó. Es justo el rango de mucha gente de la persona foco.
