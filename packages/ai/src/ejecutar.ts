@@ -3,7 +3,7 @@ import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import type { EventoIA } from "@makers/core";
 import { z } from "zod";
 import type { Agente } from "./agentes";
-import { costoUsd, MODELOS } from "./modelos";
+import { costoUsd, MODELOS, modeloEfectivo } from "./modelos";
 import { constitucion } from "./prompts/constitucion";
 import type { Proveedor } from "./proveedor";
 
@@ -55,7 +55,8 @@ export async function ejecutarAgente(o: {
   alEvento?: (evento: EventoIA) => void;
 }): Promise<{ runId: string | null; registro: RegistroIA; salida: unknown }> {
   const { agente, proveedor } = o;
-  const modelo = MODELOS[agente.modelo];
+  const nombreModelo = modeloEfectivo(agente.modelo);
+  const modelo = MODELOS[nombreModelo];
   const inicio = Date.now();
   const registro: RegistroIA = {
     user_id: o.usuarioId,
@@ -119,7 +120,7 @@ export async function ejecutarAgente(o: {
       registro.output_tokens += respuesta.usage.output_tokens;
       registro.cache_read_tokens += respuesta.usage.cache_read_input_tokens ?? 0;
       registro.cache_write_tokens += respuesta.usage.cache_creation_input_tokens ?? 0;
-      registro.cost_usd += costoUsd(agente.modelo, respuesta.usage);
+      registro.cost_usd += costoUsd(nombreModelo, respuesta.usage);
 
       // Un rechazo o un corte por max_tokens pueden dejar una herramienta a medias: no se ejecuta.
       if (respuesta.stop_reason === "refusal") {

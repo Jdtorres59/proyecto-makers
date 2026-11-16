@@ -218,3 +218,25 @@ test("borrar todo deja a Luca sin saber nada de la persona", async () => {
   expect(await (await pedir("/progreso")).json()).toEqual({ leccionesTerminadas: [], medallas: [] });
   expect((await pedir(`/documentos/${DOC}`)).status).toBe(404);
 });
+
+test("CORS: solo los orígenes permitidos, y la consulta previa no exige sesión", async () => {
+  const { app } = preparar();
+  const previa = (origen: string, a = app) =>
+    a.request("/perfil", { method: "OPTIONS", headers: { Origin: origen, "Access-Control-Request-Method": "PUT", "Access-Control-Request-Headers": "authorization,content-type" } });
+  const local = await previa("http://localhost:8081");
+  expect(local.status).toBe(204);
+  expect(local.headers.get("Access-Control-Allow-Origin")).toBe("http://localhost:8081");
+  expect(local.headers.get("Access-Control-Allow-Headers")?.toLowerCase()).toContain("authorization");
+  expect((await previa("https://intruso.example")).headers.get("Access-Control-Allow-Origin")).toBeNull();
+
+  const web = crearApp({
+    proveedor: proveedorSimulado(), topeDiarioUsd: 0.5, verificarToken: async () => "u1", gastoDeHoyUsd: async () => 0, registrar: async () => null,
+    hoy: () => "2026-11-15", datos: memoria().datos, origenesPermitidos: ["https://luca.example"],
+  });
+  expect((await previa("https://luca.example", web)).headers.get("Access-Control-Allow-Origin")).toBe("https://luca.example");
+  expect((await previa("http://localhost:8081", web)).headers.get("Access-Control-Allow-Origin")).toBeNull();
+  // Las respuestas reales también llevan el encabezado, incluido un 401.
+  const r = await web.request("/me", { headers: { Origin: "https://luca.example" } });
+  expect(r.status).toBe(401);
+  expect(r.headers.get("Access-Control-Allow-Origin")).toBe("https://luca.example");
+});

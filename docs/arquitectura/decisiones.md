@@ -2,6 +2,18 @@
 
 Una entrada corta por decisión: qué, por qué y qué la haría cambiar. Las nuevas van arriba.
 
+## 2026-11-16 · Despliegue y Bedrock
+
+**La API va a Vercel empaquetada con esbuild.** Los paquetes del monorepo son TypeScript sin compilar, con imports sin extensión: Node no los corre tal cual y el compilador de Vercel tampoco los resuelve. Un solo `dist/server.js` evita depender de cómo Vercel trate el monorepo. Cambia si los paquetes pasan a compilarse por su cuenta.
+
+**Bedrock por el endpoint `bedrock-mantle` con variables propias** (`BEDROCK_REGION`, `BEDROCK_AWS_ACCESS_KEY_ID`, `BEDROCK_AWS_SECRET_ACCESS_KEY`), no `AWS_REGION` ni `AWS_ACCESS_KEY_ID`. Vercel puede poner esas en la función con valores que no sirven como credenciales, y el SDK las tomaría sin avisar. Si falta algo, la API no arranca.
+
+**Los IDs de modelo de Bedrock se pueden fijar por variable** (`BEDROCK_MODELO_PRINCIPAL`, `BEDROCK_MODELO_ECONOMICO`), porque dependen de lo que tenga habilitado la cuenta. Por defecto, `anthropic.` más el ID de `modelos.ts`.
+
+**Opus 5.5 sigue de predeterminado; Haiku 5.5 queda como `economico` para pruebas** (`AI_MODELO=economico`). Pasar un agente o el predeterminado a Haiku se decide con `pnpm eval` contra el modelo real, comparando los dos. No se decide por precio: leer un desprendible mal cuesta más que la diferencia. Los casos de `evals/casos.json` corren con cualquier modelo (`AI_MODELO=economico AI_PROVIDER=bedrock pnpm eval`), así que no hizo falta un caso nuevo.
+
+**CORS por lista de orígenes** (`ORIGENES_PERMITIDOS`; por defecto `http://localhost:8081`). Va antes de la sesión, porque la consulta previa del navegador no lleva token.
+
 ## 2026-11-15 · Backend de Luca 1.0
 
 **Las cuentas leen sus cifras legales de `conocimiento` en la fecha de la cuenta y fallan si no hay norma vigente.** `core` depende de `conocimiento`. Mejor un error que una cifra vieja.

@@ -72,9 +72,44 @@ Las rutas con IA respetan el tope diario.
 
 **Falta para el backend:**
 
-3. Correr los evals contra el modelo real cuando haya llave (`AI_PROVIDER=anthropic pnpm eval`).
+3. Correr los evals contra el modelo real cuando haya llave (`AI_PROVIDER=bedrock pnpm eval`, con las variables de Bedrock en el entorno).
 4. Auxilio de transporte: con salario hasta 2 SMMLV, `eventosDePlata` devuelve los montos en null porque la norma de 2026 no se confirmó. Es justo el rango de mucha gente de la persona foco.
 5. Que una persona verifique las normas y cambie `verificadoPor`.
+
+## Despliegue de la API en Vercel (listo, sin desplegar)
+
+La API sale como una sola función de Vercel. `pnpm build` en `apps/api` empaqueta `src/index.ts` con esbuild en `dist/server.js`: los paquetes `@makers/*` son TypeScript sin compilar y Vercel no los ejecutaría tal cual. `hono` queda por fuera del paquete porque Vercel busca el archivo de entrada por la línea `from "hono"`. `apps/api/vercel.json` fija el preset Hono, el build y la carpeta `dist`. `pnpm dev:api` no cambia.
+
+Comprobado en local: el `dist/server.js` empaquetado, servido con Node 24, pasó el recorrido completo contra `makers-dev` con el proveedor simulado. Incluye NDJSON de `/ai/run` y de `conversar`, la consulta previa de CORS y la limpieza en cero. No se ha desplegado.
+
+**Pasos para desplegar** (quien tenga la cuenta de Vercel):
+
+1. En Vercel: Add New > Project > importar el repo de GitHub.
+2. **Root Directory: `apps/api`**. Framework: Hono (lo toma de `vercel.json`). Build, Output e Install: dejar lo que trae `vercel.json` y lo que detecta Vercel (pnpm, por el `pnpm-lock.yaml` de la raíz).
+3. Rama de producción: la que se vaya a publicar (hoy `v1`).
+4. Variables de entorno (Settings > Environment Variables), solo en el panel y nunca en el repo:
+   - `SUPABASE_URL`, `SUPABASE_SECRET_KEY` (marcar como Sensitive)
+   - `AI_PROVIDER=bedrock`, `BEDROCK_REGION`
+   - `BEDROCK_AWS_ACCESS_KEY_ID` y `BEDROCK_AWS_SECRET_ACCESS_KEY` (Sensitive), o `AWS_BEARER_TOKEN_BEDROCK`
+   - Opcionales: `BEDROCK_MODELO_PRINCIPAL` y `BEDROCK_MODELO_ECONOMICO` (si la cuenta usa otro ID), y `AI_MODELO=economico` mientras se prueba barato
+   - `TOPE_DIARIO_USD` (por ejemplo `0.5`)
+   - `ORIGENES_PERMITIDOS`: la URL pública de la app web, separadas por comas si son varias
+   - `ENABLE_EXPERIMENTAL_COREPACK=1`, para que Vercel use la versión de pnpm de `packageManager`
+5. Deploy. Revisar `https://<dominio>/health`: debe responder `{"ok":true,"proveedor":"bedrock"}`.
+6. En la app web, `EXPO_PUBLIC_API_URL` apunta a ese dominio.
+
+**Límites de Vercel que importan:**
+- Una función dura máximo 300 s en Hobby (Pro: 300 s por defecto, configurable hasta 800 s). El streaming cuenta dentro de ese tiempo. Una conversación larga con varias rondas de herramientas en Opus podría acercarse; si pasa, se sube `maxDuration` en Pro o se baja el esfuerzo.
+- El cuerpo de una petición no puede pasar de 4,5 MB. No afecta a los documentos, porque la app los sube directo a Supabase y la API los descarga.
+- La función corre en `iad1` (us-east-1) por defecto, la misma región de Supabase.
+
+**Prueba de humo del modelo real** (una sola llamada, cuesta unos centavos):
+
+```bash
+pnpm --filter @makers/api humo
+```
+
+Lee `apps/api/.env`. Llama una vez a `leer_documento` con `evals/fixtures/desprendible-ficticio.pdf` e imprime proveedor, modelo, estado, tokens y costo; si falla, también el error. No escribe en la base.
 
 ## Proyecto de Supabase
 
@@ -87,8 +122,8 @@ Las rutas con IA respetan el tope diario.
 3. **Correo de login.** La plantilla "Magic Link" de Supabase (Authentication > Emails) debe incluir el código `{{ .Token }}`; por defecto solo manda un enlace. Además, el correo por defecto de Supabase solo entrega a miembros del proyecto y tiene límite por hora: para personas externas hay que configurar un proveedor de correo (SMTP).
 4. **Llave secreta de Supabase** en `apps/api/.env` (Project Settings > API Keys). Ya está puesta en la copia principal y la API arrancó con ella.
 5. **Probar el flujo completo en un celular.** Login, autorización, streaming en el teléfono y valoración nunca se han ejecutado con una sesión real.
-6. **Llave del modelo.** Sin definir (Anthropic directo o Amazon Bedrock). Ninguna llamada real al modelo se ha hecho: los evals solo han corrido contra el proveedor simulado, que sigue un guion y no dice nada sobre la calidad de las respuestas. La rama de Bedrock en `proveedor.ts` está escrita según la documentación y sin probar.
-7. **Despliegue.** API en Vercel y builds de la app con EAS, sin hacer.
+6. **Llave del modelo.** Será Amazon Bedrock (endpoint `bedrock-mantle`, IDs `anthropic.claude-*`). La rama de Bedrock en `proveedor.ts` está revisada contra la documentación vigente y probada solo en la construcción del cliente: ninguna llamada real se ha hecho. Primer paso con credenciales: `pnpm --filter @makers/api humo`. Los evals solo han corrido contra el proveedor simulado.
+7. **Despliegue.** API lista para Vercel (ver "Despliegue de la API en Vercel"), sin desplegar. Builds de la app con EAS, sin hacer.
 8. **Texto de autorización de datos.** Es un borrador de trabajo, no un texto legal.
 9. **CI.** El flujo de GitHub Actions está escrito y no ha corrido todavía.
 

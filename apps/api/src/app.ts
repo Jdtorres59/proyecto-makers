@@ -10,6 +10,7 @@ import {
   SolicitudIA,
 } from "@makers/core";
 import { type Context, Hono } from "hono";
+import { cors } from "hono/cors";
 import { createMiddleware } from "hono/factory";
 import { stream } from "hono/streaming";
 import { validator } from "hono/validator";
@@ -44,6 +45,8 @@ export type Dependencias = {
   datos: Datos;
   /** Fecha de hoy en Colombia, AAAA-MM-DD. */
   hoy(): string;
+  /** Orígenes web que pueden llamar a la API (la app web vive en otro dominio). Por defecto, Expo web en desarrollo. */
+  origenesPermitidos?: string[];
 };
 
 const PERFIL_VACIO: PerfilFinanciero = { nombre: null, empresa: null, cargo: null, salario: null, diaDePago: null, fechaIngreso: null, deudas: [], meta: null, vivienda: null };
@@ -109,6 +112,8 @@ export function crearApp(d: Dependencias) {
 
   return (
     new Hono<Entorno>()
+      // Va primero: la consulta previa del navegador (OPTIONS) no lleva sesión.
+      .use(cors({ origin: d.origenesPermitidos ?? ["http://localhost:8081"], allowHeaders: ["Authorization", "Content-Type"], maxAge: 600 }))
       .get("/health", (c) => c.json({ ok: true, proveedor: d.proveedor.nombre }))
       // De aquí hacia abajo todo exige sesión.
       .use(async (c, next) => {
