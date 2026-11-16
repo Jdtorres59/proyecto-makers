@@ -10,7 +10,7 @@ import {
 } from '@makers/core';
 
 import type { FuenteDeDatos } from './fuente';
-import { cargarModulos } from './modulos';
+import { modulosPara } from '@makers/contenido';
 
 /*
  * Datos de muestra: el caso ficticio de Valentina del prototipo. Solo se escriben a mano los datos de
@@ -137,7 +137,7 @@ export const fuenteDeMuestra: FuenteDeDatos = {
     return explicar(doc);
   },
   eventos: async (perfil) => eventosDePlata(perfil, HOY),
-  modulos: async (perfil) => cargarModulos(perfil),
+  modulos: async (perfil) => modulosPara(perfil, HOY),
   borrarTodo: async () => {
     guardado = PERFIL_VACIO;
   },

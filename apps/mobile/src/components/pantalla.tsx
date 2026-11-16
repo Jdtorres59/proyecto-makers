@@ -27,7 +27,7 @@ export function Pantalla({ children, pie, cabecera, conPestanas }: Props) {
     <SafeAreaView style={[estilos.fondo, { backgroundColor: tema.fondo }]} edges={conPestanas ? ['top'] : ['top', 'bottom']}>
       <KeyboardAvoidingView style={estilos.fondo} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         {cabecera ? <View style={estilos.cabecera}>{cabecera}</View> : null}
-        <ScrollView contentContainerStyle={estilos.contenido} keyboardShouldPersistTaps="handled">
+        <ScrollView contentContainerStyle={[estilos.contenido, pie ? { paddingBottom: Espacio.xxxl + Espacio.l } : null]} keyboardShouldPersistTaps="handled">
           {children}
         </ScrollView>
         {pie ? <View style={[estilos.pie, { backgroundColor: tema.fondo, borderTopColor: tema.lineaSuave }]}>{pie}</View> : null}

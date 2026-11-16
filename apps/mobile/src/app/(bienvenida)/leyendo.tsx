@@ -88,7 +88,7 @@ export default function Leyendo() {
       </Entrada>
 
       <View style={estilos.estado} accessibilityRole="text" accessibilityLiveRegion="polite" accessibilityLabel={estado}>
-        <Luca pose="explica" tamano={56} latido={leidos} />
+        <Luca pose="lee" tamano={64} latido={leidos} />
         <Texto tipo="cuerpoFuerte">{estado}</Texto>
       </View>
     </Pantalla>

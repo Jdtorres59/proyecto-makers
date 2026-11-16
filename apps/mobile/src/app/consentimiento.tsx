@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { Aviso } from '@/components/aviso';
 import { Boton } from '@/components/boton';
 import { Entrada } from '@/components/entrada';
 import { Icono } from '@/components/icono';
@@ -43,11 +44,7 @@ export default function Consentimiento() {
     <Pantalla
       pie={
         <>
-          {error ? (
-            <Texto tipo="pequeno" accessibilityRole="alert" style={{ textAlign: 'center' }}>
-              {error}
-            </Texto>
-          ) : null}
+          {error ? <Aviso texto={error} /> : null}
           <Boton titulo="Autorizo el uso de mis datos" cargando={cargando} onPress={aceptar} />
           <Boton titulo="No autorizo, salir" variante="texto" disabled={cargando} onPress={salir} />
         </>

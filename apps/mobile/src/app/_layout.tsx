@@ -80,6 +80,13 @@ function Pantallas() {
       <Stack.Screen name="(bienvenida)/preguntas" />
       <Stack.Screen name="(bienvenida)/listo" options={{ animation: 'fade', gestureEnabled: false }} />
       <Stack.Screen name="(pestanas)" options={{ animation: 'fade' }} />
+      <Stack.Screen name="modulo/[id]" />
+      <Stack.Screen name="leccion/[modulo]/[leccion]" options={{ animation: 'slide_from_bottom', gestureEnabled: false }} />
+      <Stack.Screen name="prima" options={{ animation: 'slide_from_bottom', gestureEnabled: false }} />
+      <Stack.Screen name="documento/[id]" />
+      <Stack.Screen name="decision/index" />
+      <Stack.Screen name="decision/leyendo" options={{ animation: 'fade', gestureEnabled: false }} />
+      <Stack.Screen name="decision/caminos" options={{ gestureEnabled: false }} />
     </Stack>
   );
 }

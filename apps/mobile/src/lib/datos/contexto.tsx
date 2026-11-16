@@ -37,6 +37,9 @@ type Estado = {
   guardarPlanPrima(plan: Destino[]): void;
   guardarDecision(decision: Decision & { resumen: ResumenDecision }): void;
   borrarTodo(): Promise<void>;
+  /** Solo en desarrollo: muestra desbloqueados los módulos con `publicado: false` para poder recorrerlos. */
+  verBorradores: boolean;
+  alternarBorradores?: () => void;
 };
 
 const Contexto = createContext<Estado | null>(null);
@@ -66,6 +69,7 @@ export function ProveedorLuca({ children }: { children: ReactNode }) {
   const [planPrima, setPlanPrima] = useState<Destino[] | null>(null);
   const [decision, setDecision] = useState<Estado['decision']>(null);
   const [bienvenidaLista, setBienvenidaLista] = useState(false);
+  const [verBorradores, setVerBorradores] = useState(__DEV__);
 
   useEffect(() => {
     fuente.perfil().then(setPerfil);
@@ -128,6 +132,8 @@ export function ProveedorLuca({ children }: { children: ReactNode }) {
       setPerfil(await fuente.perfil());
       setBienvenidaLista(false);
     },
+    verBorradores: __DEV__ && verBorradores,
+    alternarBorradores: __DEV__ ? () => setVerBorradores((v) => !v) : undefined,
   };
   return <Contexto value={valor}>{children}</Contexto>;
 }
@@ -142,3 +148,6 @@ export function etapaDeCrecimiento(terminados: number) {
 export function moduloTerminado(m: Modulo, p: Progreso) {
   return p.medallas.includes(m.id) && m.lecciones.every((l) => p.leccionesTerminadas.includes(l.id));
 }
+
+/** Se puede abrir si está publicado, o si en desarrollo se pidió ver borradores. */
+export const moduloAbierto = (m: Modulo, verBorradores: boolean) => m.publicado || (verBorradores && m.lecciones.length > 0);

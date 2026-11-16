@@ -93,7 +93,7 @@ export default function Preguntas() {
       {/* La clave reinicia la entrada escalonada y la voz de Luca en cada pregunta. */}
       <View key={paso} style={estilos.cuerpo}>
         <Entrada indice={0}>
-          <BurbujaLuca texto={PREGUNTAS[paso]} grande tamanoLuca={64} />
+          <BurbujaLuca texto={PREGUNTAS[paso]} pose="piensa" grande tamanoLuca={64} />
         </Entrada>
         <Entrada indice={1} style={estilos.chips}>
           {paso === 0

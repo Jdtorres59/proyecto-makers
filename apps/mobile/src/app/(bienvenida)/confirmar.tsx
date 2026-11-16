@@ -71,7 +71,7 @@ export default function Confirmar() {
       {prima ? (
         <Entrada indice={3}>
           <Tarjeta variante="superficie" style={estilos.aha}>
-            <Luca pose="celebra" tamano={64} gesto="quieto" />
+            <Luca pose="sorprendido" tamano={64} gesto="quieto" />
             <Texto style={{ flex: 1 }}>
               Con esto ya sé algo más: el <Texto style={{ fontFamily: Fuente.negrita }}>{fechaLarga(prima.fecha)}</Texto> te llega tu primera prima,{' '}
               <Texto esCifra style={{ fontFamily: Fuente.titular, color: tema.texto }}>

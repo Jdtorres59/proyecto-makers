@@ -7,7 +7,7 @@ import { haptica } from '@/lib/haptica';
 
 import { Texto } from './texto';
 
-type Variante = 'principal' | 'secundario' | 'tinta' | 'texto';
+type Variante = 'principal' | 'secundario' | 'tinta' | 'texto' | 'apple' | 'google';
 
 type Props = Omit<PressableProps, 'style' | 'children'> & {
   titulo: string;
@@ -35,6 +35,12 @@ export function Boton({ titulo, variante = 'principal', cargando, icono, disable
     secundario: { fondo: tema.verde, texto: tema.sobreVerde, borde: tema.linea, sombra: tema.linea },
     tinta: { fondo: TINTA.fondo, texto: TINTA.texto, borde: TINTA.fondo, sombra: 'rgba(42, 34, 25, 0.35)' },
     texto: { fondo: 'transparent', texto: tema.texto, borde: 'transparent', sombra: 'transparent' },
+    // Pautas de Apple: botón negro sobre fondo claro y blanco sobre oscuro, con el logo del mismo color que el texto.
+    apple: tema.oscuro
+      ? { fondo: '#FFFFFF', texto: '#000000', borde: '#FFFFFF', sombra: 'rgba(255, 255, 255, 0.35)' }
+      : { fondo: '#000000', texto: '#FFFFFF', borde: '#000000', sombra: tema.linea },
+    // Pautas de Google: fondo blanco, texto #1F1F1F y el logo a color.
+    google: { fondo: '#FFFFFF', texto: '#1F1F1F', borde: tema.linea, sombra: tema.linea },
   }[variante];
   const conCaja = variante !== 'texto';
 

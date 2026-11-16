@@ -165,7 +165,7 @@ function TextoHablado({ trozos, completo, grande }: { trozos: { t: string; fuert
 
 const estilos = StyleSheet.create({
   // Papel claro de DESIGN.md con contorno maíz: un sello que lee bien sobre #1D1812.
-  sello: { ...StyleSheet.absoluteFillObject, backgroundColor: '#F6EEDC', borderWidth: 2, borderColor: '#D99A2B', transform: [{ scale: 1.04 }] },
+  sello: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#F6EEDC', borderWidth: 2, borderColor: '#D99A2B', transform: [{ scale: 1.04 }] },
   burbujaFila: { flexDirection: 'row', alignItems: 'flex-end', gap: Espacio.s },
   burbujaCuerpo: { flex: 1, gap: Espacio.xs },
   burbuja: {

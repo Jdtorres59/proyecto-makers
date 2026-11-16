@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Platform, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Image } from 'expo-image';
 
+import { Aviso } from '@/components/aviso';
 import { Boton } from '@/components/boton';
 import { Campo } from '@/components/campo';
 import { Entrada } from '@/components/entrada';
@@ -12,6 +13,7 @@ import { Hoja } from '@/components/hoja';
 import { Luca } from '@/components/luca';
 import { Pantalla } from '@/components/pantalla';
 import { Texto } from '@/components/texto';
+import { LogoApple, LogoGoogle } from '@/components/marcas';
 import { Wordmark } from '@/components/wordmark';
 import { Espacio, useTema } from '@/constants/tema';
 import { grabado } from '@/lib/assets';
@@ -19,9 +21,9 @@ import { useSesion } from '@/lib/sesion';
 import { supabase } from '@/lib/supabase';
 
 // Para sumar otro proveedor: actívalo en Supabase (Authentication > Sign In / Providers) y agrégalo aquí.
-const PROVEEDORES: { id: Provider; titulo: string; variante: 'principal' | 'secundario' }[] = [
-  { id: 'google', titulo: 'Seguir con Google', variante: 'principal' },
-  { id: 'apple', titulo: 'Seguir con Apple', variante: 'secundario' },
+const PROVEEDORES: { id: Provider; titulo: string; variante: 'google' | 'apple' }[] = [
+  { id: 'google', titulo: 'Seguir con Google', variante: 'google' },
+  { id: 'apple', titulo: 'Seguir con Apple', variante: 'apple' },
 ];
 
 // A dónde vuelve la persona después de autenticarse con Google o Apple. Debe estar en la lista
@@ -30,6 +32,7 @@ const REGRESO = Linking.createURL('/');
 
 /** Tres formas de entrar: Google, Apple o un código que llega al correo. Ninguna usa contraseña. */
 export default function Login() {
+  const { oscuro } = useTema();
   const { entrarDeMuestra } = useSesion();
   const [correo, setCorreo] = useState('');
   const [codigo, setCodigo] = useState('');
@@ -88,11 +91,7 @@ export default function Login() {
     });
 
   const ocupado = cargando !== null;
-  const mensajeError = error ? (
-    <Texto tipo="pequeno" accessibilityRole="alert" style={estilos.error}>
-      {error}
-    </Texto>
-  ) : null;
+  const mensajeError = error ? <Aviso texto={error} /> : null;
 
   return (
     <Pantalla>
@@ -112,12 +111,26 @@ export default function Login() {
         <Texto suave>Luca lee tu desprendible, sabe qué viene en tu plata y te ayuda a entender qué hacer con ella.</Texto>
       </Entrada>
 
+      {/* Empuja las acciones al pie en pantallas altas: la composición llena la pantalla sin hueco abajo. */}
+      <View style={{ flexGrow: 1 }} />
+
       <Entrada indice={3} style={estilos.acciones}>
         {PROVEEDORES.map(({ id, titulo, variante }) => (
-          <Boton key={id} titulo={titulo} variante={variante} cargando={cargando === id} disabled={ocupado} onPress={() => conProveedor(id)} />
+          <Boton
+            key={id}
+            titulo={titulo}
+            variante={variante}
+            icono={variante === 'google' ? <LogoGoogle /> : <LogoApple color={oscuro ? '#000000' : '#FFFFFF'} />}
+            cargando={cargando === id}
+            disabled={ocupado}
+            onPress={() => conProveedor(id)}
+          />
         ))}
         <Boton titulo="Seguir con correo" variante="texto" disabled={ocupado} onPress={() => (setError(''), setHojaCorreo(true))} />
         {!hojaCorreo ? mensajeError : null}
+        <Texto tipo="pequeno" suave style={estilos.legal}>
+          Al seguir aceptas los términos y la política de datos.
+        </Texto>
       </Entrada>
 
       <Hoja visible={hojaCorreo} alCerrar={() => setHojaCorreo(false)} titulo="Seguir con correo">
@@ -168,7 +181,7 @@ export default function Login() {
 function Heroe() {
   const { oscuro } = useTema();
   const { height, width } = useWindowDimensions();
-  const alto = Math.max(200, Math.min(300, height * 0.3));
+  const alto = Math.max(200, Math.min(380, height * 0.4));
   const ancho = Math.min(width, 560) - Espacio.xl * 2;
   return (
     <View style={{ height: alto }}>
@@ -185,5 +198,5 @@ const estilos = StyleSheet.create({
   marca: { alignItems: 'flex-start' },
   textos: { gap: Espacio.s },
   acciones: { gap: Espacio.s },
-  error: { textAlign: 'center' },
+  legal: { textAlign: 'center' },
 });

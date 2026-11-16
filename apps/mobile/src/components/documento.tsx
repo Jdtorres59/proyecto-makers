@@ -13,8 +13,9 @@ import { Texto } from './texto';
 /** Un renglón del documento tal como Luca lo leyó. `leido` lo marca con un visto cuando la lectura pasa por ahí. */
 export function RenglonDocumento({ renglon, leido = true, total }: { renglon: Renglon; leido?: boolean; total?: boolean }) {
   const tema = useTema();
-  const esDescuento = renglon.clave !== 'salario' && renglon.clave !== 'neto';
-  const monto = renglon.monto === null ? 'Sin leer' : `${esDescuento ? '−' : ''}${formatearCOP(renglon.monto)}`;
+  const esDescuento = ['salud', 'pension', 'solidaridad'].includes(renglon.clave);
+  // Sin monto (una tasa, una fecha) se muestra tal como venía en el papel.
+  const monto = renglon.monto === null ? renglon.texto : `${esDescuento ? '−' : ''}${formatearCOP(renglon.monto)}`;
   return (
     <View
       style={[estilos.renglon, { borderTopColor: total ? tema.linea : tema.lineaSuave, borderTopWidth: total ? Forma.contorno : 1 }]}
@@ -25,7 +26,7 @@ export function RenglonDocumento({ renglon, leido = true, total }: { renglon: Re
           {leido ? <Icono nombre="check" tamano={12} color={tema.sobreVerde} /> : null}
         </View>
         <Texto tipo={total ? 'cuerpoFuerte' : 'cuerpo'} style={{ flexShrink: 1 }}>
-          {renglon.texto}
+          {renglon.monto === null ? renglon.etiqueta : renglon.texto}
         </Texto>
       </View>
       <Texto tipo="cuerpoFuerte" esCifra>
