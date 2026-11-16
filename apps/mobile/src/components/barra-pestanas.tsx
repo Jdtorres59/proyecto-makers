@@ -57,7 +57,7 @@ export function BarraPestanas({ state, navigateToTab }: BottomTabBarProps) {
               <View style={estilos.iconoCaja}>
                 <Icono nombre={p.icono} tamano={24} color={activa ? tema.sobreMaiz : tema.textoSuave} />
               </View>
-              <Texto tipo="pequeno" numberOfLines={1} maxFontSizeMultiplier={1.3} color={activa ? tema.texto : tema.textoSuave} style={activa && { fontFamily: 'BricolageGrotesque_700Bold' }}>
+              <Texto tipo="pequeno" numberOfLines={1} maxFontSizeMultiplier={1.15} adjustsFontSizeToFit minimumFontScale={0.75} color={activa ? tema.texto : tema.textoSuave} style={[{ textAlign: 'center' }, activa && { fontFamily: 'BricolageGrotesque_700Bold' }]}>
                 {p.titulo}
               </Texto>
             </Pressable>

@@ -1,9 +1,11 @@
 import { router } from 'expo-router';
 import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Espacio, Forma, useTema } from '@/constants/tema';
+import { grabado } from '@/lib/assets';
 
 import { Icono } from './icono';
 import { Tajadas } from './tajadas';
@@ -30,7 +32,28 @@ export function Pantalla({ children, pie, cabecera, conPestanas }: Props) {
         </ScrollView>
         {pie ? <View style={[estilos.pie, { backgroundColor: tema.fondo, borderTopColor: tema.lineaSuave }]}>{pie}</View> : null}
       </KeyboardAvoidingView>
+      <Grano />
     </SafeAreaView>
+  );
+}
+
+const LADO_GRANO = 256;
+
+/**
+ * Grano de papel sobre toda la pantalla (DESIGN.md). La textura ya trae su opacidad. Se arma con cuadros
+ * de 256 porque resizeMode="repeat" de RN no repite en la nueva arquitectura de iOS.
+ */
+function Grano() {
+  const { oscuro } = useTema();
+  const { width, height } = useWindowDimensions();
+  const columnas = Math.ceil(width / LADO_GRANO);
+  const filas = Math.ceil(height / LADO_GRANO);
+  return (
+    <View style={[estilos.grano, { width: columnas * LADO_GRANO, height: filas * LADO_GRANO }]} pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants">
+      {Array.from({ length: columnas * filas }, (_, i) => (
+        <Image key={i} source={grabado('grano', oscuro)} style={{ width: LADO_GRANO, height: LADO_GRANO }} cachePolicy="memory" />
+      ))}
+    </View>
   );
 }
 
@@ -59,6 +82,7 @@ export function Cabecera({ alVolver, progreso }: { alVolver?: () => void; progre
 
 const estilos = StyleSheet.create({
   fondo: { flex: 1 },
+  grano: { position: 'absolute', top: 0, left: 0, flexDirection: 'row', flexWrap: 'wrap' },
   cabecera: { flexDirection: 'row', alignItems: 'center', gap: Espacio.l, paddingHorizontal: Espacio.xl, paddingTop: Espacio.s, paddingBottom: Espacio.s, width: '100%', maxWidth: 560, alignSelf: 'center' },
   contenido: { flexGrow: 1, paddingHorizontal: Espacio.xl, paddingTop: Espacio.l, paddingBottom: Espacio.xxl, gap: Espacio.xl, width: '100%', maxWidth: 560, alignSelf: 'center' },
   pie: { paddingHorizontal: Espacio.xl, paddingTop: Espacio.m, paddingBottom: Espacio.s, gap: Espacio.xs, borderTopWidth: 1, width: '100%', alignItems: 'stretch' },

@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
-import Svg, { Path } from 'react-native-svg';
+import { Image } from 'expo-image';
 
 import { useTema } from '@/constants/tema';
+import { grabado, type PiezaGrabado } from '@/lib/assets';
 import { haptica } from '@/lib/haptica';
 
 import { Luca } from './luca';
-import { tajada } from './moneda';
 
-/** Luca celebra y suelta tajadas de moneda en las tres tintas. Con "Reducir movimiento", solo Luca, sin lluvia. */
+/** Luca celebra y suelta el confeti de grabado (hojas, granos, tiras y puntos). Con "Reducir movimiento", solo Luca, sin lluvia. */
 export function Celebracion({ tamano = 160 }: { tamano?: number }) {
   const reducido = useReducedMotion();
   useEffect(() => {
@@ -32,7 +32,7 @@ function Chispa({ i, centro }: { i: number; centro: number }) {
   // Trayectorias fijas por índice (sin azar): se ven distintas y son iguales en cada render.
   const angulo = (i / 14) * Math.PI * 2 + (i % 3) * 0.3;
   const distancia = centro * (0.9 + (i % 4) * 0.18);
-  const color = [tema.maiz, tema.verde, tema.linea, tema.salvia][i % 4];
+  const pieza = PIEZAS[i % PIEZAS.length];
   useEffect(() => {
     t.set(withDelay(320 + (i % 5) * 30, withTiming(1, { duration: 1100, easing: Easing.out(Easing.cubic) })));
   }, [t, i]);
@@ -47,11 +47,11 @@ function Chispa({ i, centro }: { i: number; centro: number }) {
   }));
   return (
     <Animated.View style={[estilos.chispa, { left: centro - 9, top: centro - 9 }, estilo]} pointerEvents="none">
-      <Svg width={18} height={18} viewBox="0 0 100 100">
-        <Path d={tajada(50, 50, 48, -120, -40 + (i % 3) * 20)} fill={color} />
-      </Svg>
+      <Image source={grabado(pieza, tema.oscuro)} style={{ width: 18, height: 18 }} accessible={false} />
     </Animated.View>
   );
 }
+
+const PIEZAS: PiezaGrabado[] = ['confeti-hoja', 'confeti-grano', 'confeti-tira', 'confeti-punto'];
 
 const estilos = StyleSheet.create({ chispa: { position: 'absolute' } });

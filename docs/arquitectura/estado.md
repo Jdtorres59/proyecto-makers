@@ -13,7 +13,7 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 | 0 | Rama `v1`, contratos en `packages/core/src/esquemas.ts` | Hecho |
 | 1 | Dirección visual y personaje | Hecho: Semilla · Grabado, ver `DESIGN.md` |
 | 2 | Biblioteca de assets en `apps/mobile/assets` | Parcial: 3 poses, desprendible y 20 íconos. El resto espera a la generación de imágenes |
-| 3 | App con datos de muestra | En curso, en dos tandas |
+| 3 | App con datos de muestra | Primera tanda hecha (login a inicio, rama `claude/app-v1-020a11`). Falta la segunda: Aprender, Documentos, Sobre mí, prima y decisión |
 | 4 | Backend: cuentas, tablas, agentes y rutas | Hecho y fusionado en `v1`. Migración `20261115000000_luca.sql` aplicada en `makers-dev` el 15 de noviembre: avisos de seguridad en cero y prueba de aislamiento entre dos usuarios (revertida) |
 | 5 | Conectar app y API | Pendiente |
 | 6 | Contenido de los 12 módulos | Pendiente |
@@ -27,9 +27,25 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 | `packages/core`, `conocimiento`, `ai` | Listo | `pnpm test`: 47 pruebas en todo el repo. Las cuentas cuadran con el prototipo (neto 3.312.000, prima y cesantías 900.000, intereses 27.000) |
 | API | Rutas de Luca 1.0 probadas contra `makers-dev` | Pruebas de cada ruta con dobles en memoria, y el 15 de noviembre un recorrido por HTTP con `index.ts` real y el proveedor simulado: perfil, eventos, subir y leer un PDF, explicarlo, progreso, decisión completa, aislamiento entre dos usuarios y `DELETE /yo`. Todo pasó sin cambios de código; los usuarios de prueba se borraron |
 | Evals | Arnés listo | `pnpm eval`: 7 casos contra el proveedor simulado, uno o más por agente |
-| App | Compila y muestra el login | `expo-doctor` 20/20, Metro empaqueta para iOS y el login se vio en la versión web. No se abrió en un celular ni en el simulador. Ver "Qué falta" |
+| App | Primera tanda de Luca 1.0 con datos de muestra | Recorrida en el simulador de iOS (iPhone 17 Pro, Expo Go) de login a inicio, en claro y oscuro y con letra grande; login también en web a 375 px. Capturas en `apps/mobile/capturas/`. Nunca con una sesión real ni en un celular físico |
 | Base de datos | Aplicada en `makers-dev` | Migración aplicada, avisos de seguridad de Supabase en cero, y prueba con dos usuarios: ninguno lee ni escribe filas del otro, y la app no puede insertar en `ai_runs` |
 | Login | Pantalla lista con Google, Apple y correo, **sin probar un ingreso real** | La pantalla se vio en web. El correo está activo en Supabase; Google y Apple responden "provider is not enabled" porque faltan sus credenciales |
+
+## App de Luca 1.0 (primera tanda)
+
+**Cimientos** (`apps/mobile/src`): tokens de `DESIGN.md` en `constants/tema.ts` (color claro y oscuro, tipo, forma, movimiento); Bricolage Grotesque con `@expo-google-fonts/bricolage-grotesque` y cifras tabulares; `lib/assets.ts` indexa la biblioteca por los nombres de `DESIGN.md` con `require.context`, así una imagen nueva entra sin tocar pantallas (mientras falta, pinta la pieza de `grabado/` que le toca); `lib/datos/` tiene la interfaz `FuenteDeDatos` y la de muestra (Valentina), con toda cifra calculada por `packages/core`. Para conectar la API (paso 5) se cambia la fuente en `lib/datos/contexto.tsx`.
+
+**Componentes:** botón impreso (principal, secundario, tinta, texto), chip, tarjeta, burbuja de Luca que habla palabra por palabra, renglón de documento, fila editable en línea, "Lo que viene", tajadas de progreso, hoja inferior con arrastre, campo, wordmark (SVG de diseño), cifra que rueda, celebración con confeti de grabado, grano de papel, barra de pestañas con ficha deslizante. Reanimated respeta "Reducir movimiento"; háptica en avanzar, elegir y celebrar.
+
+**Pantallas:** login (misma lógica de Supabase), autorización, conocerte, leyendo, confirmar con edición, tres preguntas, listo, inicio y pestañas Aprender, Documentos y Sobre mí con pantallas mínimas honestas. Se quitó la prueba interna de IA del flujo.
+
+**Modo de muestra:** solo en desarrollo, mantener presionado el nombre `luca` en el login entra sin cuenta con los datos de muestra. No existe en un build de producción (`__DEV__`).
+
+**Navegación:** `_layout.tsx` calcula la primera pantalla de cada estado (sin sesión, sin autorización, conociéndote, adentro) y reemplaza la pila al cambiar. `Stack.Protected` de Expo Router 58 lanzaba `ROUTE_NAMES_CHANGED` sin manejar al proteger un grupo con Stack propio o pantallas sueltas; revisar al subir de versión.
+
+**Contraste medido** (script WCAG sobre los tokens, también con el píxel más oscuro del grano): todo texto pasa 4,5:1 en ambos modos; el peor es `sobreVerde` sobre verde en claro, 5,17:1 (4,60:1 bajo el grano). El nombre en el login mide 13,56:1 en claro y 15,26:1 en oscuro.
+
+**Falta:** segunda tanda; selector de archivos real y subida al bucket; inicio no se vio a 375 px (solo el login); no se probó con VoiceOver; ícono de app sigue siendo el de Expo.
 
 ## Backend de Luca 1.0
 

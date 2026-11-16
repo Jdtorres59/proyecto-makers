@@ -3,18 +3,18 @@ import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
 import { Platform, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
-import Svg, { G, Path } from 'react-native-svg';
+import { Image } from 'expo-image';
 
 import { Boton } from '@/components/boton';
 import { Campo } from '@/components/campo';
 import { Entrada } from '@/components/entrada';
 import { Hoja } from '@/components/hoja';
 import { Luca } from '@/components/luca';
-import { moneda } from '@/components/moneda';
 import { Pantalla } from '@/components/pantalla';
 import { Texto } from '@/components/texto';
 import { Wordmark } from '@/components/wordmark';
-import { Espacio, Forma, useTema } from '@/constants/tema';
+import { Espacio, useTema } from '@/constants/tema';
+import { grabado } from '@/lib/assets';
 import { useSesion } from '@/lib/sesion';
 import { supabase } from '@/lib/supabase';
 
@@ -103,7 +103,7 @@ export default function Login() {
       <Entrada indice={1} style={estilos.marca}>
         {/* En desarrollo, mantener presionado el nombre entra con los datos de muestra (sin cuenta). */}
         <Pressable onLongPress={entrarDeMuestra} disabled={!entrarDeMuestra} accessible={false}>
-          <Wordmark tamano={56} />
+          <Wordmark alto={64} />
         </Pressable>
       </Entrada>
 
@@ -164,41 +164,26 @@ export default function Login() {
   );
 }
 
-/** Panel maíz con Luca saludando y monedas estampadas en las esquinas. El nombre va afuera, sobre fondo liso. */
+/** Panel ilustrado de borde irregular con el sol de grabado y Luca saludando. El nombre va afuera, sobre fondo liso. */
 function Heroe() {
-  const tema = useTema();
-  const { height } = useWindowDimensions();
-  const alto = Math.max(190, Math.min(300, height * 0.3));
-  const M = moneda({ r: 40, abertura: 70, separacion: 8 });
-  const monedas = [
-    { x: '6%', y: 14, s: 34, r: 0 },
-    { x: '78%', y: 22, s: 26, r: 50 },
-    { x: '84%', y: alto - 64, s: 40, r: -30 },
-    { x: '10%', y: alto - 54, s: 22, r: 90 },
-  ] as const;
+  const { oscuro } = useTema();
+  const { height, width } = useWindowDimensions();
+  const alto = Math.max(200, Math.min(300, height * 0.3));
+  const ancho = Math.min(width, 560) - Espacio.xl * 2;
   return (
-    <View style={{ paddingBottom: Forma.sombra }}>
-      <View style={[estilos.sombra, { backgroundColor: tema.linea }]} />
-      <View style={[estilos.heroe, { height: alto, backgroundColor: tema.maiz, borderColor: tema.linea }]}>
-        {monedas.map((m, i) => (
-          <Svg key={i} width={m.s} height={m.s} viewBox="0 0 100 100" style={{ position: 'absolute', left: m.x, top: m.y, transform: [{ rotate: `${m.r}deg` }] }}>
-            <Path d={M.cuerpo} fill="#FFFBF0" />
-            <G transform={`translate(${M.dx} ${M.dy})`}>
-              <Path d={M.tajada} fill="#2A2219" />
-            </G>
-          </Svg>
-        ))}
-        <Luca pose="saluda" tamano={alto * 0.86} gesto="saluda" />
+    <View style={{ height: alto }}>
+      <Image source={grabado('forma-panel', oscuro)} style={[StyleSheet.absoluteFill, { top: alto * 0.18 }]} contentFit="fill" accessible={false} />
+      <Image source={grabado('forma-sol', oscuro)} style={{ position: 'absolute', left: ancho * 0.06, top: 0, width: alto * 0.42, height: alto * 0.42 }} accessible={false} />
+      <View style={{ position: 'absolute', right: ancho * 0.08, bottom: 0 }}>
+        <Luca pose="saluda" tamano={alto * 0.95} gesto="saluda" />
       </View>
     </View>
   );
 }
 
 const estilos = StyleSheet.create({
-  heroe: { borderWidth: Forma.contorno, borderRadius: Forma.radio, alignItems: 'center', justifyContent: 'flex-end', overflow: 'hidden' },
-  sombra: { position: 'absolute', left: 0, right: 0, top: Forma.sombra, bottom: 0, borderRadius: Forma.radio },
-  marca: { alignItems: 'flex-start', marginTop: -Espacio.s },
-  textos: { gap: Espacio.s, marginTop: -Espacio.m },
+  marca: { alignItems: 'flex-start' },
+  textos: { gap: Espacio.s },
   acciones: { gap: Espacio.s },
   error: { textAlign: 'center' },
 });

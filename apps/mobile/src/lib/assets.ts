@@ -79,3 +79,27 @@ export const ICONOS = {
   yo: require('../../assets/iconos/yo.svg'),
 } as const;
 export type NombreIcono = keyof typeof ICONOS;
+
+/** Piezas vectoriales del sistema de grabado y de la marca (DESIGN.md, Assets). Las de tinta traen variante oscura. */
+const GRABADO = {
+  'forma-panel': [require('../../assets/grabado/forma-panel.svg'), require('../../assets/grabado/forma-panel-oscuro.svg')],
+  'forma-sol': [require('../../assets/grabado/forma-sol.svg'), require('../../assets/grabado/forma-sol-oscuro.svg')],
+  'forma-mancha': [require('../../assets/grabado/forma-mancha.svg'), require('../../assets/grabado/forma-mancha-oscuro.svg')],
+  'marco-portada': [require('../../assets/grabado/marco-portada.svg'), require('../../assets/grabado/marco-portada-oscuro.svg')],
+  'marco-medalla': [require('../../assets/grabado/marco-medalla.svg'), require('../../assets/grabado/marco-medalla-oscuro.svg')],
+  'medalla-bloqueada': [require('../../assets/grabado/medalla-bloqueada.svg'), require('../../assets/grabado/medalla-bloqueada-oscuro.svg')],
+  'confeti-hoja': [require('../../assets/grabado/confeti-hoja.svg'), require('../../assets/grabado/confeti-hoja-oscuro.svg')],
+  'confeti-grano': [require('../../assets/grabado/confeti-grano.svg'), require('../../assets/grabado/confeti-grano-oscuro.svg')],
+  'confeti-tira': [require('../../assets/grabado/confeti-tira.svg'), require('../../assets/grabado/confeti-tira-oscuro.svg')],
+  'confeti-punto': [require('../../assets/grabado/confeti-punto.svg'), require('../../assets/grabado/confeti-punto-oscuro.svg')],
+  grano: [require('../../assets/grabado/grano.png'), require('../../assets/grabado/grano-oscuro.png')],
+  halo: [require('../../assets/grabado/halo.svg'), require('../../assets/grabado/halo.svg')],
+  'wordmark-claro': [require('../../assets/marca/wordmark-claro.svg'), require('../../assets/marca/wordmark-claro.svg')],
+  'wordmark-oscuro': [require('../../assets/marca/wordmark-oscuro.svg'), require('../../assets/marca/wordmark-oscuro.svg')],
+  'wordmark-maiz': [require('../../assets/marca/wordmark-maiz.svg'), require('../../assets/marca/wordmark-maiz.svg')],
+} as const;
+export type PiezaGrabado = keyof typeof GRABADO;
+
+export function grabado(nombre: PiezaGrabado, oscuro: boolean): ImageSource {
+  return GRABADO[nombre][oscuro ? 1 : 0];
+}

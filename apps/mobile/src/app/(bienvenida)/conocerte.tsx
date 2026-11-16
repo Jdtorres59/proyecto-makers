@@ -22,7 +22,8 @@ export default function Conocerte() {
 
   const leer = () => {
     setHojaSubir(false);
-    router.push('/leyendo');
+    // iOS pierde un push que llega mientras se desmonta el Modal de la hoja: se navega cuando ya se fue.
+    setTimeout(() => router.push('/leyendo'), 120);
   };
 
   return (

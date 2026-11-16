@@ -1,6 +1,6 @@
 import { formatearCOP } from '@makers/core';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, type TextStyle, View } from 'react-native';
+import { PixelRatio, StyleSheet, Text, type TextStyle, useWindowDimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
 
 import { cifra, Movimiento, useTema } from '@/constants/tema';
@@ -15,6 +15,12 @@ export function Cifra({ valor, tamano = 32, color, signo, demora = 0 }: Props) {
   const tema = useTema();
   const reducido = useReducedMotion();
   const texto = `${signo ?? ''}${formatearCOP(valor)}`;
+  const { width } = useWindowDimensions();
+  // Con letra grande el tamaño efectivo crece; se limita para que la cifra quepa en el ancho disponible
+  // (≈0,62 em por carácter en Bricolage 800 tabular, con 112 de márgenes y relleno).
+  const escalaSistema = Math.min(PixelRatio.getFontScale(), 1.6);
+  const maximo = (Math.min(width, 560) - 112) / (texto.length * 0.62 * escalaSistema);
+  tamano = Math.min(tamano, maximo);
   const estilo: TextStyle = { ...cifra, fontSize: tamano, lineHeight: tamano * 1.15, letterSpacing: -tamano * 0.03, color: color ?? tema.texto };
 
   if (reducido) {

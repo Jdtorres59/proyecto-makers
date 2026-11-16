@@ -11,10 +11,9 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { Espacio, Forma, Movimiento, Tipo, useTema } from '@/constants/tema';
-import { asset, familiaDe, type NombreAsset, type Pose } from '@/lib/assets';
+import { asset, familiaDe, grabado, type NombreAsset, type Pose } from '@/lib/assets';
 
 import { MarcoGrabado } from './marco-grabado';
 import { Texto } from './texto';
@@ -26,7 +25,20 @@ type IlustracionProps = { nombre: NombreAsset; ancho: number; alto?: number };
 /** Una ilustración de la biblioteca por nombre; si todavía no existe, el marco de grabado. */
 export function Ilustracion({ nombre, ancho, alto = ancho }: IlustracionProps) {
   const fuente = asset(nombre);
-  if (!fuente) return <MarcoGrabado familia={familiaDe(nombre)} ancho={ancho} alto={alto} />;
+  const familia = familiaDe(nombre);
+  const base = asset('luca/luca-saluda');
+  // Una pose o etapa que falta se ve como Luca de siempre sobre la mancha salvia: nunca un hueco.
+  if (!fuente && base && (familia === 'luca' || familia === 'crecimiento')) {
+    return (
+      <View style={{ width: ancho, height: alto, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={StyleSheet.absoluteFill}>
+          <MarcoGrabado familia={familia} ancho={ancho} alto={alto} />
+        </View>
+        <Image source={base} style={{ width: ancho * 0.8, height: alto * 0.8 }} contentFit="contain" accessible={false} />
+      </View>
+    );
+  }
+  if (!fuente) return <MarcoGrabado familia={familia} ancho={ancho} alto={alto} />;
   return <Image source={fuente} style={{ width: ancho, height: alto }} contentFit="contain" accessible={false} />;
 }
 
@@ -77,17 +89,7 @@ export function Luca({ pose = 'saluda', tamano, gesto = 'entra', latido = 0, nom
   const halo = tema.oscuro && tamano <= 120;
   return (
     <View style={{ width: tamano, height: tamano }} accessible={false} importantForAccessibility="no-hide-descendants">
-      {halo ? (
-        <Svg style={StyleSheet.absoluteFill} viewBox="0 0 100 100">
-          <Defs>
-            <RadialGradient id="halo" cx="50" cy="55" r="50" gradientUnits="userSpaceOnUse">
-              <Stop offset="0" stopColor={tema.maiz} stopOpacity={0.38} />
-              <Stop offset="1" stopColor={tema.maiz} stopOpacity={0} />
-            </RadialGradient>
-          </Defs>
-          <Rect width="100" height="100" fill="url(#halo)" />
-        </Svg>
-      ) : null}
+      {halo ? <Image source={grabado('halo', true)} style={[StyleSheet.absoluteFill, { transform: [{ scale: 1.25 }] }]} accessible={false} /> : null}
       <Animated.View style={[StyleSheet.absoluteFill, animado]}>
         <Ilustracion nombre={nombre ?? `luca/luca-${pose}`} ancho={tamano} />
       </Animated.View>

@@ -6,7 +6,7 @@ import {
   BricolageGrotesque_800ExtraBold,
   useFonts,
 } from '@expo-google-fonts/bricolage-grotesque';
-import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import { DarkTheme, DefaultTheme, router, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -46,32 +46,40 @@ export default function Layout() {
   );
 }
 
-/** Cada grupo de pantallas solo existe en el estado que le corresponde: sin sesión, sin autorización, conociéndote, o adentro. */
+/** La app tiene cuatro estados; `destino` es la primera pantalla de cada uno. */
 function Pantallas() {
   const { sesion, consentido } = useSesion();
   const { bienvenidaLista, perfil } = useLuca();
   const cargando = sesion === undefined || (sesion && consentido === undefined) || !perfil;
 
+  const destino = !sesion ? '/login' : !consentido ? '/consentimiento' : !bienvenidaLista ? '/conocerte' : '/';
+
+  // Cada estado (sin sesión, sin autorización, conociéndote, adentro) tiene su primera pantalla. Al cambiar
+  // de estado se vacía la pila y se reemplaza: no se puede volver atrás a un estado anterior.
+  // shortcut: Stack.Protected de Expo Router 58 no lleva bien a un grupo sin índice ni a pantallas sueltas
+  // (ROUTE_NAMES_CHANGED sin manejar); probar de nuevo con guardas al subir de versión.
   useEffect(() => {
-    if (!cargando) SplashScreen.hideAsync();
-  }, [cargando]);
+    if (cargando) return;
+    const id = requestAnimationFrame(() => {
+      if (router.canDismiss()) router.dismissAll();
+      router.replace(destino);
+      // La pantalla de arranque se va cuando ya está la pantalla correcta, sin destello del inicio.
+      setTimeout(() => SplashScreen.hideAsync(), 60);
+    });
+    return () => cancelAnimationFrame(id);
+  }, [cargando, destino]);
 
   if (cargando) return null;
-  const adentro = !!sesion && !!consentido;
   return (
     <Stack screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
-      <Stack.Protected guard={!sesion}>
-        <Stack.Screen name="login" options={{ animation: 'fade' }} />
-      </Stack.Protected>
-      <Stack.Protected guard={!!sesion && !consentido}>
-        <Stack.Screen name="consentimiento" options={{ animation: 'fade' }} />
-      </Stack.Protected>
-      <Stack.Protected guard={adentro && !bienvenidaLista}>
-        <Stack.Screen name="(bienvenida)" options={{ animation: 'fade' }} />
-      </Stack.Protected>
-      <Stack.Protected guard={adentro && bienvenidaLista}>
-        <Stack.Screen name="(pestanas)" options={{ animation: 'fade' }} />
-      </Stack.Protected>
+      <Stack.Screen name="login" options={{ animation: 'fade' }} />
+      <Stack.Screen name="consentimiento" options={{ animation: 'fade' }} />
+      <Stack.Screen name="(bienvenida)/conocerte" options={{ animation: 'fade' }} />
+      <Stack.Screen name="(bienvenida)/leyendo" options={{ animation: 'fade', gestureEnabled: false }} />
+      <Stack.Screen name="(bienvenida)/confirmar" />
+      <Stack.Screen name="(bienvenida)/preguntas" />
+      <Stack.Screen name="(bienvenida)/listo" options={{ animation: 'fade', gestureEnabled: false }} />
+      <Stack.Screen name="(pestanas)" options={{ animation: 'fade' }} />
     </Stack>
   );
 }

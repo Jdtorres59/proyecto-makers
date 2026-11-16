@@ -62,7 +62,7 @@ export default function Inicio() {
   return (
     <Pantalla conPestanas>
       <Entrada indice={0} style={estilos.saludo}>
-        <Wordmark tamano={34} />
+        <Wordmark alto={34} />
         <Pressable
           onPress={() => router.navigate('/yo')}
           accessibilityRole="button"
@@ -196,7 +196,9 @@ function FilaEnlace({ titulo, detalle, onPress }: { titulo: string; detalle: str
       accessibilityRole="button"
       accessibilityLabel={`${titulo}. ${detalle}`}
       style={({ pressed }) => [estilos.enlace, { borderColor: tema.linea, backgroundColor: pressed ? tema.superficie : tema.papel }]}>
-      <Luca nombre="crecimiento/0-semilla" tamano={52} gesto="quieto" />
+      <View style={[estilos.fichaIcono, { backgroundColor: tema.maiz, borderColor: tema.linea }]}>
+        <Icono nombre="aprender" tamano={26} color={tema.sobreMaiz} />
+      </View>
       <View style={{ flex: 1, gap: 2 }}>
         <Texto tipo="cuerpoFuerte">{titulo}</Texto>
         <Texto tipo="pequeno" suave>
@@ -229,5 +231,6 @@ const estilos = StyleSheet.create({
   decision: { flexDirection: 'row', alignItems: 'center', gap: Espacio.m, borderWidth: Forma.contorno, borderRadius: Forma.radio, padding: Espacio.m },
   sombra: { position: 'absolute', left: 0, right: 0, top: Forma.sombra, bottom: 0, borderRadius: Forma.radio },
   seccion: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: -Espacio.s },
+  fichaIcono: { width: 52, height: 52, borderRadius: Forma.radioChico, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
   enlace: { flexDirection: 'row', alignItems: 'center', gap: Espacio.m, borderWidth: Forma.contorno, borderRadius: Forma.radio, padding: Espacio.m, minHeight: 72 },
 });
