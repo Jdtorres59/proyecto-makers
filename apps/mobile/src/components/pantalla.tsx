@@ -1,4 +1,4 @@
-import { router, useNavigation } from 'expo-router';
+import { router } from 'expo-router';
 import type { ReactNode } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Image } from 'expo-image';
@@ -60,22 +60,19 @@ export function Grano() {
 /** Atrás + tajadas de progreso, como en el prototipo. */
 export function Cabecera({ alVolver, progreso }: { alVolver?: () => void; progreso?: { total: number; actual: number; etiqueta: string } }) {
   const tema = useTema();
-  // canGoBack de la navegación de esta pantalla: router.canGoBack() global puede dar false en el primer render.
-  const puedeVolver = useNavigation().canGoBack();
+  // Siempre hay atrás: canGoBack puede dar false en el primer render de una pantalla abierta justo al cerrar una hoja.
+  // Sin historia, atrás lleva al inicio.
+  const volver = alVolver ?? (() => (router.canGoBack() ? router.back() : router.navigate('/')));
   return (
     <>
-      {alVolver !== undefined || puedeVolver ? (
-        <Pressable
-          onPress={alVolver ?? (() => router.back())}
-          accessibilityRole="button"
-          accessibilityLabel="Atrás"
-          hitSlop={4}
-          style={({ pressed }) => [estilos.atras, { borderColor: tema.linea, backgroundColor: pressed ? tema.superficie : tema.papel }]}>
-          <Icono nombre="atras" tamano={22} />
-        </Pressable>
-      ) : (
-        <View style={estilos.atrasVacio} />
-      )}
+      <Pressable
+        onPress={volver}
+        accessibilityRole="button"
+        accessibilityLabel="Atrás"
+        hitSlop={4}
+        style={({ pressed }) => [estilos.atras, { borderColor: tema.linea, backgroundColor: pressed ? tema.superficie : tema.papel }]}>
+        <Icono nombre="atras" tamano={22} />
+      </Pressable>
       {progreso ? <Tajadas {...progreso} /> : <View style={{ flex: 1 }} />}
       <View style={estilos.atrasVacio} />
     </>
