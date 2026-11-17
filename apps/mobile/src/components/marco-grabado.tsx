@@ -10,5 +10,5 @@ import { type Familia, grabado } from '@/lib/assets';
 export function MarcoGrabado({ familia, ancho, alto }: { familia: Familia; ancho: number; alto: number }) {
   const { oscuro } = useTema();
   const pieza = familia === 'portada' ? 'marco-portada' : familia === 'medalla' ? 'medalla-bloqueada' : 'forma-mancha';
-  return <Image source={grabado(pieza, oscuro)} style={{ width: ancho, height: alto }} contentFit="contain" alt="" />;
+  return <Image source={grabado(pieza, oscuro)} style={{ width: ancho, height: alto }} contentFit="contain" alt="" aria-hidden />;
 }

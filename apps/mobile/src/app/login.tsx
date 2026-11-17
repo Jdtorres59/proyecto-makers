@@ -186,8 +186,8 @@ function Heroe() {
   const ancho = Math.min(width, 560) - Espacio.xl * 2;
   return (
     <View style={{ height: alto }}>
-      <Image source={grabado('forma-panel', oscuro)} style={[StyleSheet.absoluteFill, { top: alto * 0.18 }]} contentFit="fill" alt="" />
-      <Image source={grabado('forma-sol', oscuro)} style={{ position: 'absolute', left: ancho * 0.06, top: 0, width: alto * 0.42, height: alto * 0.42 }} alt="" />
+      <Image source={grabado('forma-panel', oscuro)} style={[StyleSheet.absoluteFill, { top: alto * 0.18 }]} contentFit="fill" alt="" aria-hidden />
+      <Image source={grabado('forma-sol', oscuro)} style={{ position: 'absolute', left: ancho * 0.06, top: 0, width: alto * 0.42, height: alto * 0.42 }} alt="" aria-hidden />
       <View style={{ position: 'absolute', right: ancho * 0.08, bottom: 0 }}>
         <Luca pose="saluda" tamano={alto * 0.95} gesto="saluda" />
       </View>

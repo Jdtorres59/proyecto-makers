@@ -38,7 +38,7 @@ export function Cifra({ valor, tamano = 32, color, signo, demora = 0 }: Props) {
         return /\d/.test(c) ? (
           <Digito key={desdeLaDerecha} digito={Number(c)} estilo={estilo} demora={demora + desdeLaDerecha * 45} />
         ) : (
-          <Text key={`${desdeLaDerecha}${c}`} style={estilo} maxFontSizeMultiplier={1.6} importantForAccessibility="no">
+          <Text key={`${desdeLaDerecha}${c}`} style={estilo} maxFontSizeMultiplier={1.6} aria-hidden importantForAccessibility="no">
             {c}
           </Text>
         );
@@ -56,7 +56,7 @@ function Digito({ digito, estilo, demora }: { digito: number; estilo: TextStyle;
   const columna = useAnimatedStyle(() => ({ transform: [{ translateY: y.value }] }));
 
   return (
-    <View style={{ overflow: 'hidden' }} importantForAccessibility="no-hide-descendants">
+    <View style={{ overflow: 'hidden' }} aria-hidden importantForAccessibility="no-hide-descendants">
       {/* Mide el alto real de un dígito con el tamaño de letra del sistema. */}
       <Text style={[estilo, { opacity: 0 }]} maxFontSizeMultiplier={1.6} onLayout={(e) => setAlto(e.nativeEvent.layout.height)}>
         0

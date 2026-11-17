@@ -47,7 +47,7 @@ function Chispa({ i, centro }: { i: number; centro: number }) {
   }));
   return (
     <Animated.View style={[estilos.chispa, { left: centro - 9, top: centro - 9 }, estilo]} pointerEvents="none">
-      <Image source={grabado(pieza, tema.oscuro)} style={{ width: 18, height: 18 }} alt="" />
+      <Image source={grabado(pieza, tema.oscuro)} style={{ width: 18, height: 18 }} alt="" aria-hidden />
     </Animated.View>
   );
 }

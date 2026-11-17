@@ -131,7 +131,7 @@ export default function Prima() {
         </Entrada>
         {!revelado ? (
           <Entrada indice={1} style={{ gap: Espacio.m }}>
-            <Texto tipo="gigante" esCifra style={{ textAlign: 'center' }} accessibilityElementsHidden>
+            <Texto tipo="gigante" esCifra style={{ textAlign: 'center' }} accessibilityElementsHidden aria-hidden>
               {formatearCOP(apuesta)}
             </Texto>
             <Deslizador min={0} max={salario / 2} paso={PASO} valor={apuesta} alCambiar={setApuesta} etiqueta="Lo que crees que te llega" textoValor={formatearCOP(apuesta)} />

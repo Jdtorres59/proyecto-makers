@@ -18,6 +18,7 @@ import { Problema } from '@/components/problema';
 import { Forma, useTema } from '@/constants/tema';
 import { grabado } from '@/lib/assets';
 import { ProveedorLuca, useLuca } from '@/lib/datos/contexto';
+import '@/lib/foco-web';
 import { ProveedorSesion, useSesion } from '@/lib/sesion';
 
 SplashScreen.preventAutoHideAsync();
@@ -73,8 +74,8 @@ function Marco({ children }: { children: React.ReactNode }) {
   if (Platform.OS !== 'web' || width < 640) return <>{children}</>;
   return (
     <View style={[estilos.mesa, { backgroundColor: tema.superficie }]}>
-      <Image source={grabado('forma-mancha', tema.oscuro)} style={[estilos.mancha, { left: -120, top: -80 }]} contentFit="contain" alt="" />
-      <Image source={grabado('forma-sol', tema.oscuro)} style={[estilos.sol, { right: -60, bottom: -40 }]} contentFit="contain" alt="" />
+      <Image source={grabado('forma-mancha', tema.oscuro)} style={[estilos.mancha, { left: -120, top: -80 }]} contentFit="contain" alt="" aria-hidden />
+      <Image source={grabado('forma-sol', tema.oscuro)} style={[estilos.sol, { right: -60, bottom: -40 }]} contentFit="contain" alt="" aria-hidden />
       <View style={[estilos.columna, { backgroundColor: tema.fondo, borderColor: tema.linea }]}>{children}</View>
     </View>
   );

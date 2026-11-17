@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { useIsFocused } from 'expo-router/react-navigation';
 import { type ReactNode, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Image } from 'expo-image';
@@ -25,8 +26,9 @@ export function Pantalla({ children, pie, cabecera, conPestanas }: Props) {
   const tema = useTema();
   // Con el contenido desplazado, la cabecera gana un borde: el texto se corta en una línea, no contra el botón.
   const [desplazada, setDesplazada] = useState(false);
+  const enfocada = useIsFocused();
   return (
-    <SafeAreaView style={[estilos.fondo, { backgroundColor: tema.fondo }]} edges={conPestanas ? ['top'] : ['top', 'bottom']}>
+    <SafeAreaView style={[estilos.fondo, { backgroundColor: tema.fondo }, ocultaEnWeb(enfocada)]} edges={conPestanas ? ['top'] : ['top', 'bottom']}>
       <KeyboardAvoidingView style={estilos.fondo} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         {cabecera ? (
           <View style={{ borderBottomWidth: 1, borderBottomColor: desplazada ? tema.lineaSuave : 'transparent', backgroundColor: tema.fondo, zIndex: 1 }}>
@@ -46,6 +48,12 @@ export function Pantalla({ children, pie, cabecera, conPestanas }: Props) {
   );
 }
 
+/**
+ * En web las pantallas que no están al frente (otras pestañas, la de abajo en la pila) siguen en el DOM y se
+ * podían recorrer con teclado y lector de pantalla. Se sacan con display none. En el celular lo hace el navegador.
+ */
+export const ocultaEnWeb = (enfocada: boolean) => (Platform.OS === 'web' && !enfocada ? { display: 'none' as const } : null);
+
 const LADO_GRANO = 256;
 
 /**
@@ -59,10 +67,10 @@ export function Grano() {
   const filas = Math.ceil(height / LADO_GRANO);
   return (
     // El contenedor recorta: la grilla mide más que la pantalla y en web haría scroll horizontal.
-    <View style={[StyleSheet.absoluteFill, { overflow: 'hidden' }]} pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants">
+    <View style={[StyleSheet.absoluteFill, { overflow: 'hidden' }]} pointerEvents="none" accessible={false} aria-hidden importantForAccessibility="no-hide-descendants">
       <View style={[estilos.grano, { width: columnas * LADO_GRANO, height: filas * LADO_GRANO }]}>
         {Array.from({ length: columnas * filas }, (_, i) => (
-          <Image key={i} source={grabado('grano', oscuro)} style={{ width: LADO_GRANO, height: LADO_GRANO }} cachePolicy="memory" alt="" />
+          <Image key={i} source={grabado('grano', oscuro)} style={{ width: LADO_GRANO, height: LADO_GRANO }} cachePolicy="memory" alt="" aria-hidden />
         ))}
       </View>
     </View>

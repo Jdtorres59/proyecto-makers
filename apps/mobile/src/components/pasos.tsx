@@ -172,7 +172,7 @@ function Estimar({ paso, alListo }: De<'estimar'>) {
       </Entrada>
       {!revelado ? (
         <Entrada indice={1} style={{ gap: Espacio.m }}>
-          <Texto tipo="gigante" esCifra style={{ textAlign: 'center' }} accessibilityElementsHidden>
+          <Texto tipo="gigante" esCifra style={{ textAlign: 'center' }} accessibilityElementsHidden aria-hidden>
             {formatearCOP(apuesta)}
           </Texto>
           <Deslizador

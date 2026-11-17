@@ -10,7 +10,8 @@ import { Boton } from '@/components/boton';
 import { HojaSubir } from '@/components/hoja-subir';
 import { Icono } from '@/components/icono';
 import { BurbujaLuca, Luca } from '@/components/luca';
-import { Cabecera, Grano } from '@/components/pantalla';
+import { Cabecera, Grano, ocultaEnWeb } from '@/components/pantalla';
+import { useIsFocused } from 'expo-router/react-navigation';
 import { Pdf } from '@/components/pdf';
 import { Texto } from '@/components/texto';
 import { Espacio, Forma, Movimiento, Tipo, useTema } from '@/constants/tema';
@@ -29,6 +30,7 @@ const RESPUESTA_SIN_MODELO = 'Entiendo. Miremos los caminos con tus números ant
 export default function Decidir() {
   const tema = useTema();
   const reducido = useReducedMotion();
+  const enfocada = useIsFocused();
   const { leerDocumento, iniciarDecision, conversar, guardarPapel, papeles, documentos, demo } = useLuca();
   const scroll = useRef<ScrollViewInstance>(null);
   const [texto, setTexto] = useState(demo ? 'Debo $2.400.000 en la tarjeta y no sé si pagar el mínimo, diferir a cuotas o pedir un préstamo.' : '');
@@ -91,7 +93,7 @@ export default function Decidir() {
   const listos = !!papeles.extracto && !!papeles.oferta;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: tema.fondo }}>
+    <SafeAreaView style={[{ flex: 1, backgroundColor: tema.fondo }, ocultaEnWeb(enfocada)]}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <View style={estilos.cabecera}>
           <Cabecera />

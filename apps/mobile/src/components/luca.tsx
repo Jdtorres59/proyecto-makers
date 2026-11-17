@@ -34,12 +34,12 @@ export function Ilustracion({ nombre, ancho, alto = ancho }: IlustracionProps) {
         <View style={StyleSheet.absoluteFill}>
           <MarcoGrabado familia={familia} ancho={ancho} alto={alto} />
         </View>
-        <Image source={base} style={{ width: ancho * 0.8, height: alto * 0.8 }} contentFit="contain" alt="" />
+        <Image source={base} style={{ width: ancho * 0.8, height: alto * 0.8 }} contentFit="contain" alt="" aria-hidden />
       </View>
     );
   }
   if (!fuente) return <MarcoGrabado familia={familia} ancho={ancho} alto={alto} />;
-  return <Image source={fuente} style={{ width: ancho, height: alto }} contentFit="contain" alt="" />;
+  return <Image source={fuente} style={{ width: ancho, height: alto }} contentFit="contain" alt="" aria-hidden />;
 }
 
 type Props = {
@@ -89,7 +89,7 @@ export function Luca({ pose = 'saluda', tamano, gesto = 'entra', latido = 0, nom
 
   const sello = tema.oscuro && tamano <= 160;
   return (
-    <View style={{ width: tamano, height: tamano }} accessible={false} importantForAccessibility="no-hide-descendants">
+    <View style={{ width: tamano, height: tamano }} accessible={false} aria-hidden importantForAccessibility="no-hide-descendants">
       {sello ? <View style={[estilos.sello, { borderRadius: tamano / 2 }]} /> : null}
       <Animated.View style={[StyleSheet.absoluteFill, animado]}>
         <Ilustracion nombre={nombre ?? `luca/luca-${pose}`} ancho={tamano} />

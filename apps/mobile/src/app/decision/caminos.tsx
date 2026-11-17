@@ -227,7 +227,7 @@ export default function Caminos() {
     return (
       <Pantalla cabecera={cabecera} pie={<Boton titulo="Ya entendí, quiero decidir" onPress={() => ir(4)} />}>
         <BurbujaLuca pose="muestra" texto={dice} />
-        <View style={estilos.leyenda} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+        <View style={estilos.leyenda} accessibilityElementsHidden aria-hidden importantForAccessibility="no-hide-descendants">
           <View style={estilos.leyendaItem}>
             <View style={[estilos.cuadro, { backgroundColor: tema.linea }]} />
             <Texto tipo="pequeno" suave>
