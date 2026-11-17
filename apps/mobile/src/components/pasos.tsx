@@ -354,8 +354,8 @@ export function FilaReparto({
           {formatearCOP(monto)}
         </Texto>
       </View>
-      {boton('−', alQuitar, monto > 0, `Quitar a ${nombre}`)}
-      {boton('+', alSumar, puedeSumar, `Sumar a ${nombre}`, alLlenar)}
+      {boton('−', alQuitar, monto > 0, `Quitar a ${nombre}. Tiene ${formatearCOP(monto)}`)}
+      {boton('+', alSumar, puedeSumar, `Sumar a ${nombre}. Tiene ${formatearCOP(monto)}`, alLlenar)}
     </View>
   );
 }

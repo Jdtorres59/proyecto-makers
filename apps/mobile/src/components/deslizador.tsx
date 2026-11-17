@@ -27,6 +27,14 @@ export function Deslizador({ min, max, paso, valor, alCambiar, etiqueta, textoVa
   const pasos = Math.max(1, Math.round((max - min) / paso));
   const fraccion = (valor - min) / (max - min || 1);
 
+  const mover = (delta: number) => {
+    const nuevo = Math.min(max, Math.max(min, valor + delta));
+    if (nuevo !== valor) {
+      haptica.eleccion();
+      alCambiar(nuevo);
+    }
+  };
+
   const desdeX = (x: number) => {
     const f = Math.min(1, Math.max(0, x / (ancho || 1)));
     const nuevo = min + Math.round(f * pasos) * paso;
@@ -58,7 +66,21 @@ export function Deslizador({ min, max, paso, valor, alCambiar, etiqueta, textoVa
       accessibilityLabel={etiqueta}
       accessibilityValue={{ text: textoValor }}
       accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
-      onAccessibilityAction={(e) => alCambiar(Math.min(max, Math.max(min, valor + (e.nativeEvent.actionName === 'increment' ? paso : -paso))))}
+      onAccessibilityAction={(e) => mover(e.nativeEvent.actionName === 'increment' ? paso : -paso)}
+      // Web: foco con Tab, valor anunciado y flechas. En el celular lo cubren adjustable y sus acciones.
+      focusable
+      aria-valuemin={min}
+      aria-valuemax={max}
+      aria-valuenow={valor}
+      aria-valuetext={textoValor}
+      {...({
+        onKeyDown: (e: { key: string; preventDefault(): void }) => {
+          const salto = { ArrowRight: paso, ArrowUp: paso, ArrowLeft: -paso, ArrowDown: -paso, PageUp: paso * 5, PageDown: -paso * 5, Home: min - valor, End: max - valor }[e.key];
+          if (salto === undefined) return;
+          e.preventDefault();
+          mover(salto);
+        },
+      } as object)}
       style={estilos.zona}>
       <GestureDetector gesture={gesto}>
         <View style={estilos.zona} onLayout={(e) => setAncho(e.nativeEvent.layout.width)}>
