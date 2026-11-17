@@ -1,6 +1,6 @@
 import type { BottomTabBarProps } from 'expo-router/js-tabs';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -23,6 +23,7 @@ export function BarraPestanas({ state, navigateToTab }: BottomTabBarProps) {
   const tema = useTema();
   const { bottom } = useSafeAreaInsets();
   const [ancho, setAncho] = useState(0);
+  const angosta = useWindowDimensions().width < 360; // a 320 pt "Documentos" no cabe en 14 pt
   const x = useSharedValue(0);
   const porPestana = ancho / state.routes.length;
 
@@ -57,7 +58,7 @@ export function BarraPestanas({ state, navigateToTab }: BottomTabBarProps) {
               <View style={estilos.iconoCaja}>
                 <Icono nombre={p.icono} tamano={24} color={activa ? tema.sobreMaiz : tema.textoSuave} />
               </View>
-              <Texto tipo="pequeno" numberOfLines={1} maxFontSizeMultiplier={1.15} adjustsFontSizeToFit minimumFontScale={0.75} color={activa ? tema.texto : tema.textoSuave} style={[{ textAlign: 'center' }, activa && { fontFamily: 'BricolageGrotesque_700Bold' }]}>
+              <Texto tipo="pequeno" numberOfLines={1} maxFontSizeMultiplier={1.15} adjustsFontSizeToFit minimumFontScale={0.75} color={activa ? tema.texto : tema.textoSuave} style={[{ textAlign: 'center' }, angosta && { fontSize: 12, lineHeight: 16 }, activa && { fontFamily: 'BricolageGrotesque_700Bold' }]}>
                 {p.titulo}
               </Texto>
             </Pressable>
