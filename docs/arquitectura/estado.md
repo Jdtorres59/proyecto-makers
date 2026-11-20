@@ -12,7 +12,7 @@ Lo que falta para cerrar la app 1.0, en orden:
 
 1. Hecho el 16 de noviembre: API desplegada, web conectada y primeras llamadas reales al modelo (ver "Producción").
 2. Juan David: URL de la web agregada en Supabase el 20 de noviembre. Falta probar un ingreso real con Google y con código al correo. Apple está sin configurar.
-3. Hecho el 20 de noviembre y fusionado en `v1`: pasada final (ver "pasada final"). La web publicada todavía no la tiene: hay que volver a publicar.
+3. Hecho el 20 de noviembre y fusionado en `v1`: pasada final (ver "pasada final"). La web la tiene: publicada el 20 de noviembre.
 4. Build de iPhone, después de la web.
 
 Contenido: 1 de 12 módulos escrito (prima y cesantías). Los otros 11 se escriben en `packages/contenido`, cada persona en su rama desde `v1` y con PR hacia `v1`, tocando solo `packages/contenido` y `packages/conocimiento`. No se edita `packages/core/src/esquemas.ts` desde esas ramas.
@@ -193,6 +193,8 @@ vercel link --yes --scope juan-david-torres-casas-projects --project luca-api &&
 - Web: el paquete trae la URL de la API y la de Supabase, y ninguna llave secreta (lo que coincide con `sb_secret` es código de supabase-js). En el navegador a 375 px: carga el login, "Probar sin cuenta" recorre autorización, conocerte, confirmar, preguntas y listo hasta inicio con "Lo que viene"; consola sin errores. Una ruta interna (`/inicio`) responde 200.
 - Primera llamada real (local, `pnpm --filter @makers/api humo` con `AI_PROVIDER=anthropic`): estado `ok`, `claude-haiku-5-5`, 3.491 tokens de entrada y 544 de salida, US$0,0006, 4,2 s. Los cuatro renglones coinciden con el PDF ficticio (salario 3.600.000, salud 144.000, pensión 144.000, neto 3.312.000), todos con confianza alta. `humo` ahora imprime la salida.
 - Punta a punta contra producción, con un usuario `@luca.test` creado por la API de administración: autorización, perfil, subida del PDF al bucket con el token de la persona, lectura real (200, mismos cuatro renglones), confirmación, `GET /eventos` con sueldo 30 nov, prima 20 dic $900.000, intereses 31 ene $27.000 y cesantías 14 feb, una fila en `ai_runs` (`leer_documento`, `claude-haiku-5-5`, `anthropic`, `ok`, 3.491/592 tokens, US$0,000645), `DELETE /yo` 204 con tablas y bucket en cero, y usuario borrado sin archivos restantes.
+
+**20 de noviembre de 2026:** web (`luca-demo`) publicada de nuevo desde `4e179c3` con la pasada final; la API no cambió. Verificado en https://luca-demo-delta.vercel.app a 375 px: favicon de Luca (no el de Expo), estilo de foco visible (`#luca-foco`) cargado, recorrido con "Probar sin cuenta" de login a inicio con "Lo que viene", consola sin errores y ninguna petición a la API ni a Supabase. Sin llamadas al modelo ni cuentas nuevas.
 
 **Gasto real en modelo:** dos llamadas, unos US$0,0013 en total.
 
