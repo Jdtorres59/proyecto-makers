@@ -94,6 +94,42 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 
 **Falta:** el plan de la prima vive solo en el teléfono (la API no tiene dónde guardarlo); un enlace directo a una ruta interna funciona, pero si los datos todavía cargan, la persona ve el problema o el inicio primero.
 
+## App de Luca 1.0: pasada final (20 de noviembre de 2026)
+
+**Ícono y arranque.** iOS usa `assets/images/icon.png` (antes el `expo.icon` de la plantilla), Android el ícono adaptable sobre maíz `#D99A2B`, la web su favicon, y el arranque las piezas de `assets/marca/splash-*`.
+
+**Accesibilidad.** En esta versión de RN-web `accessibilityState` no llega al DOM, así que la app usa props `aria-*` (`aria-selected`, `aria-checked`, `aria-expanded`, `aria-disabled`, `aria-busy`), que también sirven en iOS y Android. Además:
+- Las opciones dicen "Correcta", "No es esta" o "Elegido", y el ordenar dice el puesto.
+- El deslizador funciona con flechas, PageUp/PageDown e Inicio/Fin, y anuncia su valor.
+- El reparto dice cuánto tiene cada destino.
+- La hoja inferior tiene nombre, el velo no es un segundo "Cerrar" y el foco no sale de ella.
+- Las imágenes decorativas están ocultas al lector y el foco visible es de 3 px.
+- Las pantallas de fondo quedan fuera del orden del teclado.
+
+Revisado en web con el árbol de accesibilidad: no hay controles sin nombre ni objetivos de menos de 44 px.
+
+**Pantallas chicas.** De login al cierre de la decisión, incluidas las 4 lecciones de prima y los 8 tipos de paso, sin texto cortado ni scroll horizontal a 320 y 375 px. A menos de 360 px de ancho las etiquetas de las pestañas bajan a 12 pt. En web ancha la app va en una columna centrada.
+
+**Contraste**, medido en el DOM con el color real sobre el fondo real:
+- Mínimo en texto: 5,17:1 en claro y 6,42:1 en oscuro.
+- La opción descartada subió de opacidad 0,55 a 0,7, porque en claro quedaba en 3,7:1 y ahora queda en 5,9:1.
+- El maíz sobre fondo claro (2,1:1) solo se usa con contorno oscuro.
+- `lineaSuave` solo se usa en bordes que no llevan información.
+
+**Movimiento.** Revisado con los estándares de review-animations:
+- La medalla entra desde 0,6 y no desde 0.
+- La hoja sale con curva de cajón y no con ease-in.
+- Lo demás cumple (pulsación de 160 ms o resorte, sacudida de 50 a 70 ms, resortes interrumpibles) y respeta "Reducir movimiento". No se agregaron animaciones nuevas.
+
+**Anti plantilla.** Cero rayas largas, cero mayúsculas espaciadas, cero textos genéricos. Los errores hablan en la voz de Luca y dicen qué hacer, y el estado vacío de documentos tiene su escena. Se cambió "Irme a vivir sola" por "Vivir por mi cuenta". En el contenido del módulo de prima no hubo nada que reportar.
+
+**Producción.** https://luca-demo-delta.vercel.app recorrida con "Probar sin cuenta" a 375 px, de login al cierre de la decisión: todo responde 200/304, sin errores de consola y sin llamadas a la API ni al modelo. En escritorio la columna está centrada. Esta versión todavía no tiene los arreglos de esta pasada.
+
+**No verificado:**
+- Android: no hay SDK ni emulador en este Mac.
+- Letra del sistema al máximo en las pantallas interiores en iOS. Login e inicio se vieron en la fase 1. Esta vez el simulador quedó esperando el permiso del panel.
+- VoiceOver real. Se revisó el árbol de accesibilidad en web.
+
 ## Backend de Luca 1.0
 
 **Cuentas** (`packages/core/src/cuentas.ts`): neto del mes, prima, cesantías e intereses en año de 360 días, tarjeta diferida, pago mínimo (supuesto: 36 cuotas), préstamo de cuota fija con seguro, porcentaje del sueldo y `eventosDePlata(perfil, hoy)`. Leen las cifras legales de `conocimiento` en la fecha de la cuenta.
