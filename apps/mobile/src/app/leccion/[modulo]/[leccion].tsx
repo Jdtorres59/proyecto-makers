@@ -1,7 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import Animated, { ZoomIn } from 'react-native-reanimated';
+import Animated, { Easing, Keyframe } from 'react-native-reanimated';
 
 import { Boton } from '@/components/boton';
 import { Celebracion } from '@/components/celebracion';
@@ -19,6 +19,14 @@ import { leccionDePrueba } from '@/lib/datos/pasos-de-prueba';
 import { haptica } from '@/lib/haptica';
 
 /** Reproductor de cualquier lección: un paso por pantalla, tajadas de progreso y cierre con celebración. */
+/** La medalla llega desde 0,6 (nada aparece de la nada) con un leve rebote: es el premio, pasa pocas veces. */
+const MEDALLA = new Keyframe({
+  0: { opacity: 0, transform: [{ scale: 0.6 }] },
+  100: { opacity: 1, transform: [{ scale: 1 }], easing: Easing.out(Easing.back(1.6)) },
+})
+  .delay(600)
+  .duration(420);
+
 export default function LeccionPantalla() {
   const tema = useTema();
   const { modulo: idModulo, leccion: idLeccion } = useLocalSearchParams<{ modulo: string; leccion: string }>();
@@ -82,7 +90,7 @@ export default function LeccionPantalla() {
         </Entrada>
         {medallaNueva ? (
           <Entrada indice={2} style={{ alignItems: 'center', gap: Espacio.s }}>
-            <Animated.View entering={ZoomIn.delay(600).springify().damping(Movimiento.resorteVivo.damping)}>
+            <Animated.View entering={MEDALLA}>
               <Ilustracion nombre={`medallas/${modulo!.medalla}` as NombreAsset} ancho={128} />
             </Animated.View>
             <Texto tipo="titulo3" style={{ textAlign: 'center' }}>

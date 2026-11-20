@@ -25,7 +25,7 @@ const DEUDAS: { id: IdDeuda; texto: string; tipo?: Deuda['tipo'] }[] = [
   { id: 'familia', texto: 'A alguien de mi familia', tipo: 'otra' },
   { id: 'no', texto: 'No debo nada' },
 ];
-const METAS = ['Irme a vivir sola', 'Un viaje', 'Estudiar algo', 'Tener un colchón', 'Todavía no sé'];
+const METAS = ['Vivir por mi cuenta', 'Un viaje', 'Estudiar algo', 'Tener un colchón', 'Todavía no sé'];
 const VIVIENDAS: { texto: string; valor: NonNullable<PerfilFinanciero['vivienda']> }[] = [
   { texto: 'Con mi familia', valor: 'familia' },
   { texto: 'Pago arriendo', valor: 'arriendo' },

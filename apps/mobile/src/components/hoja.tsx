@@ -1,7 +1,7 @@
 import { type ReactNode, useEffect } from 'react';
 import { KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { GestureDetector, GestureHandlerRootView, usePanGesture } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scheduleOnRN } from 'react-native-worklets';
 
@@ -25,9 +25,9 @@ export function Hoja({ visible, alCerrar, titulo, children }: Props) {
   const velo = useSharedValue(0);
 
   const cerrar = () => {
-    velo.set(withTiming(0, { duration: Movimiento.rapido }));
+    velo.set(withTiming(0, { duration: Movimiento.rapido, easing: Easing.out(Easing.quad) }));
     y.set(
-      withTiming(height, { duration: reducido ? 0 : Movimiento.medio }, (fin) => {
+      withTiming(height, { duration: reducido ? 0 : Movimiento.medio, easing: SALIDA }, (fin) => {
         if (fin) scheduleOnRN(alCerrar);
       }),
     );
@@ -36,7 +36,7 @@ export function Hoja({ visible, alCerrar, titulo, children }: Props) {
   useEffect(() => {
     if (!visible) return;
     y.set(height);
-    velo.set(withTiming(1, { duration: Movimiento.medio }));
+    velo.set(withTiming(1, { duration: Movimiento.medio, easing: Easing.out(Easing.quad) }));
     y.set(reducido ? 0 : withSpring(0, Movimiento.resorte));
   }, [visible, reducido, height, y, velo]);
 
@@ -49,8 +49,8 @@ export function Hoja({ visible, alCerrar, titulo, children }: Props) {
     onDeactivate: (e) => {
       'worklet';
       if (e.translationY > 120 || e.velocityY > 900) {
-        velo.set(withTiming(0, { duration: Movimiento.rapido }));
-        y.set(withTiming(height, { duration: Movimiento.rapido }, () => scheduleOnRN(alCerrar)));
+        velo.set(withTiming(0, { duration: Movimiento.rapido, easing: Easing.out(Easing.quad) }));
+        y.set(withTiming(height, { duration: Movimiento.rapido, easing: SALIDA }, () => scheduleOnRN(alCerrar)));
       } else {
         y.set(withSpring(0, Movimiento.resorte));
       }
@@ -98,6 +98,9 @@ export function Hoja({ visible, alCerrar, titulo, children }: Props) {
     </Modal>
   );
 }
+
+/** Salida tipo cajón de iOS: arranca rápido y frena al final (nunca ease-in en lo que se va). */
+const SALIDA = Easing.bezier(0.32, 0.72, 0, 1);
 
 const estilos = StyleSheet.create({
   abajo: { flex: 1, justifyContent: 'flex-end' },

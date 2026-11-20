@@ -171,7 +171,7 @@ function TarjetaDecision({ decidido, onPress }: { decidido: string | null; onPre
         <View style={{ flex: 1, gap: 2 }}>
           <Texto tipo="titulo3">{decidido ? 'Tu decisión de plata' : '¿Tienes una decisión de plata?'}</Texto>
           <Texto tipo="pequeno" suave>
-            {decidido ? `Decidiste: ${decidido.toLowerCase()}. Puedes volver a mirar los caminos.` : 'Debo y no sé cómo pagar, me ofrecieron un crédito, no sé si diferir...'}
+            {decidido ? `Decidiste: ${decidido.toLowerCase()}. Puedes volver a mirar los caminos.` : 'Debo y no sé cómo pagar, me ofrecieron un crédito, no sé si diferir…'}
           </Texto>
         </View>
         <Icono nombre="flecha" tamano={22} />
