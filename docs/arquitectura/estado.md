@@ -11,8 +11,8 @@ Web publicada y conectada a la API: https://luca-demo-delta.vercel.app (ingreso 
 Lo que falta para cerrar la app 1.0, en orden:
 
 1. Hecho el 16 de noviembre: API desplegada, web conectada y primeras llamadas reales al modelo (ver "Producción").
-2. Juan David: agregar la URL de la web en Supabase > Authentication > URL Configuration y probar un ingreso real con Google y con código al correo. Apple está sin configurar.
-3. Pasada final: ícono de la app, lector de pantalla, pantallas chicas.
+2. Juan David: URL de la web agregada en Supabase el 20 de noviembre. Falta probar un ingreso real con Google y con código al correo. Apple está sin configurar.
+3. Hecho el 20 de noviembre y fusionado en `v1`: pasada final (ver "pasada final"). La web publicada todavía no la tiene: hay que volver a publicar.
 4. Build de iPhone, después de la web.
 
 Contenido: 1 de 12 módulos escrito (prima y cesantías). Los otros 11 se escriben en `packages/contenido`, cada persona en su rama desde `v1` y con PR hacia `v1`, tocando solo `packages/contenido` y `packages/conocimiento`. No se edita `packages/core/src/esquemas.ts` desde esas ramas.
@@ -25,12 +25,12 @@ Plan de siete pasos. La rama `v1` ya tiene la base técnica, el prototipo y el c
 |---|---|---|
 | 0 | Rama `v1`, contratos en `packages/core/src/esquemas.ts` | Hecho |
 | 1 | Dirección visual y personaje | Hecho: Semilla · Grabado, ver `DESIGN.md` |
-| 2 | Biblioteca de assets en `apps/mobile/assets` | Parcial: 3 poses, desprendible y 20 íconos. El resto espera a la generación de imágenes |
+| 2 | Biblioteca de assets en `apps/mobile/assets` | Hecho: 12 poses, 5 etapas de crecimiento, 12 portadas, 12 medallas, 7 objetos, 4 escenas, 20 íconos SVG, ícono y arranque |
 | 3 | App con datos de muestra | Dos tandas hechas en `claude/app-v1-020a11`: bienvenida, inicio, Aprender con lecciones, prima, documentos, decisión y Sobre mí. Falta conectar la API (paso 5) |
 | 4 | Backend: cuentas, tablas, agentes y rutas | Hecho y fusionado en `v1`. Migración `20261115000000_luca.sql` aplicada en `makers-dev` el 15 de noviembre: avisos de seguridad en cero y prueba de aislamiento entre dos usuarios (revertida) |
 | 5 | Conectar app y API | Hecho en `claude/app-v1-020a11`: fuente real contra la API, subida al bucket, modo demostración y web lista para Vercel (sin desplegar) |
-| 6 | Contenido de los 12 módulos | Pendiente |
-| 7 | Pulido y verificación | Pendiente |
+| 6 | Contenido de los 12 módulos | 1 de 12 (prima y cesantías). Los otros 11 los escriben Ariel y Juan José |
+| 7 | Pulido y verificación | Hecho el 20 de noviembre en `v1`, salvo Android y VoiceOver real |
 
 ## Qué funciona y cómo se comprobó
 
