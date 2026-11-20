@@ -11,7 +11,7 @@ import { BurbujaLuca, Ilustracion, Luca } from '@/components/luca';
 import { Pantalla } from '@/components/pantalla';
 import { Pdf } from '@/components/pdf';
 import { Texto } from '@/components/texto';
-import { Espacio, Forma, Fuente, useTema } from '@/constants/tema';
+import { Espacio, Forma, Fuente, useLetraGrande, useTema } from '@/constants/tema';
 import { useLuca } from '@/lib/datos/contexto';
 import { comoProblema, type ProblemaLuca } from '@/lib/datos/errores';
 import type { Archivo } from '@/lib/datos/fuente';
@@ -84,7 +84,9 @@ export default function Documentos() {
           accessibilityLabel="Subir otro documento"
           style={({ pressed }) => [estilos.subir, { borderColor: tema.linea, backgroundColor: pressed ? tema.superficie : 'transparent' }]}>
           <Icono nombre="mas" tamano={22} />
-          <Texto tipo="boton">Subir otro documento</Texto>
+          <Texto tipo="boton" style={{ flexShrink: 1 }}>
+            Subir otro documento
+          </Texto>
         </Pressable>
       </Entrada>
 
@@ -116,7 +118,15 @@ export default function Documentos() {
 
 function FilaDocumento({ doc, nuevo }: { doc: DocumentoLeido; nuevo: boolean }) {
   const tema = useTema();
+  const letraGrande = useLetraGrande();
   const explicado = doc.renglones.every((x) => x.explicacion);
+  const etiquetaNuevo = (
+    <View style={[estilos.nuevo, { backgroundColor: tema.verde }]}>
+      <Texto tipo="pequeno" color={tema.sobreVerde} style={{ fontFamily: Fuente.negrita }}>
+        Nuevo
+      </Texto>
+    </View>
+  );
   return (
     <Pressable
       onPress={() => (haptica.toque(), router.push({ pathname: '/documento/[id]', params: { id: doc.id } }))}
@@ -130,16 +140,10 @@ function FilaDocumento({ doc, nuevo }: { doc: DocumentoLeido; nuevo: boolean }) 
           {doc.titulo}
           {explicado ? ' · explicado' : ''}
         </Texto>
+        {/* Con letra grande la etiqueta baja: al lado partía "Desprendible" en dos. */}
+        {nuevo && letraGrande ? <View style={{ alignSelf: 'flex-start', marginTop: Espacio.xs }}>{etiquetaNuevo}</View> : null}
       </View>
-      {nuevo ? (
-        <View style={[estilos.nuevo, { backgroundColor: tema.verde }]}>
-          <Texto tipo="pequeno" color={tema.sobreVerde} style={{ fontFamily: Fuente.negrita }}>
-            Nuevo
-          </Texto>
-        </View>
-      ) : (
-        <Icono nombre="flecha" tamano={20} color={tema.textoSuave} />
-      )}
+      {nuevo ? (letraGrande ? null : etiquetaNuevo) : <Icono nombre="flecha" tamano={20} color={tema.textoSuave} />}
     </Pressable>
   );
 }
@@ -147,7 +151,7 @@ function FilaDocumento({ doc, nuevo }: { doc: DocumentoLeido; nuevo: boolean }) 
 const estilos = StyleSheet.create({
   leyendo: { flexDirection: 'row', alignItems: 'center', gap: Espacio.m },
   archivo: { flexDirection: 'row', alignItems: 'center', gap: Espacio.m, borderWidth: Forma.contorno, borderRadius: Forma.radio, padding: Espacio.m, minHeight: 72 },
-  subir: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: Espacio.s, borderWidth: Forma.contorno, borderStyle: 'dashed', borderRadius: Forma.radio, minHeight: 56 },
+  subir: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: Espacio.s, borderWidth: Forma.contorno, borderStyle: 'dashed', borderRadius: Forma.radio, minHeight: 56, paddingHorizontal: Espacio.l, paddingVertical: Espacio.s },
   pildoras: { flexDirection: 'row', flexWrap: 'wrap', gap: Espacio.s },
   pildora: { borderWidth: 1.5, borderRadius: 6, paddingHorizontal: 10, paddingVertical: 4 },
   nuevo: { borderRadius: 6, paddingHorizontal: 8, paddingVertical: 2 },

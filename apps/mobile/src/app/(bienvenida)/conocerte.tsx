@@ -10,7 +10,7 @@ import { Icono } from '@/components/icono';
 import { BurbujaLuca, Ilustracion } from '@/components/luca';
 import { Pantalla } from '@/components/pantalla';
 import { Texto } from '@/components/texto';
-import { Espacio, Forma, Movimiento, useTema } from '@/constants/tema';
+import { Espacio, Forma, Movimiento, useLetraGrande, useTema } from '@/constants/tema';
 import { useLuca } from '@/lib/datos/contexto';
 import { haptica } from '@/lib/haptica';
 
@@ -82,6 +82,7 @@ type OpcionProps = {
 /** Opción grande de la bienvenida. La principal lleva la sombra sólida y se hunde al tocarla. */
 function Opcion({ titulo, detalle, principal, proximamente, ilustracion, onPress }: OpcionProps) {
   const tema = useTema();
+  const letraGrande = useLetraGrande();
   const bajada = useSharedValue(0);
   const animado = useAnimatedStyle(() => ({ transform: [{ translateY: bajada.value }] }));
   return (
@@ -118,7 +119,7 @@ function Opcion({ titulo, detalle, principal, proximamente, ilustracion, onPress
             {detalle}
           </Texto>
         </View>
-        {ilustracion}
+        {letraGrande ? null : ilustracion}
         {principal ? <Icono nombre="flecha" tamano={22} /> : null}
       </Animated.View>
     </Pressable>

@@ -12,7 +12,7 @@ import { Pantalla } from '@/components/pantalla';
 import { PasoVista, TarjetaRegla } from '@/components/pasos';
 import { Tajadas } from '@/components/tajadas';
 import { Texto } from '@/components/texto';
-import { Espacio, Forma, Movimiento, useTema } from '@/constants/tema';
+import { Espacio, Forma, useTema } from '@/constants/tema';
 import type { NombreAsset } from '@/lib/assets';
 import { useLuca } from '@/lib/datos/contexto';
 import { leccionDePrueba } from '@/lib/datos/pasos-de-prueba';

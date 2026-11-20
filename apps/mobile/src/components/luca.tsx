@@ -12,7 +12,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { Espacio, Forma, Movimiento, Tipo, useTema } from '@/constants/tema';
+import { Apilado, Espacio, Forma, Movimiento, Tipo, useLetraGrande, useTema } from '@/constants/tema';
 import { asset, familiaDe, type NombreAsset, type Pose } from '@/lib/assets';
 
 import { MarcoGrabado } from './marco-grabado';
@@ -120,10 +120,12 @@ export function BurbujaLuca({
   const tema = useTema();
   const trozos = (typeof texto === 'string' ? [texto] : texto).map((t) => (typeof t === 'string' ? { t, fuerte: false } : { t: t.fuerte, fuerte: true }));
   const completo = trozos.map((x) => x.t).join('');
+  // Con letra muy grande, Luca va encima y la burbuja usa todo el ancho (al lado quedaba en dos palabras por línea).
+  const apilada = useLetraGrande();
   return (
-    <View style={estilos.burbujaFila}>
+    <View style={[estilos.burbujaFila, apilada && Apilado.fila]}>
       <Luca pose={pose} tamano={tamanoLuca} latido={sinVoz ? 0 : completo.length} />
-      <View style={estilos.burbujaCuerpo}>
+      <View style={[estilos.burbujaCuerpo, apilada && Apilado.cuerpo]}>
         <Texto tipo="pequeno" suave>
           Luca
         </Texto>

@@ -9,7 +9,7 @@ export function Pdf() {
   const tema = useTema();
   return (
     <View style={[estilos.pdf, { backgroundColor: tema.maiz, borderColor: tema.linea }]} accessible={false}>
-      <Texto tipo="pequeno" color={tema.sobreMaiz} style={{ fontFamily: Fuente.titular }}>
+      <Texto tipo="pequeno" color={tema.sobreMaiz} maxFontSizeMultiplier={1} style={{ fontFamily: Fuente.titular }}>
         PDF
       </Texto>
     </View>

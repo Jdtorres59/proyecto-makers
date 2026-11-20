@@ -36,10 +36,10 @@ export function LoQueViene({ items, desde = 0 }: { items: Item[]; desde?: number
                     estilos.ficha,
                     { borderColor: tema.linea, backgroundColor: x.destacado ? tema.maiz : tema.papel },
                   ]}>
-                  <Texto tipo="titulo3" esCifra color={x.destacado ? tema.sobreMaiz : tema.texto} style={estilos.dia}>
+                  <Texto maxFontSizeMultiplier={1.2} tipo="titulo3" esCifra color={x.destacado ? tema.sobreMaiz : tema.texto} style={estilos.dia}>
                     {dia}
                   </Texto>
-                  <Texto tipo="pequeno" color={x.destacado ? tema.sobreMaiz : tema.textoSuave} style={estilos.mes}>
+                  <Texto maxFontSizeMultiplier={1.2} tipo="pequeno" color={x.destacado ? tema.sobreMaiz : tema.textoSuave} style={estilos.mes}>
                     {mes}
                   </Texto>
                 </View>

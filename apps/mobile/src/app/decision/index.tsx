@@ -129,7 +129,7 @@ export default function Decidir() {
                     <Pdf />
                     <View style={{ flex: 1 }}>
                       <Texto tipo="cuerpoFuerte">{p.titulo}</Texto>
-                      <Texto tipo="pequeno" suave numberOfLines={1}>
+                      <Texto tipo="pequeno" suave numberOfLines={2}>
                         {listo ? nombreDe(id) : subiendo === p.cual ? 'Leyendo…' : 'Toca para subirlo'}
                       </Texto>
                     </View>

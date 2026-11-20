@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 
-import { Espacio, Forma, Movimiento, useTema } from '@/constants/tema';
+import { Apilado, Espacio, Forma, Movimiento, useLetraGrande, useTema } from '@/constants/tema';
 import { haptica } from '@/lib/haptica';
 
 import { Campo } from './campo';
@@ -13,12 +13,13 @@ import { Texto } from './texto';
 /** Un renglón del documento tal como Luca lo leyó. `leido` lo marca con un visto cuando la lectura pasa por ahí. */
 export function RenglonDocumento({ renglon, leido = true, total }: { renglon: Renglon; leido?: boolean; total?: boolean }) {
   const tema = useTema();
+  const letraGrande = useLetraGrande();
   const esDescuento = ['salud', 'pension', 'solidaridad'].includes(renglon.clave);
   // Sin monto (una tasa, una fecha) se muestra tal como venía en el papel.
   const monto = renglon.monto === null ? renglon.texto : `${esDescuento ? '−' : ''}${formatearCOP(renglon.monto)}`;
   return (
     <View
-      style={[estilos.renglon, { borderTopColor: total ? tema.linea : tema.lineaSuave, borderTopWidth: total ? Forma.contorno : 1 }]}
+      style={[estilos.renglon, letraGrande && [Apilado.fila, { gap: 2 }], { borderTopColor: total ? tema.linea : tema.lineaSuave, borderTopWidth: total ? Forma.contorno : 1 }]}
       accessible
       accessibilityLabel={`${renglon.etiqueta}: ${monto}${renglon.confianza === 'baja' ? '. Revisa este dato' : ''}`}>
       <View style={estilos.izquierda}>
@@ -50,6 +51,7 @@ type FilaProps = {
 /** Fila de "lo que leí": se corrige en el mismo lugar. Después de cambiarla queda marcada. */
 export function FilaEditable({ etiqueta, valor, alGuardar, valorEditable = valor, numerico, revisar }: FilaProps) {
   const tema = useTema();
+  const letraGrande = useLetraGrande();
   const [editando, setEditando] = useState(false);
   const [borrador, setBorrador] = useState(valorEditable);
   const [cambiada, setCambiada] = useState(false);
@@ -67,7 +69,7 @@ export function FilaEditable({ etiqueta, valor, alGuardar, valorEditable = valor
   return (
     <Animated.View
       layout={LinearTransition.springify().damping(Movimiento.resorte.damping)}
-      style={[estilos.fila, { borderBottomColor: tema.lineaSuave }, revisar && !cambiada && { borderLeftWidth: 4, borderLeftColor: tema.maiz, paddingLeft: Espacio.m }]}>
+      style={[estilos.fila, letraGrande && !editando && Apilado.fila, { borderBottomColor: tema.lineaSuave }, revisar && !cambiada && { borderLeftWidth: 4, borderLeftColor: tema.maiz, paddingLeft: Espacio.m }]}>
       {editando ? (
         <Animated.View entering={FadeIn.duration(Movimiento.rapido)} style={estilos.edicion}>
           <Campo
@@ -89,7 +91,7 @@ export function FilaEditable({ etiqueta, valor, alGuardar, valorEditable = valor
         </Animated.View>
       ) : (
         <>
-          <View style={estilos.texto}>
+          <View style={[estilos.texto, letraGrande && Apilado.cuerpo]}>
             <Texto tipo="pequeno" suave>
               {etiqueta}
             </Texto>

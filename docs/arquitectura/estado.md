@@ -125,9 +125,16 @@ Revisado en web con el árbol de accesibilidad: no hay controles sin nombre ni o
 
 **Producción.** https://luca-demo-delta.vercel.app recorrida con "Probar sin cuenta" a 375 px, de login al cierre de la decisión: todo responde 200/304, sin errores de consola y sin llamadas a la API ni al modelo. En escritorio la columna está centrada. Esta versión todavía no tiene los arreglos de esta pasada.
 
+**Letra del sistema al máximo** (iPhone 16e, accesibilidad XXXL, claro): recorrido completo en el simulador, del login al cierre de la decisión, pasando por una lección, documentos, Sobre mí y la prima. `useLetraGrande()` (`fontScale` de 1,6 o más) en `constants/tema.ts` reacomoda las filas que partían palabras ("desprendi/ble", "présta/mo", "$300.00/0"):
+- La burbuja de Luca, la tarjeta de crecimiento y los módulos de Aprender ponen la imagen encima.
+- En los renglones del documento, las filas editables, los caminos de la decisión y la comparación, el monto baja debajo de la etiqueta.
+- "Nuevo" en Documentos baja debajo del título.
+- La ilustración de "Subir mi desprendible" se oculta.
+- Las fichas de tamaño fijo (PDF, números de orden, fecha de "Lo que viene", fecha en Listo) topan su texto, porque el dato también va en la etiqueta accesible.
+- El encabezado "Lo que viene" envuelve y el estado de cada papel en la decisión usa dos líneas.
+
 **No verificado:**
 - Android: no hay SDK ni emulador en este Mac.
-- Letra del sistema al máximo en las pantallas interiores en iOS. Login e inicio se vieron en la fase 1. Esta vez el simulador quedó esperando el permiso del panel.
 - VoiceOver real. Se revisó el árbol de accesibilidad en web.
 
 ## Backend de Luca 1.0

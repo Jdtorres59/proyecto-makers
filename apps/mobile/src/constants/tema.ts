@@ -1,4 +1,4 @@
-import { useColorScheme } from 'react-native';
+import { useColorScheme, useWindowDimensions } from 'react-native';
 
 /** Tokens de DESIGN.md (Semilla · Grabado). Una sola fuente de verdad para color, tipo, forma y movimiento. */
 
@@ -45,6 +45,14 @@ export function useTema(): Paleta & { oscuro: boolean } {
   const oscuro = useColorScheme() === 'dark';
   return { ...(oscuro ? Colores.oscuro : Colores.claro), oscuro };
 }
+
+/** Letra del sistema muy grande (de "Más grande" para arriba en iOS): las filas con ilustración se reacomodan. */
+export const useLetraGrande = () => useWindowDimensions().fontScale >= 1.6;
+/** Fila que se vuelve columna con letra grande, y el bloque de texto que deja de estirarse a lo alto. */
+export const Apilado = {
+  fila: { flexDirection: 'column', alignItems: 'flex-start' },
+  cuerpo: { flex: 0, alignSelf: 'stretch' },
+} as const;
 
 /** Bricolage Grotesque, cargada en _layout con expo-font. Un nombre por peso: RN no sintetiza pesos de fuentes propias. */
 export const Fuente = {

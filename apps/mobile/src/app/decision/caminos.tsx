@@ -21,7 +21,7 @@ import { TarjetaRegla } from '@/components/pasos';
 import { Tajadas } from '@/components/tajadas';
 import { Tarjeta } from '@/components/tarjeta';
 import { Texto } from '@/components/texto';
-import { Espacio, Forma, Fuente, Movimiento, Tipo, useTema } from '@/constants/tema';
+import { Apilado, Espacio, Forma, Fuente, Movimiento, Tipo, useLetraGrande, useTema } from '@/constants/tema';
 import { useLuca } from '@/lib/datos/contexto';
 import { type Camino, caminos, type IdCamino, type Papeles, papelesDesde, tasaDe, terminaEn } from '@/lib/decision';
 import { comoProblema, type ProblemaLuca } from '@/lib/datos/errores';
@@ -34,6 +34,7 @@ const porcentaje = (n: number) => `${n.toFixed(2).replace('.', ',')} %`;
 /** La decisión como lección: lo que leí, adivinar, comparar con plazos, elegir y justificar, cierre. Decide la persona. */
 export default function Caminos() {
   const tema = useTema();
+  const letraGrande = useLetraGrande();
   const { revisar } = useLocalSearchParams<{ revisar?: string }>();
   const { perfil, documentos, eventos, hoy, decision, planPrima, cerrarDecision, papeles: ids } = useLuca();
   const extracto = documentos.find((d) => d.id === ids.extracto);
@@ -255,14 +256,14 @@ export default function Caminos() {
                     aria-expanded={abiertoAqui}
                     accessibilityLabel={`${x.nombre}. ${formatearCOP(x.total)} en total. ${x.detalle}`}
                     style={{ gap: Espacio.s }}>
-                    <View style={estilos.filaEntre}>
-                      <View style={{ flex: 1 }}>
+                    <View style={[estilos.filaEntre, letraGrande && Apilado.fila]}>
+                      <View style={[{ flex: 1 }, letraGrande && Apilado.cuerpo]}>
                         <Texto tipo="cuerpoFuerte">{x.nombre}</Texto>
                         <Texto tipo="pequeno" suave>
                           {x.detalle}
                         </Texto>
                       </View>
-                      <View style={{ alignItems: 'flex-end' }}>
+                      <View style={{ alignItems: letraGrande ? 'flex-start' : 'flex-end' }}>
                         <Cifra valor={x.total} tamano={20} />
                         <Texto tipo="pequeno" suave>
                           en total
@@ -386,8 +387,8 @@ export default function Caminos() {
                 accessibilityRole="radio"
                 aria-checked={sel}
                 accessibilityLabel={`${c.nombre}. ${c.detalle}. ${formatearCOP(c.total)} en total`}
-                style={[estilos.opcion, { borderColor: tema.linea, backgroundColor: sel ? tema.verde : tema.papel }]}>
-                <View style={{ flex: 1 }}>
+                style={[estilos.opcion, letraGrande && Apilado.fila, { borderColor: tema.linea, backgroundColor: sel ? tema.verde : tema.papel }]}>
+                <View style={[{ flex: 1 }, letraGrande && Apilado.cuerpo]}>
                   <Texto tipo="cuerpoFuerte" color={sel ? tema.sobreVerde : tema.texto}>
                     {c.nombre}
                   </Texto>

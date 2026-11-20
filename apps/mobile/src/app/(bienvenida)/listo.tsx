@@ -63,7 +63,7 @@ function Hecho({ bola, principal, detalle }: { bola: string; principal: ReactNod
   return (
     <View style={[estilos.hecho, { backgroundColor: tema.papel, borderColor: tema.linea }]}>
       <View style={[estilos.bola, { backgroundColor: tema.maiz, borderColor: tema.linea }]}>
-        <Texto tipo="pequeno" esCifra color={tema.sobreMaiz} style={{ fontFamily: 'BricolageGrotesque_800ExtraBold', textAlign: 'center' }}>
+        <Texto maxFontSizeMultiplier={1} numberOfLines={2} adjustsFontSizeToFit tipo="pequeno" esCifra color={tema.sobreMaiz} style={{ fontFamily: 'BricolageGrotesque_800ExtraBold', textAlign: 'center' }}>
           {bola}
         </Texto>
       </View>

@@ -65,7 +65,7 @@ export default function ModuloPantalla() {
                 {hecha ? (
                   <Icono nombre="check" tamano={16} color={tema.sobreVerde} />
                 ) : (
-                  <Texto tipo="pequeno" esCifra color={esSiguiente ? tema.sobreMaiz : tema.texto} style={{ fontFamily: 'BricolageGrotesque_700Bold' }}>
+                  <Texto tipo="pequeno" maxFontSizeMultiplier={1.2} esCifra color={esSiguiente ? tema.sobreMaiz : tema.texto} style={{ fontFamily: 'BricolageGrotesque_700Bold' }}>
                     {i + 1}
                   </Texto>
                 )}

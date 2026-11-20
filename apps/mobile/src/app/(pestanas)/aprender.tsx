@@ -10,7 +10,7 @@ import { Ilustracion, Luca } from '@/components/luca';
 import { Pantalla } from '@/components/pantalla';
 import { Tarjeta } from '@/components/tarjeta';
 import { Texto } from '@/components/texto';
-import { Espacio, Forma, Fuente, Movimiento, useTema } from '@/constants/tema';
+import { Apilado, Espacio, Forma, Fuente, Movimiento, useLetraGrande, useTema } from '@/constants/tema';
 import type { NombreAsset } from '@/lib/assets';
 import { etapaDeCrecimiento, moduloAbierto, moduloTerminado, useLuca } from '@/lib/datos/contexto';
 import { haptica } from '@/lib/haptica';
@@ -21,6 +21,7 @@ export default function Aprender() {
   const { modulos, progreso, decision, verBorradores, alternarBorradores } = useLuca();
   const terminados = modulos.filter((m) => moduloTerminado(m, progreso)).length;
   const etapa = etapaDeCrecimiento(terminados);
+  const letraGrande = useLetraGrande();
 
   return (
     <Pantalla conPestanas>
@@ -29,9 +30,9 @@ export default function Aprender() {
       </Entrada>
 
       <Entrada indice={1}>
-        <Tarjeta style={estilos.crecer}>
+        <Tarjeta style={letraGrande ? { ...estilos.crecer, ...Apilado.fila } : estilos.crecer}>
           <Luca nombre={`crecimiento/${etapa}`} tamano={104} />
-          <View style={{ flex: 1, gap: Espacio.s }}>
+          <View style={[{ flex: 1, gap: Espacio.s }, letraGrande && Apilado.cuerpo]}>
             <Texto tipo="titulo3">
               {terminados === 0 ? 'Luca es una semilla' : terminados === modulos.length ? 'Luca ya es un árbol' : 'Luca está creciendo'}
             </Texto>
@@ -93,6 +94,7 @@ export default function Aprender() {
 
 function Nodo({ modulo: m, ultimo }: { modulo: Modulo; ultimo: boolean }) {
   const tema = useTema();
+  const letraGrande = useLetraGrande();
   const { progreso, verBorradores } = useLuca();
   const abierto = moduloAbierto(m, verBorradores);
   const terminado = moduloTerminado(m, progreso);
@@ -114,7 +116,7 @@ function Nodo({ modulo: m, ultimo }: { modulo: Modulo; ultimo: boolean }) {
           {terminado ? (
             <Icono nombre="check" tamano={18} color={tema.sobreVerde} />
           ) : (
-            <Texto tipo="cuerpoFuerte" esCifra color={abierto ? tema.sobreMaiz : tema.textoSuave}>
+            <Texto tipo="cuerpoFuerte" maxFontSizeMultiplier={1.2} esCifra color={abierto ? tema.sobreMaiz : tema.textoSuave}>
               {m.orden}
             </Texto>
           )}
@@ -130,15 +132,15 @@ function Nodo({ modulo: m, ultimo }: { modulo: Modulo; ultimo: boolean }) {
         aria-disabled={!abierto}
         accessibilityLabel={`Módulo ${m.orden}: ${m.titulo}. ${estado}`}
         style={{ flex: 1, paddingBottom: Espacio.l }}>
-        <Animated.View style={[estilos.nodo, { backgroundColor: abierto ? tema.papel : tema.fondo, borderColor: abierto ? tema.linea : tema.lineaSuave }, animado]}>
+        <Animated.View style={[estilos.nodo, letraGrande && Apilado.fila, { backgroundColor: abierto ? tema.papel : tema.fondo, borderColor: abierto ? tema.linea : tema.lineaSuave }, animado]}>
           <View style={{ opacity: abierto ? 1 : 0.55 }}>
             <Ilustracion nombre={`portadas/${m.portada}` as NombreAsset} ancho={96} alto={64} />
           </View>
-          <View style={{ flex: 1, gap: 2 }}>
+          <View style={[{ flex: 1, gap: 2 }, letraGrande && Apilado.cuerpo]}>
             <Texto tipo="cuerpoFuerte">{m.titulo}</Texto>
             <View style={estilos.estado}>
               {!abierto ? <Icono nombre="candado" tamano={14} color={tema.textoSuave} /> : null}
-              <Texto tipo="pequeno" suave>
+              <Texto tipo="pequeno" suave style={{ flexShrink: 1 }}>
                 {estado}
               </Texto>
             </View>

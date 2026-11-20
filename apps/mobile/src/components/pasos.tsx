@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown, useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
 
-import { Espacio, Forma, Fuente, Movimiento, useTema } from '@/constants/tema';
+import { Apilado, Espacio, Forma, Fuente, Movimiento, useLetraGrande, useTema } from '@/constants/tema';
 import { haptica } from '@/lib/haptica';
 
 import { Boton } from './boton';
@@ -266,7 +266,7 @@ function Ordenar({ paso, alListo }: De<'ordenar'>) {
               accessibilityLabel={`${t.texto}${colocada ? `, puesto ${n}` : ''}`}
               style={[estilos.opcion, { borderColor: tema.linea, backgroundColor: bien ? tema.verde : colocada ? tema.superficie : tema.papel }]}>
               <View style={[estilos.numero, { borderColor: bien ? tema.sobreVerde : tema.linea, backgroundColor: colocada ? (bien ? tema.verde : tema.maiz) : 'transparent' }]}>
-                <Texto tipo="cuerpoFuerte" esCifra color={bien ? tema.sobreVerde : tema.sobreMaiz}>
+                <Texto maxFontSizeMultiplier={1.2} tipo="cuerpoFuerte" esCifra color={bien ? tema.sobreVerde : tema.sobreMaiz}>
                   {colocada ? n : ''}
                 </Texto>
               </View>
@@ -399,6 +399,7 @@ function Repartir({ paso, alListo }: De<'repartir'>) {
 
 function Comparar({ paso, alListo }: De<'comparar'>) {
   const tema = useTema();
+  const letraGrande = useLetraGrande();
   const [elegido, setElegido] = useState<string | null>(null);
   const maximo = Math.max(...paso.caminos.map((c) => c.total));
   return (
@@ -421,8 +422,8 @@ function Comparar({ paso, alListo }: De<'comparar'>) {
               aria-selected={abierto}
               accessibilityLabel={`${c.titulo}. ${formatearCOP(c.total)} en total, cuota de ${formatearCOP(c.cuotaMensual)}, ${c.meses} meses${abierto ? '. Elegido' : ''}`}
               style={[estilos.camino, { borderColor: tema.linea, backgroundColor: abierto ? tema.superficie : tema.papel }]}>
-              <View style={estilos.filaEntre}>
-                <Texto tipo="cuerpoFuerte" style={{ flex: 1 }}>
+              <View style={[estilos.filaEntre, letraGrande && [Apilado.fila, { gap: 2 }]]}>
+                <Texto tipo="cuerpoFuerte" style={letraGrande ? undefined : { flex: 1 }}>
                   {c.titulo}
                 </Texto>
                 <Texto tipo="titulo3" esCifra>
@@ -433,7 +434,7 @@ function Comparar({ paso, alListo }: De<'comparar'>) {
                 <View style={{ width: `${(c.total / maximo) * 100}%`, height: '100%', backgroundColor: tema.maiz, borderRadius: 4 }} />
               </View>
               {abierto ? (
-                <Animated.View entering={FadeIn} style={estilos.filaEntre}>
+                <Animated.View entering={FadeIn} style={[estilos.filaEntre, letraGrande && [Apilado.fila, { gap: 2 }]]}>
                   <Texto tipo="pequeno" suave esCifra>
                     Cuota de {formatearCOP(c.cuotaMensual)}
                   </Texto>

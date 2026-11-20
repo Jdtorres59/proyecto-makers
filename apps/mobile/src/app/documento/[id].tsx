@@ -11,7 +11,7 @@ import { BurbujaLuca, Luca } from '@/components/luca';
 import { Cabecera, Pantalla } from '@/components/pantalla';
 import { Tarjeta } from '@/components/tarjeta';
 import { Texto } from '@/components/texto';
-import { Espacio, useTema } from '@/constants/tema';
+import { Apilado, Espacio, useLetraGrande, useTema } from '@/constants/tema';
 import { useLuca } from '@/lib/datos/contexto';
 import { comoProblema, type ProblemaLuca } from '@/lib/datos/errores';
 
@@ -20,6 +20,7 @@ const DESCUENTOS = ['salud', 'pension', 'solidaridad'];
 /** Un documento explicado: cada renglón se abre y dice qué es, con la cuenta hecha. */
 export default function DocumentoPantalla() {
   const tema = useTema();
+  const letraGrande = useLetraGrande();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { documentos, explicarDocumento, perfil } = useLuca();
   const doc = documentos.find((d) => d.id === id);
@@ -66,7 +67,7 @@ export default function DocumentoPantalla() {
           {doc.renglones.map((r, i) => {
             const monto = r.monto === null ? r.texto : `${DESCUENTOS.includes(r.clave) ? '−' : ''}${formatearCOP(r.monto)}`;
             const cabeza = (
-              <View style={estilos.renglon}>
+              <View style={[estilos.renglon, letraGrande && [Apilado.fila, { gap: 2 }]]}>
                 <Texto tipo={r.clave === 'neto' ? 'cuerpoFuerte' : 'cuerpo'} style={{ flexShrink: 1 }}>
                   {r.etiqueta}
                 </Texto>
@@ -94,7 +95,7 @@ export default function DocumentoPantalla() {
             <Texto tipo="pequeno" suave>
               Este mes tu empresa también te va guardando:
             </Texto>
-            <View style={estilos.noVes}>
+            <View style={[estilos.noVes, letraGrande && { flexDirection: 'column', gap: Espacio.s }]}>
               {[
                 [prima(salario, 30), 'de prima'],
                 [cesantias(salario, 30), 'de cesantías'],

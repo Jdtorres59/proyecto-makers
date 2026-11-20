@@ -198,7 +198,7 @@ export default function Prima() {
                 accessibilityLabel={`${o.titulo}. ${o.detalle}${n ? `, puesto ${n}` : ''}`}
                 style={[estilos.orden, { borderColor: tema.linea, backgroundColor: ordenBien ? tema.verde : n ? tema.superficie : tema.papel }]}>
                 <View style={[estilos.numero, { borderColor: ordenBien ? tema.sobreVerde : tema.linea, backgroundColor: n && !ordenBien ? tema.maiz : 'transparent' }]}>
-                  <Texto tipo="cuerpoFuerte" esCifra color={ordenBien ? tema.sobreVerde : tema.sobreMaiz}>
+                  <Texto maxFontSizeMultiplier={1.2} tipo="cuerpoFuerte" esCifra color={ordenBien ? tema.sobreVerde : tema.sobreMaiz}>
                     {n || ''}
                   </Texto>
                 </View>
