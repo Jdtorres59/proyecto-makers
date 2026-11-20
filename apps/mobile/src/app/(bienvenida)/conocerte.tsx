@@ -91,7 +91,7 @@ function Opcion({ titulo, detalle, principal, proximamente, ilustracion, onPress
       onPressIn={() => (bajada.set(withSpring(Forma.sombra, Movimiento.resorteVivo)))}
       onPressOut={() => (bajada.set(withSpring(0, Movimiento.resorteVivo)))}
       accessibilityRole="button"
-      accessibilityState={{ disabled: !!proximamente }}
+      aria-disabled={!!proximamente}
       accessibilityLabel={`${titulo}. ${detalle}${proximamente ? ' Próximamente.' : ''}`}
       style={{ paddingBottom: Forma.sombra }}>
       {principal ? <View style={[estilos.sombra, { backgroundColor: tema.linea }]} /> : null}

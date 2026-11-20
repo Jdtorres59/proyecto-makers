@@ -176,8 +176,8 @@ export default function Caminos() {
                   else haptica.firme();
                 }}
                 accessibilityRole="button"
-                accessibilityState={{ selected: elegida, disabled: !!adivina && !elegida }}
-                accessibilityLabel={c.nombre}
+                aria-selected={elegida} aria-disabled={!!adivina && !elegida}
+                accessibilityLabel={`${c.nombre}${elegida ? '. Elegido' : ''}`}
                 style={[estilos.opcion, { borderColor: tema.linea, backgroundColor: elegida ? tema.superficie : tema.papel }]}>
                 <View style={{ flex: 1 }}>
                   <Texto tipo="cuerpoFuerte">{c.nombre}</Texto>
@@ -252,7 +252,7 @@ export default function Caminos() {
                   <Pressable
                     onPress={() => (haptica.eleccion(), setAbierto(abiertoAqui ? null : x.id))}
                     accessibilityRole="button"
-                    accessibilityState={{ expanded: abiertoAqui }}
+                    aria-expanded={abiertoAqui}
                     accessibilityLabel={`${x.nombre}. ${formatearCOP(x.total)} en total. ${x.detalle}`}
                     style={{ gap: Espacio.s }}>
                     <View style={estilos.filaEntre}>
@@ -384,7 +384,7 @@ export default function Caminos() {
                 key={c.id}
                 onPress={() => (haptica.eleccion(), setElegido(c.id))}
                 accessibilityRole="radio"
-                accessibilityState={{ checked: sel }}
+                aria-checked={sel}
                 accessibilityLabel={`${c.nombre}. ${c.detalle}. ${formatearCOP(c.total)} en total`}
                 style={[estilos.opcion, { borderColor: tema.linea, backgroundColor: sel ? tema.verde : tema.papel }]}>
                 <View style={{ flex: 1 }}>

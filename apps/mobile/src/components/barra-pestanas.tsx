@@ -47,7 +47,7 @@ export function BarraPestanas({ state, navigateToTab }: BottomTabBarProps) {
             <Pressable
               key={ruta.key}
               accessibilityRole="tab"
-              accessibilityState={{ selected: activa }}
+              aria-selected={activa}
               accessibilityLabel={p.titulo}
               style={estilos.pestana}
               onPress={() => {

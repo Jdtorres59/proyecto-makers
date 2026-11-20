@@ -20,7 +20,7 @@ export function Expandible({ cabeza, etiqueta, children, abierto: inicial = fals
         onPress={() => (haptica.toque(), setAbierto(!abierto))}
         accessibilityRole="button"
         accessibilityLabel={etiqueta}
-        accessibilityState={{ expanded: abierto }}
+        aria-expanded={abierto}
         style={estilos.cabeza}>
         <View style={{ flex: 1 }}>{cabeza}</View>
         <View style={{ transform: [{ rotate: abierto ? '45deg' : '0deg' }] }}>

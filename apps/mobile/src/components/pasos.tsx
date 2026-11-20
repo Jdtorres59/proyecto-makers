@@ -83,7 +83,7 @@ function Idea({ paso, alListo }: De<'idea'>) {
   );
 }
 
-/** Opción grande con su estado: neutra, elegida bien (verde con visto) o mal (tiembla y se apaga). */
+/** Opción grande con su estado: neutra, elegida bien (verde con visto) o mal (tiembla y se apaga a 0,7). */
 function Opcion({ texto, estado, alTocar, deshabilitada }: { texto: string; estado: 'neutra' | 'bien' | 'mal'; alTocar(): void; deshabilitada?: boolean }) {
   const tema = useTema();
   const x = useSharedValue(0);
@@ -93,11 +93,11 @@ function Opcion({ texto, estado, alTocar, deshabilitada }: { texto: string; esta
   }, [estado, x]);
   const bien = estado === 'bien';
   return (
-    <Pressable onPress={alTocar} disabled={deshabilitada} accessibilityRole="button" accessibilityLabel={texto} accessibilityState={{ selected: bien, disabled: !!deshabilitada }}>
+    <Pressable onPress={alTocar} disabled={deshabilitada} accessibilityRole="button" accessibilityLabel={`${texto}${bien ? '. Correcta' : estado === 'mal' ? '. No es esta' : ''}`} aria-selected={bien} aria-disabled={!!deshabilitada}>
       <Animated.View
         style={[
           estilos.opcion,
-          { borderColor: tema.linea, backgroundColor: bien ? tema.verde : tema.papel, opacity: estado === 'mal' ? 0.55 : 1 },
+          { borderColor: tema.linea, backgroundColor: bien ? tema.verde : tema.papel, opacity: estado === 'mal' ? 0.7 : 1 }, // 0,7: el texto descartado sigue en 5,9:1 en claro
           animado,
         ]}>
         <Texto tipo="cuerpoFuerte" color={bien ? tema.sobreVerde : tema.texto} style={{ flex: 1 }}>
@@ -335,7 +335,7 @@ export function FilaReparto({
       disabled={!activo}
       accessibilityRole="button"
       accessibilityLabel={etiqueta}
-      accessibilityState={{ disabled: !activo }}
+      aria-disabled={!activo}
       style={({ pressed }) => [estilos.botonReparto, { borderColor: tema.linea, backgroundColor: pressed ? tema.superficie : tema.papel, opacity: activo ? 1 : 0.4 }]}>
       <Texto tipo="titulo3">{signo}</Texto>
     </Pressable>
@@ -418,8 +418,8 @@ function Comparar({ paso, alListo }: De<'comparar'>) {
                 alListo();
               }}
               accessibilityRole="button"
-              accessibilityState={{ selected: abierto }}
-              accessibilityLabel={`${c.titulo}. ${formatearCOP(c.total)} en total, cuota de ${formatearCOP(c.cuotaMensual)}, ${c.meses} meses`}
+              aria-selected={abierto}
+              accessibilityLabel={`${c.titulo}. ${formatearCOP(c.total)} en total, cuota de ${formatearCOP(c.cuotaMensual)}, ${c.meses} meses${abierto ? '. Elegido' : ''}`}
               style={[estilos.camino, { borderColor: tema.linea, backgroundColor: abierto ? tema.superficie : tema.papel }]}>
               <View style={estilos.filaEntre}>
                 <Texto tipo="cuerpoFuerte" style={{ flex: 1 }}>

@@ -66,12 +66,15 @@ export function Hoja({ visible, alCerrar, titulo, children }: Props) {
     <Modal visible transparent animationType="none" statusBarTranslucent navigationBarTranslucent onRequestClose={cerrar}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: tema.velo }, veloAnimado]}>
-          <Pressable style={{ flex: 1 }} onPress={cerrar} accessibilityLabel="Cerrar" accessibilityRole="button" />
+          {/* El velo cierra al tocarlo, pero el lector usa el botón Cerrar: así no hay dos "Cerrar". */}
+          <Pressable style={{ flex: 1 }} onPress={cerrar} accessible={false} focusable={false} aria-hidden />
         </Animated.View>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={estilos.abajo} pointerEvents="box-none">
           <GestureDetector gesture={arrastre}>
             <Animated.View
               accessibilityViewIsModal
+              role="dialog"
+              aria-label={titulo}
               style={[estilos.hoja, { backgroundColor: tema.fondo, borderColor: tema.linea, paddingBottom: bottom + Espacio.xl }, hojaAnimada]}>
               <View style={[estilos.agarre, { backgroundColor: tema.lineaSuave }]} />
               <View style={estilos.cabeza}>

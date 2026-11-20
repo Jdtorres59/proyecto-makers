@@ -18,7 +18,7 @@ export function Chip({ texto, elegido, multiple, onPress }: Props) {
   return (
     <Pressable
       accessibilityRole={multiple ? 'checkbox' : 'radio'}
-      accessibilityState={{ checked: elegido }}
+      aria-checked={elegido}
       accessibilityLabel={texto}
       onPressIn={() => (escala.set(withSpring(0.95, Movimiento.resorteVivo)))}
       onPressOut={() => (escala.set(withSpring(1, Movimiento.resorteVivo)))}

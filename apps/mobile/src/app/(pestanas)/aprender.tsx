@@ -127,7 +127,7 @@ function Nodo({ modulo: m, ultimo }: { modulo: Modulo; ultimo: boolean }) {
         onPressIn={() => bajada.set(withSpring(2, Movimiento.resorteVivo))}
         onPressOut={() => bajada.set(withSpring(0, Movimiento.resorteVivo))}
         accessibilityRole="button"
-        accessibilityState={{ disabled: !abierto }}
+        aria-disabled={!abierto}
         accessibilityLabel={`Módulo ${m.orden}: ${m.titulo}. ${estado}`}
         style={{ flex: 1, paddingBottom: Espacio.l }}>
         <Animated.View style={[estilos.nodo, { backgroundColor: abierto ? tema.papel : tema.fondo, borderColor: abierto ? tema.linea : tema.lineaSuave }, animado]}>

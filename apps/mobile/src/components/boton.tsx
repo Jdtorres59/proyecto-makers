@@ -50,7 +50,7 @@ export function Boton({ titulo, variante = 'principal', cargando, icono, disable
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={titulo}
-      accessibilityState={{ disabled: inactivo, busy: !!cargando }}
+      aria-disabled={inactivo} aria-busy={!!cargando}
       disabled={inactivo}
       hitSlop={conCaja ? undefined : 4}
       onPressIn={(e) => {
